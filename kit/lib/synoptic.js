@@ -8,6 +8,27 @@
   "use strict";
   const NS = "http://www.w3.org/2000/svg";
   const NW = 150, HEAD = 28, ROW = 20, PY = 15;      // compact nodes
+  const TS = 11, TH = TS * Math.sqrt(3) / 2;          // port connector: equilateral triangle (side, height)
+  const ZMIN = 0.5, ZMAX = 1.5, ZKEY = "tscg-kit-zoom";
+  // A connector straddles the block's border. Triangles point the way the flow goes (left to right):
+  // into the block on an input, out of it on an output; a port both input and output is a diamond.
+  function connector(cx, cy, io) {
+    if (io) return `M${cx - TH / 2} ${cy} L${cx} ${cy - TH / 2} L${cx + TH / 2} ${cy} L${cx} ${cy + TH / 2} Z`;
+    return `M${cx - TH / 2} ${cy - TS / 2} L${cx + TH / 2} ${cy} L${cx - TH / 2} ${cy + TS / 2} Z`;
+  }
+  // a polyline with rounded corners
+  function rounded(pts, r) {
+    let d = `M${pts[0][0]} ${pts[0][1]}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], [x2, y2] = pts[i + 1];
+      const l1 = Math.hypot(x1 - x0, y1 - y0), l2 = Math.hypot(x2 - x1, y2 - y1), k = Math.min(r, l1 / 2, l2 / 2);
+      const ax = x1 - (x1 - x0) / (l1 || 1) * k, ay = y1 - (y1 - y0) / (l1 || 1) * k;
+      const bx = x1 + (x2 - x1) / (l2 || 1) * k, by = y1 + (y2 - y1) / (l2 || 1) * k;
+      d += ` L${ax.toFixed(1)} ${ay.toFixed(1)} Q${x1} ${y1} ${bx.toFixed(1)} ${by.toFixed(1)}`;
+    }
+    const e = pts[pts.length - 1];
+    return d + ` L${e[0]} ${e[1]}`;
+  }
   const REJECT = { self: "rej_self", flux_to_info: "rej_flux", info_to_flux: "rej_info" };
   function el(tag, attrs, parent) {
     const e = document.createElementNS(NS, tag);
@@ -28,13 +49,23 @@
              <div><i style="background:var(--info)"></i><span class="sy-linfo"></span></div>
              <p class="sy-help"></p></div></div>
            <div class="sy-infobox"><h2 class="k-h2 sy-ih"></h2><div class="sy-info" aria-live="polite"></div></div></div>
-         <div class="sy-stage"><svg class="sy-svg"></svg><div class="sy-params"></div></div>`;
+         <div class="sy-stage"><svg class="sy-svg"></svg>
+           <div class="sy-zoom"><button data-z="out">−</button><button data-z="reset" class="sy-zval"></button><button data-z="in">+</button><button data-z="fit">⤢</button></div>
+           <div class="sy-params"></div></div>`;
       this.host = host;
       this.svg = host.querySelector(".sy-svg");
       this.list = host.querySelector(".sy-list");
       this.info = host.querySelector(".sy-info");
       this.params = host.querySelector(".sy-params");
       this.svg.addEventListener("pointerdown", e => { if (e.target === this.svg) this.select(null); });
+      // zoom of the Synoptic (the browser's own zoom cannot be set from a page): buttons, Ctrl + wheel
+      this.zoom = (() => { try { const z = +localStorage.getItem(ZKEY); return z >= ZMIN && z <= ZMAX ? z : 1; } catch (e) { return 1; } })();
+      host.querySelectorAll(".sy-zoom button").forEach(b => b.onclick = () => {
+        const k = b.dataset.z;
+        if (k === "fit") this.fit(); else this.setZoom(k === "reset" ? 1 : this.zoom + (k === "in" ? 0.1 : -0.1));
+      });
+      this.svg.addEventListener("wheel", e => { if (!e.ctrlKey) return; e.preventDefault(); this.setZoom(this.zoom - Math.sign(e.deltaY) * 0.1); }, { passive: false });
+      window.addEventListener("resize", () => this.applyView());
       window.addEventListener("pointermove", e => this.onMove(e));
       window.addEventListener("pointerup", e => this.onUp(e));
       this.relabel();
@@ -44,6 +75,8 @@
       q(".sy-h").textContent = K.t("pieces"); q(".sy-lflux").textContent = this.o.fluxLabel() || "flux";
       q(".sy-linfo").textContent = K.t("info"); q(".sy-help").textContent = K.t("wire_help");
       q(".sy-ih").textContent = K.t("info_box");
+      const zt = { out: "zoom_out", reset: "zoom_reset", in: "zoom_in", fit: "zoom_fit" };
+      this.host.querySelectorAll(".sy-zoom button").forEach(b => { b.title = K.t(zt[b.dataset.z]); });
       this.svg.setAttribute("aria-label", K.t("syn_aria"));
       this.showInfo(this.infoType || null);
     }
@@ -61,22 +94,43 @@
       const rows = Math.max(this.m.ports(n, "in").length, this.m.ports(n, "out").length, 1);
       return HEAD + 8 + rows * ROW + 24;
     }
+    // where a wire meets a port: the tip of an output triangle, the base of an input triangle
     portPos(n, port, side) {
       const i = this.m.ports(n, side).findIndex(q => q.id === port);
-      return { x: n.x + (side === "in" ? 0 : NW), y: n.y + HEAD + PY + i * ROW };
+      return { x: n.x + (side === "in" ? -TH / 2 : NW + TH / 2), y: n.y + HEAD + PY + i * ROW };
     }
     // A wire whose target is not clearly to the left is a smooth curve (also for a target
-    // above or below in a nearby column); only a real return wire is routed under the pieces.
+    // above or below in a nearby column). A return wire goes through the gap between the two
+    // blocks when one is above the other, and under both only when they overlap vertically.
     isBack(a, b) { return b.x < a.x - 30; }
     wirePath(a, b, na, nb, k) {
       if (!this.isBack(a, b) || !na || !nb) {
         const dx = Math.max(40, Math.abs(b.x - a.x) / 2, Math.min(90, Math.abs(b.y - a.y) / 3));
         return `M${a.x} ${a.y} C${a.x + dx} ${a.y} ${b.x - dx} ${b.y} ${b.x} ${b.y}`;
       }
-      const lane = Math.max(na.y + this.nodeHeight(na), nb.y + this.nodeHeight(nb)) + 18 + 12 * k, r = 8;
-      const xr = a.x + 20 + 9 * k, xl = Math.max(6 + 4 * k, b.x - 20 - 9 * k);
-      return `M${a.x} ${a.y} H${xr - r} Q${xr} ${a.y} ${xr} ${a.y + r} V${lane - r} Q${xr} ${lane} ${xr - r} ${lane}` +
-             ` H${xl + r} Q${xl} ${lane} ${xl} ${lane - r} V${b.y + r} Q${xl} ${b.y} ${xl + r} ${b.y} H${b.x}`;
+      const aTop = na.y, aBot = na.y + this.nodeHeight(na), bTop = nb.y, bBot = nb.y + this.nodeHeight(nb);
+      let lane;
+      if (bTop - aBot >= 24) lane = (aBot + bTop) / 2 + 6 * k;           // target below: the gap between them
+      else if (aTop - bBot >= 24) lane = (bBot + aTop) / 2 + 6 * k;      // target above
+      else lane = Math.max(aBot, bBot) + 18 + 12 * k;                     // side by side: under both
+      const xr = a.x + 16 + 9 * k, xl = Math.max(6 + 4 * k, b.x - 16 - 9 * k);
+      return rounded([[a.x, a.y], [xr, a.y], [xr, lane], [xl, lane], [xl, b.y], [b.x, b.y]], 8);
+    }
+    applyView() {                       // the zoom is a viewBox in node coordinates
+      const r = this.svg.getBoundingClientRect(), z = this.zoom;
+      if (r.width && r.height) this.svg.setAttribute("viewBox", `0 0 ${(r.width / z).toFixed(1)} ${(r.height / z).toFixed(1)}`);
+      this.svg.parentNode.style.backgroundSize = `${20 * z}px ${20 * z}px`;
+      const v = this.host.querySelector(".sy-zval"); if (v) v.textContent = Math.round(z * 100) + " %";
+    }
+    setZoom(z) {
+      this.zoom = Math.round(Math.max(ZMIN, Math.min(ZMAX, z)) * 100) / 100;
+      try { localStorage.setItem(ZKEY, String(this.zoom)); } catch (e) { /* storage blocked */ }
+      this.m.emit("zoom", this.zoom); this.render();
+    }
+    fit() {                             // every block visible, as large as possible
+      const r = this.svg.getBoundingClientRect(); if (!r.width || !this.m.nodes.length) return this.setZoom(1);
+      const w = Math.max(...this.m.nodes.map(n => n.x + NW)) + 16, h = Math.max(...this.m.nodes.map(n => n.y + this.nodeHeight(n))) + 70;
+      this.setZoom(Math.min(r.width / w, r.height / h));
     }
 
     renderPalette() {
@@ -96,7 +150,7 @@
 
     render() {
       const svg = this.svg, m = this.m;
-      svg.textContent = ""; this.live = [];
+      svg.textContent = ""; this.live = []; this.applyView();
       const gW = el("g", {}, svg), gN = el("g", {}, svg);
       let back = 0;
       for (const w of m.wires) {
@@ -131,12 +185,14 @@
         outer.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
         m.ports(n, "in").forEach((q, i) => {
           const y = HEAD + PY + i * ROW;
-          el("circle", { class: `port ${q.kind}`, cx: 0, cy: y, r: 6, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
+          el("path", { class: `port ${q.kind}`, d: connector(0, y, q.io) }, g);
+          el("circle", { class: "port-hit", cx: 0, cy: y, r: 9, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
           el("text", { class: "port-label", x: 10, y: y + 3.5 }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
         });
         m.ports(n, "out").forEach((q, i) => {
           const y = HEAD + PY + i * ROW;
-          const c = el("circle", { class: `port ${q.kind}`, cx: NW, cy: y, r: 6, "data-node": n.id, "data-port": q.id, "data-side": "out" }, g);
+          el("path", { class: `port ${q.kind}`, d: connector(NW, y, q.io) }, g);
+          const c = el("circle", { class: "port-hit", cx: NW, cy: y, r: 9, "data-node": n.id, "data-port": q.id, "data-side": "out" }, g);
           c.addEventListener("pointerdown", e => this.startWire(e, n, q));
           el("text", { class: "port-label", x: NW - 10, y: y + 3.5, "text-anchor": "end" }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
         });
@@ -180,7 +236,7 @@
       }
     }
 
-    point(e) { const r = this.svg.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+    point(e) { const r = this.svg.getBoundingClientRect(); return { x: (e.clientX - r.left) / this.zoom, y: (e.clientY - r.top) / this.zoom }; }
     startDrag(e, n) {
       e.preventDefault(); e.stopPropagation(); this.select("n" + n.id);
       const p = this.point(e); this.drag = { n, dx: p.x - n.x, dy: p.y - n.y };
@@ -193,8 +249,8 @@
     onMove(e) {
       if (this.drag) {
         const p = this.point(e), r = this.svg.getBoundingClientRect(), n = this.drag.n;
-        n.x = Math.max(4, Math.min(r.width - NW - 4, p.x - this.drag.dx));
-        n.y = Math.max(4, Math.min(r.height - 40, p.y - this.drag.dy));
+        n.x = Math.max(8, Math.min(r.width / this.zoom - NW - 8, p.x - this.drag.dx));
+        n.y = Math.max(4, Math.min(r.height / this.zoom - 40, p.y - this.drag.dy));
         this.render();
       } else if (this.dragWire && this.dragWire.path) {
         const a = this.portPos(this.m.byId(this.dragWire.from.node), this.dragWire.from.port, "out");
@@ -221,7 +277,7 @@
     }
     add(type) {
       // home positions are designed for a wide stage; squeeze them horizontally to fit this one
-      const r = this.svg.getBoundingClientRect(), homes = this.o.home || {}, home = homes[type] || { x: 40, y: 40 };
+      const rr = this.svg.getBoundingClientRect(), r = { width: rr.width / this.zoom }, homes = this.o.home || {}, home = homes[type] || { x: 40, y: 40 };
       const maxX = Math.max(1, ...Object.values(homes).map(h => h.x));
       const scale = r.width ? Math.min(1, (r.width - NW - 12) / maxX) : 1;
       let x = Math.round(home.x * scale), y = home.y;

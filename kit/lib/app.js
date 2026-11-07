@@ -1,7 +1,7 @@
 /* TSCG Kit — app.js
  * The workshop shell, identical for every workshop:
- *   left  : tutorial banner + tabs [Panel | Synoptic]
- *   right : Scale model (drawn by the workshop) + Curves
+ *   top row    : tutorial banner (left) | tabs [Scale model | Curves] (right)
+ *   bottom row : tabs [Synoptic | Panel], full width
  * Owns the clock, the main loop, "under the hood", free mode, the language
  * switch and the session export.
  * Usage: TSCGKit.start(factory), where factory(L) returns the workshop definition
@@ -10,7 +10,7 @@
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.8.0";
+  const VERSION = "0.9.0";
   const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
   const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));
@@ -40,29 +40,34 @@
          <button id="kTheme" class="k-theme" data-tip="theme_tip"></button>
        </header>
        <main class="k-main">
-         <section class="k-left">
-           <div class="k-banner" id="kBanner" aria-live="polite"></div>
-           <div class="k-split k-split-h" id="kSplitBanner"></div>
+         <div class="k-banner" id="kBanner" aria-live="polite"></div>
+         <div class="k-split k-split-v" id="kSplitCols"></div>
+         <section class="k-right">
            <div class="k-tabs" role="tablist">
-             <button class="k-tab" role="tab" data-tab="panel" data-t="tab_panel"></button>
+             <button class="k-rtab active" role="tab" data-rtab="maquette" data-t="maquette"></button>
+             <button class="k-rtab" role="tab" data-rtab="curves" data-t="curves"></button>
+           </div>
+           <div class="k-rpanes">
+             <div class="k-maquette k-rpane active" data-rpane="maquette"><div class="k-view" id="kView"></div></div>
+             <div class="k-curves k-rpane" data-rpane="curves"><canvas id="kChart"></canvas><div class="k-legend" id="kLegend"></div></div>
+           </div>
+         </section>
+         <div class="k-split k-split-h" id="kSplitBanner"></div>
+         <section class="k-left">
+           <div class="k-tabs" role="tablist">
              <button class="k-tab" role="tab" data-tab="synoptic" data-t="tab_syn"></button>
+             <button class="k-tab" role="tab" data-tab="panel" data-t="tab_panel"></button>
            </div>
            <div class="k-panes">
              <div class="k-pane k-pane-panel" data-pane="panel"></div>
              <div class="k-pane k-pane-synoptic" data-pane="synoptic"></div>
            </div>
          </section>
-         <div class="k-split k-split-v" id="kSplitCols"></div>
-         <section class="k-right">
-           <div class="k-maquette"><h2 class="k-h2" data-t="maquette"></h2><div class="k-view" id="kView"></div></div>
-           <div class="k-split k-split-h" id="kSplitRight"></div>
-           <div class="k-curves"><h2 class="k-h2" data-t="curves"></h2><canvas id="kChart"></canvas><div class="k-legend" id="kLegend"></div></div>
-         </section>
        </main>
        <div class="k-toast" id="kToast" role="status"></div>`;
     const $ = sel => document.querySelector(sel);
 
-    const S = { running: false, speed: 1, hood: false, free: false, tab: "synoptic",
+    const S = { running: false, speed: 1, hood: false, free: false, tab: "synoptic", rtab: "maquette",
                 pieces: new Set(), instruments: new Set(), log: [], t0: Date.now(),
                 predictions: {}, answers: null, done: false };
     const model = new K.Model(W.skins);
@@ -96,6 +101,15 @@
       if (tab === "synoptic") app.synoptic.render(); else app.panel.render();
       log("tab", tab); app.tutorial.refresh();
     };
+    // right column: the scale model and the curves share one compartment, as two tabs
+    app.goRTab = tab => {
+      S.rtab = tab;
+      document.querySelectorAll(".k-rtab").forEach(b => { b.classList.toggle("active", b.dataset.rtab === tab); b.setAttribute("aria-selected", b.dataset.rtab === tab); b.classList.remove("attn"); });
+      document.querySelectorAll(".k-rpane").forEach(p => p.classList.toggle("active", p.dataset.rpane === tab));
+      if (tab === "curves") app.chart.draw();
+      log("rtab", tab);
+    };
+    app.curvesHint = on => { const b = document.querySelector('.k-rtab[data-rtab="curves"]'); if (b) b.classList.toggle("attn", on && S.rtab !== "curves"); };
     app.goFree = () => {
       S.free = true; $("#kFree").classList.add("on");
       app.tutorial.mode = "free"; log("mode_free", "");
@@ -158,13 +172,12 @@
     $("#kFast").onclick = () => setSpeed(+1);
 
     // ---- splitters: drag to resize the compartments (double-click resets); remembered per browser
-    const main = $(".k-main"), left = $(".k-left"), right = $(".k-right"), banner = $("#kBanner"), curves = $(".k-curves");
+    // layout: top row = tutorial (left) + scale model / curves (right); bottom row, full width = Synoptic / Panel
+    const main = $(".k-main");
     const layout = (() => { try { return JSON.parse(localStorage.getItem(LAYOUT_KEY)) || {}; } catch (e) { return {}; } })();
     const applyLayout = () => {
       main.style.gridTemplateColumns = layout.cols ? `${layout.cols}px 6px minmax(300px,1fr)` : "";
-      if (layout.banner) { banner.style.height = layout.banner + "px"; banner.style.maxHeight = "none"; } else { banner.style.height = ""; banner.style.maxHeight = ""; }
-      right.classList.toggle("sized", !!layout.curves);
-      curves.style.height = layout.curves ? layout.curves + "px" : "";
+      main.style.gridTemplateRows = layout.top ? `${layout.top}px 6px minmax(0,1fr)` : "";
     };
     const saveLayout = () => { try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout)); } catch (e) { /* storage blocked */ } };
     const relayout = () => { app.synoptic.render(); app.panel.render(); app.chart.draw(); };
@@ -178,9 +191,8 @@
       el.addEventListener("dblclick", () => { delete layout[key]; applyLayout(); saveLayout(); relayout(); });
     }
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-    splitter($("#kSplitCols"), "cols", ev => { const r = main.getBoundingClientRect(); return clamp(ev.clientX - r.left, 380, r.width - 306); });
-    splitter($("#kSplitBanner"), "banner", ev => { const r = left.getBoundingClientRect(); return clamp(ev.clientY - r.top, 60, r.height - 180); });
-    splitter($("#kSplitRight"), "curves", ev => { const r = right.getBoundingClientRect(); return clamp(r.bottom - ev.clientY, 130, r.height - 140); });
+    splitter($("#kSplitCols"), "cols", ev => { const r = main.getBoundingClientRect(); return clamp(ev.clientX - r.left, 300, r.width - 306); });
+    splitter($("#kSplitBanner"), "top", ev => { const r = main.getBoundingClientRect(); return clamp(ev.clientY - r.top, 140, r.height - 220); });
     applyLayout();
     $("#kReset").onclick = () => { model.resetAll(); app.tutorial.restartCurrent(); log("reset", ""); app.synoptic.render(); };
     $("#kHood").onclick = e => {
@@ -207,6 +219,7 @@
       log("export", "");
     };
     document.querySelectorAll(".k-tab").forEach(b => b.onclick = () => app.goTab(b.dataset.tab));
+    document.querySelectorAll(".k-rtab").forEach(b => b.onclick = () => app.goRTab(b.dataset.rtab));
     window.addEventListener("keydown", e => {
       const typing = /INPUT|TEXTAREA/.test(document.activeElement.tagName);
       if ((e.key === "Delete" || e.key === "Backspace") && !typing && S.tab === "synoptic") { e.preventDefault(); app.synoptic.deleteSelected(); }

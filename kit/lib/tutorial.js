@@ -117,6 +117,8 @@
       const bar = this.host.querySelector(".tu-progress>div"), status = this.host.querySelector(".tu-status"), go = this.host.querySelector(".tu-goto");
       const nd = this.need();
       this.app.attention(nd && nd.tab ? nd.tab : null);
+      const st = this.mode === "steps" ? this.steps[this.i] : null;     // a step that asks to read the curves
+      this.app.curvesHint(!!(st && st.curves && !this.finished));
       if (!bar || !status) return;
       if (this.finished) { bar.style.width = "100%"; status.textContent = K.t("tu_done"); go.hidden = true; return; }
       bar.style.width = Math.min(100, Math.round(100 * ((this.res && this.res.p) || 0))) + "%";

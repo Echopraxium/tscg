@@ -52,23 +52,28 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .k-transport{display:flex;gap:6px;align-items:center}
 .k-clock{font-variant-numeric:tabular-nums;color:var(--quiet);font-size:13px;min-width:64px;margin-left:4px}
 .k-spacer{flex:1}
-.k-main{display:grid;grid-template-columns:minmax(0,1.35fr) 6px minmax(300px,1fr);height:calc(100% - 44px)}
-.k-left{display:flex;flex-direction:column;min-width:0;min-height:0;border-right:1px solid var(--rule)}
-.k-right{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--panel)}
-.k-banner{padding:10px 14px;border-bottom:1px solid var(--rule);background:var(--panel);max-height:46%;overflow:auto;flex:none}
+.k-main{display:grid;grid-template-columns:minmax(0,1.3fr) 6px minmax(300px,1fr);grid-template-rows:42% 6px minmax(0,1fr);height:calc(100% - 44px)}
+.k-banner{grid-row:1;grid-column:1;padding:10px 14px;background:var(--panel);overflow:auto;min-height:0}
+#kSplitCols{grid-row:1;grid-column:2}
+.k-right{grid-row:1;grid-column:3;display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--panel)}
+#kSplitBanner{grid-row:2;grid-column:1 / -1;height:auto}
+.k-left{grid-row:3;grid-column:1 / -1;display:flex;flex-direction:column;min-width:0;min-height:0}
 .k-tabs{display:flex;gap:4px;padding:8px 12px 0;background:var(--panel);border-bottom:1px solid var(--rule);flex:none}
-.k-tab{border:1px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;padding:7px 16px;background:transparent;position:relative;color:var(--quiet)}
-.k-tab.active{background:var(--bg);border-color:var(--rule);color:var(--ink);font-weight:600;margin-bottom:-1px}
-.k-tab.attn::after{content:"";position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:var(--accent);animation:k-pulse 1.1s ease-in-out infinite}
+.k-tab,.k-rtab{border:1px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;padding:7px 16px;background:transparent;position:relative;color:var(--quiet)}
+.k-tab.active,.k-rtab.active{background:var(--bg);border-color:var(--rule);color:var(--ink);font-weight:600;margin-bottom:-1px}
+.k-tab.attn::after,.k-rtab.attn::after{content:"";position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:var(--accent);animation:k-pulse 1.1s ease-in-out infinite}
 @keyframes k-pulse{50%{opacity:.2}}
 .k-panes{flex:1;position:relative;min-height:0}
 .k-pane{position:absolute;inset:0;display:none}
 .k-pane.active{display:flex}
 .k-pane-panel{flex-direction:column}
-.k-maquette{flex:0 1 auto;min-height:0;display:flex;flex-direction:column;padding:10px 14px 8px}
-.k-view{min-height:0;display:flex}
-.k-view svg{width:100%;height:auto;max-height:60vh}
-.k-curves{flex:1 1 auto;min-height:190px;display:flex;flex-direction:column;padding:8px 14px 10px;border-top:1px solid var(--rule)}
+.k-rpanes{flex:1;position:relative;min-height:0;background:var(--bg)}
+.k-rpane{position:absolute;inset:0;display:none;flex-direction:column}
+.k-rpane.active{display:flex}
+.k-maquette{padding:10px 14px}
+.k-view{flex:1;min-height:0;display:flex}
+.k-view svg{width:100%;height:100%}
+.k-curves{padding:10px 14px}
 #kChart{width:100%;flex:1;min-height:140px;display:block}
 .k-legend{color:var(--quiet);font-size:12px;min-height:16px}
 .k-legend b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600}
@@ -76,10 +81,6 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .k-split:hover,.k-split.on{background:var(--accent)}
 .k-split-v{cursor:col-resize}
 .k-split-h{cursor:row-resize;height:5px;flex:none}
-.k-right.sized .k-maquette{flex:1 1 0}
-.k-right.sized .k-view{flex:1}
-.k-right.sized .k-view svg{height:100%;max-height:none}
-.k-right.sized .k-curves{flex:none}
 .k-speed{font-variant-numeric:tabular-nums;color:var(--quiet);font-size:12px;min-width:78px;text-align:center;white-space:nowrap}
 .k-arrow{padding:3px 7px;font-size:11px;line-height:1}
 .k-toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--rule);
@@ -108,7 +109,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 /* ---- synoptic */
 .sy-palette{width:136px;flex:none;border-right:1px solid var(--rule);display:flex;flex-direction:column;background:var(--panel);min-height:0}
 .sy-blocks{flex:1;overflow:auto;padding:8px;min-height:0}
-.sy-infobox{flex:none;border-top:1px solid var(--rule);padding:7px 8px 9px;background:var(--bg);min-height:118px;max-height:45%;overflow:auto}
+.sy-infobox{flex:none;border-top:4px solid #8b8d93;padding:7px 8px 9px;background:var(--bg);min-height:118px;max-height:45%;overflow:auto}
 .sy-infobox .k-h2{margin-bottom:4px}
 .sy-piece{display:flex;align-items:center;gap:7px;width:100%;text-align:left;margin-bottom:4px;padding:3px 7px;font-size:12.5px;line-height:1.25}
 .sy-piece .k-icon{width:17px;height:17px;flex:none;color:var(--accent)}
@@ -123,6 +124,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .sy-stage{flex:1;position:relative;overflow:hidden;min-width:0;background-color:var(--bg);
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:20px 20px}
 .sy-svg{width:100%;height:100%;display:block;touch-action:none;user-select:none}
+.sy-zoom{position:absolute;top:8px;right:8px;display:flex;gap:2px;background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:2px;box-shadow:var(--shadow);z-index:2}
+.sy-zoom button{border:none;background:transparent;padding:2px 8px;font-size:13px;line-height:1.4;border-radius:6px;color:var(--ink)}
+.sy-zoom button:hover{background:var(--grid)}
+.sy-zoom .sy-zval{min-width:52px;font-variant-numeric:tabular-nums;font-size:12px;color:var(--quiet)}
 .sy-params{position:absolute;left:10px;right:10px;bottom:10px;background:var(--panel);border:1px solid var(--rule);border-radius:10px;
   padding:5px 8px;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;font-size:12px;box-shadow:var(--shadow)}
 .sy-params label{display:flex;gap:6px;align-items:center}
@@ -144,7 +149,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .node-gen{fill:var(--quiet);font-size:10px}
 .port-label{fill:var(--quiet);font-size:10.5px}
 .node-value{fill:var(--ink);font-size:12px;font-variant-numeric:tabular-nums}
-.port{stroke:var(--node);stroke-width:2;cursor:crosshair}
+.port{stroke:var(--node);stroke-width:1.5;stroke-linejoin:round;pointer-events:none}
+.port-hit{fill:transparent;cursor:crosshair}
 .port.flux{fill:var(--flux)} .port.info{fill:var(--info)}
 .wire{fill:none;stroke-width:2.5}
 .wire.flux{stroke:var(--flux)} .wire.info{stroke:var(--info);stroke-dasharray:6 5}
@@ -204,11 +210,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 @media (max-width: 900px){
   .k-split{display:none}
-  .k-main{grid-template-columns:1fr;height:auto}
-  .k-left{border-right:none}
+  .k-main{display:flex;flex-direction:column;height:auto}
+  .k-right{min-height:380px}
   .k-panes{height:520px;flex:none}
-  .k-maquette{flex:none}
-  .k-curves{height:260px;flex:none}
+  .k-rpanes{height:380px;flex:none}
   .k-header{flex-wrap:wrap;height:auto;padding:8px 12px;gap:6px}
   .sy-palette{width:120px}
 }
@@ -276,6 +281,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       tab_panel: "Panel", tab_syn: "Synoptic", maquette: "Scale model", curves: "Curves",
       pal_hint: "Hover or click a block to read what it does.", locked_info: "Unlocked later in the tutorial.",
       theme_tip: "Light / dark theme", info_box: "About this block",
+      zoom_out: "Zoom out (Ctrl + wheel)", zoom_in: "Zoom in (Ctrl + wheel)", zoom_reset: "Back to 100 %", zoom_fit: "Show every block",
       speed_down: "Slower", speed_up: "Faster", speed_label: "Real time ↔ simulated time",
       home_tip: "All workshops", lang_btn: "FR", lang_tip: "Passer en français",
       g_threshold: "Threshold (hysteresis)", g_gradient: "Gradient (gap)", g_clock: "Clock (rhythm)"
@@ -310,6 +316,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       tab_panel: "Panneau", tab_syn: "Synoptique", maquette: "Maquette", curves: "Courbes",
       pal_hint: "Survole ou clique un bloc pour savoir ce qu'il fait.", locked_info: "Débloqué plus tard dans le tutoriel.",
       theme_tip: "Thème clair / sombre", info_box: "À propos du bloc",
+      zoom_out: "Dézoomer (Ctrl + molette)", zoom_in: "Zoomer (Ctrl + molette)", zoom_reset: "Revenir à 100 %", zoom_fit: "Afficher tous les blocs",
       speed_down: "Plus lent", speed_up: "Plus rapide", speed_label: "Temps réel ↔ temps simulé",
       home_tip: "Tous les ateliers", lang_btn: "EN", lang_tip: "Switch to English",
       g_threshold: "Threshold (hystérésis)", g_gradient: "Gradient (écart)", g_clock: "Clock (rythme)"
@@ -677,6 +684,27 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   "use strict";
   const NS = "http://www.w3.org/2000/svg";
   const NW = 150, HEAD = 28, ROW = 20, PY = 15;      // compact nodes
+  const TS = 11, TH = TS * Math.sqrt(3) / 2;          // port connector: equilateral triangle (side, height)
+  const ZMIN = 0.5, ZMAX = 1.5, ZKEY = "tscg-kit-zoom";
+  // A connector straddles the block's border. Triangles point the way the flow goes (left to right):
+  // into the block on an input, out of it on an output; a port both input and output is a diamond.
+  function connector(cx, cy, io) {
+    if (io) return `M${cx - TH / 2} ${cy} L${cx} ${cy - TH / 2} L${cx + TH / 2} ${cy} L${cx} ${cy + TH / 2} Z`;
+    return `M${cx - TH / 2} ${cy - TS / 2} L${cx + TH / 2} ${cy} L${cx - TH / 2} ${cy + TS / 2} Z`;
+  }
+  // a polyline with rounded corners
+  function rounded(pts, r) {
+    let d = `M${pts[0][0]} ${pts[0][1]}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], [x2, y2] = pts[i + 1];
+      const l1 = Math.hypot(x1 - x0, y1 - y0), l2 = Math.hypot(x2 - x1, y2 - y1), k = Math.min(r, l1 / 2, l2 / 2);
+      const ax = x1 - (x1 - x0) / (l1 || 1) * k, ay = y1 - (y1 - y0) / (l1 || 1) * k;
+      const bx = x1 + (x2 - x1) / (l2 || 1) * k, by = y1 + (y2 - y1) / (l2 || 1) * k;
+      d += ` L${ax.toFixed(1)} ${ay.toFixed(1)} Q${x1} ${y1} ${bx.toFixed(1)} ${by.toFixed(1)}`;
+    }
+    const e = pts[pts.length - 1];
+    return d + ` L${e[0]} ${e[1]}`;
+  }
   const REJECT = { self: "rej_self", flux_to_info: "rej_flux", info_to_flux: "rej_info" };
   function el(tag, attrs, parent) {
     const e = document.createElementNS(NS, tag);
@@ -697,13 +725,23 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
              <div><i style="background:var(--info)"></i><span class="sy-linfo"></span></div>
              <p class="sy-help"></p></div></div>
            <div class="sy-infobox"><h2 class="k-h2 sy-ih"></h2><div class="sy-info" aria-live="polite"></div></div></div>
-         <div class="sy-stage"><svg class="sy-svg"></svg><div class="sy-params"></div></div>`;
+         <div class="sy-stage"><svg class="sy-svg"></svg>
+           <div class="sy-zoom"><button data-z="out">−</button><button data-z="reset" class="sy-zval"></button><button data-z="in">+</button><button data-z="fit">⤢</button></div>
+           <div class="sy-params"></div></div>`;
       this.host = host;
       this.svg = host.querySelector(".sy-svg");
       this.list = host.querySelector(".sy-list");
       this.info = host.querySelector(".sy-info");
       this.params = host.querySelector(".sy-params");
       this.svg.addEventListener("pointerdown", e => { if (e.target === this.svg) this.select(null); });
+      // zoom of the Synoptic (the browser's own zoom cannot be set from a page): buttons, Ctrl + wheel
+      this.zoom = (() => { try { const z = +localStorage.getItem(ZKEY); return z >= ZMIN && z <= ZMAX ? z : 1; } catch (e) { return 1; } })();
+      host.querySelectorAll(".sy-zoom button").forEach(b => b.onclick = () => {
+        const k = b.dataset.z;
+        if (k === "fit") this.fit(); else this.setZoom(k === "reset" ? 1 : this.zoom + (k === "in" ? 0.1 : -0.1));
+      });
+      this.svg.addEventListener("wheel", e => { if (!e.ctrlKey) return; e.preventDefault(); this.setZoom(this.zoom - Math.sign(e.deltaY) * 0.1); }, { passive: false });
+      window.addEventListener("resize", () => this.applyView());
       window.addEventListener("pointermove", e => this.onMove(e));
       window.addEventListener("pointerup", e => this.onUp(e));
       this.relabel();
@@ -713,6 +751,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       q(".sy-h").textContent = K.t("pieces"); q(".sy-lflux").textContent = this.o.fluxLabel() || "flux";
       q(".sy-linfo").textContent = K.t("info"); q(".sy-help").textContent = K.t("wire_help");
       q(".sy-ih").textContent = K.t("info_box");
+      const zt = { out: "zoom_out", reset: "zoom_reset", in: "zoom_in", fit: "zoom_fit" };
+      this.host.querySelectorAll(".sy-zoom button").forEach(b => { b.title = K.t(zt[b.dataset.z]); });
       this.svg.setAttribute("aria-label", K.t("syn_aria"));
       this.showInfo(this.infoType || null);
     }
@@ -730,22 +770,43 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       const rows = Math.max(this.m.ports(n, "in").length, this.m.ports(n, "out").length, 1);
       return HEAD + 8 + rows * ROW + 24;
     }
+    // where a wire meets a port: the tip of an output triangle, the base of an input triangle
     portPos(n, port, side) {
       const i = this.m.ports(n, side).findIndex(q => q.id === port);
-      return { x: n.x + (side === "in" ? 0 : NW), y: n.y + HEAD + PY + i * ROW };
+      return { x: n.x + (side === "in" ? -TH / 2 : NW + TH / 2), y: n.y + HEAD + PY + i * ROW };
     }
     // A wire whose target is not clearly to the left is a smooth curve (also for a target
-    // above or below in a nearby column); only a real return wire is routed under the pieces.
+    // above or below in a nearby column). A return wire goes through the gap between the two
+    // blocks when one is above the other, and under both only when they overlap vertically.
     isBack(a, b) { return b.x < a.x - 30; }
     wirePath(a, b, na, nb, k) {
       if (!this.isBack(a, b) || !na || !nb) {
         const dx = Math.max(40, Math.abs(b.x - a.x) / 2, Math.min(90, Math.abs(b.y - a.y) / 3));
         return `M${a.x} ${a.y} C${a.x + dx} ${a.y} ${b.x - dx} ${b.y} ${b.x} ${b.y}`;
       }
-      const lane = Math.max(na.y + this.nodeHeight(na), nb.y + this.nodeHeight(nb)) + 18 + 12 * k, r = 8;
-      const xr = a.x + 20 + 9 * k, xl = Math.max(6 + 4 * k, b.x - 20 - 9 * k);
-      return `M${a.x} ${a.y} H${xr - r} Q${xr} ${a.y} ${xr} ${a.y + r} V${lane - r} Q${xr} ${lane} ${xr - r} ${lane}` +
-             ` H${xl + r} Q${xl} ${lane} ${xl} ${lane - r} V${b.y + r} Q${xl} ${b.y} ${xl + r} ${b.y} H${b.x}`;
+      const aTop = na.y, aBot = na.y + this.nodeHeight(na), bTop = nb.y, bBot = nb.y + this.nodeHeight(nb);
+      let lane;
+      if (bTop - aBot >= 24) lane = (aBot + bTop) / 2 + 6 * k;           // target below: the gap between them
+      else if (aTop - bBot >= 24) lane = (bBot + aTop) / 2 + 6 * k;      // target above
+      else lane = Math.max(aBot, bBot) + 18 + 12 * k;                     // side by side: under both
+      const xr = a.x + 16 + 9 * k, xl = Math.max(6 + 4 * k, b.x - 16 - 9 * k);
+      return rounded([[a.x, a.y], [xr, a.y], [xr, lane], [xl, lane], [xl, b.y], [b.x, b.y]], 8);
+    }
+    applyView() {                       // the zoom is a viewBox in node coordinates
+      const r = this.svg.getBoundingClientRect(), z = this.zoom;
+      if (r.width && r.height) this.svg.setAttribute("viewBox", `0 0 ${(r.width / z).toFixed(1)} ${(r.height / z).toFixed(1)}`);
+      this.svg.parentNode.style.backgroundSize = `${20 * z}px ${20 * z}px`;
+      const v = this.host.querySelector(".sy-zval"); if (v) v.textContent = Math.round(z * 100) + " %";
+    }
+    setZoom(z) {
+      this.zoom = Math.round(Math.max(ZMIN, Math.min(ZMAX, z)) * 100) / 100;
+      try { localStorage.setItem(ZKEY, String(this.zoom)); } catch (e) { /* storage blocked */ }
+      this.m.emit("zoom", this.zoom); this.render();
+    }
+    fit() {                             // every block visible, as large as possible
+      const r = this.svg.getBoundingClientRect(); if (!r.width || !this.m.nodes.length) return this.setZoom(1);
+      const w = Math.max(...this.m.nodes.map(n => n.x + NW)) + 16, h = Math.max(...this.m.nodes.map(n => n.y + this.nodeHeight(n))) + 70;
+      this.setZoom(Math.min(r.width / w, r.height / h));
     }
 
     renderPalette() {
@@ -765,7 +826,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
     render() {
       const svg = this.svg, m = this.m;
-      svg.textContent = ""; this.live = [];
+      svg.textContent = ""; this.live = []; this.applyView();
       const gW = el("g", {}, svg), gN = el("g", {}, svg);
       let back = 0;
       for (const w of m.wires) {
@@ -800,12 +861,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         outer.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
         m.ports(n, "in").forEach((q, i) => {
           const y = HEAD + PY + i * ROW;
-          el("circle", { class: `port ${q.kind}`, cx: 0, cy: y, r: 6, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
+          el("path", { class: `port ${q.kind}`, d: connector(0, y, q.io) }, g);
+          el("circle", { class: "port-hit", cx: 0, cy: y, r: 9, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
           el("text", { class: "port-label", x: 10, y: y + 3.5 }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
         });
         m.ports(n, "out").forEach((q, i) => {
           const y = HEAD + PY + i * ROW;
-          const c = el("circle", { class: `port ${q.kind}`, cx: NW, cy: y, r: 6, "data-node": n.id, "data-port": q.id, "data-side": "out" }, g);
+          el("path", { class: `port ${q.kind}`, d: connector(NW, y, q.io) }, g);
+          const c = el("circle", { class: "port-hit", cx: NW, cy: y, r: 9, "data-node": n.id, "data-port": q.id, "data-side": "out" }, g);
           c.addEventListener("pointerdown", e => this.startWire(e, n, q));
           el("text", { class: "port-label", x: NW - 10, y: y + 3.5, "text-anchor": "end" }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
         });
@@ -849,7 +912,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       }
     }
 
-    point(e) { const r = this.svg.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+    point(e) { const r = this.svg.getBoundingClientRect(); return { x: (e.clientX - r.left) / this.zoom, y: (e.clientY - r.top) / this.zoom }; }
     startDrag(e, n) {
       e.preventDefault(); e.stopPropagation(); this.select("n" + n.id);
       const p = this.point(e); this.drag = { n, dx: p.x - n.x, dy: p.y - n.y };
@@ -862,8 +925,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     onMove(e) {
       if (this.drag) {
         const p = this.point(e), r = this.svg.getBoundingClientRect(), n = this.drag.n;
-        n.x = Math.max(4, Math.min(r.width - NW - 4, p.x - this.drag.dx));
-        n.y = Math.max(4, Math.min(r.height - 40, p.y - this.drag.dy));
+        n.x = Math.max(8, Math.min(r.width / this.zoom - NW - 8, p.x - this.drag.dx));
+        n.y = Math.max(4, Math.min(r.height / this.zoom - 40, p.y - this.drag.dy));
         this.render();
       } else if (this.dragWire && this.dragWire.path) {
         const a = this.portPos(this.m.byId(this.dragWire.from.node), this.dragWire.from.port, "out");
@@ -890,7 +953,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     }
     add(type) {
       // home positions are designed for a wide stage; squeeze them horizontally to fit this one
-      const r = this.svg.getBoundingClientRect(), homes = this.o.home || {}, home = homes[type] || { x: 40, y: 40 };
+      const rr = this.svg.getBoundingClientRect(), r = { width: rr.width / this.zoom }, homes = this.o.home || {}, home = homes[type] || { x: 40, y: 40 };
       const maxX = Math.max(1, ...Object.values(homes).map(h => h.x));
       const scale = r.width ? Math.min(1, (r.width - NW - 12) / maxX) : 1;
       let x = Math.round(home.x * scale), y = home.y;
@@ -1202,7 +1265,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 /* TSCG Kit — chart.js
  * Curves read from the Model history (one point per simulation step).
  * Configured by the workshop (W.chart):
- *   range:[lo,hi], tickY, span, tick, label(t)   axes, in the workshop's time unit
+ *   range:[lo,hi], tickY, span                   axes; span in the workshop's time unit
+ *   unit                                         seconds per time unit (3600: hours, 1: seconds)
+ *   the time axis is labelled in s / min / h / days / months, with a line at every midnight
  *   band:[a,b], showBand(app)                    optional target zone
  *   series:[{piece, label, color, unit, decimals, fmt}]   default: every storage
  *   lines:[{piece, param | value(node), label, color, unit}]   dashed horizontal line at a parameter (e.g. set point)
@@ -1213,6 +1278,38 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  */
 (function (K) {
   "use strict";
+  // ---- time axis: a tick step chosen to fit, labels in the largest unit that names the tick
+  const MIN = 60, HOUR = 3600, DAY = 86400, MONTH = 30 * DAY;
+  const STEPS = [0.1, 0.2, 0.5, 1, 2, 5, 10, 15, 30, MIN, 2 * MIN, 5 * MIN, 10 * MIN, 15 * MIN, 30 * MIN,
+                 HOUR, 2 * HOUR, 3 * HOUR, 6 * HOUR, 12 * HOUR, DAY, 2 * DAY, 7 * DAY, 15 * DAY, MONTH];
+  function timeLabel(s, step) {
+    const r = x => Math.round(x * 10) / 10, D = K.L("d", "j"), M = K.L("mo", "m");
+    if (step < MIN) return s % MIN === 0 && s > 0 ? `${s / MIN} min` : `${r(s % MIN)} s`;
+    if (step < HOUR) return s % HOUR === 0 && s > 0 ? `${s / HOUR} h` : `${Math.round(s % HOUR / MIN)} min`;
+    if (step < DAY) return s % DAY === 0 ? `${D}${s / DAY + 1}` : `${Math.round(s % DAY / HOUR)} h`;
+    if (step < MONTH) return s % MONTH === 0 && s > 0 ? `${M}${s / MONTH + 1}` : `${D}${Math.floor(s / DAY) + 1}`;
+    return `${M}${Math.floor(s / MONTH) + 1}`;
+  }
+  function timeAxis(c, X, t0, t1, unit, pw, g) {
+    const s0 = t0 * unit, s1 = t1 * unit, want = Math.max(2, Math.floor(pw / 64));
+    const step = STEPS.find(st => (s1 - s0) / st <= want) || MONTH;
+    // midnight: a vertical line across the plot separates the days
+    if (s1 - s0 >= 3 * HOUR) {
+      c.save(); c.strokeStyle = g.quiet; c.globalAlpha = .45; c.lineWidth = 1;
+      for (let d = Math.ceil(s0 / DAY) * DAY; d <= s1 + 1e-6; d += DAY) {
+        const x = Math.round(X(d / unit)) + .5; c.beginPath(); c.moveTo(x, g.T); c.lineTo(x, g.T + g.ph); c.stroke();
+      }
+      c.restore();
+    }
+    c.fillStyle = g.quiet; c.textAlign = "center";
+    for (let s = Math.ceil(s0 / step - 1e-9) * step; s <= s1 + 1e-6; s += step) {
+      const sr = Math.round(s * 1000) / 1000, x = X(sr / unit);
+      if (x < g.L + 6 || x > g.w - g.R - 6) continue;
+      c.fillText(timeLabel(sr, step), x, g.h - 2);
+    }
+    c.textAlign = "start";
+  }
+
   class Chart {
     constructor(canvas, model, o) { this.c = canvas; this.m = model; this.o = o; }
     draw() {
@@ -1242,8 +1339,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         c.strokeStyle = v("--grid"); c.beginPath(); c.moveTo(L, Y(y)); c.lineTo(w - R, Y(y)); c.stroke();
         c.fillStyle = v("--quiet"); c.fillText(String(y), 2, Y(y) + 4);
       }
-      const tick = o.tick || 2, label = o.label || (t => t + " h");
-      for (let t = Math.ceil(t0 / tick - 1e-9) * tick; t <= t1 + 1e-9; t += tick) { c.fillStyle = v("--quiet"); c.fillText(label(+t.toFixed(6)), X(t) - 8, h - 2); }
+      timeAxis(c, X, t0, t1, o.unit || 3600, pw, { L, T, ph, w, h, R, quiet: v("--quiet"), strong: v("--rule"), grid: v("--grid") });
       if (o.band && (!o.showBand || o.showBand(o.app))) { c.fillStyle = v("--band"); c.fillRect(L, Y(o.band[1]), pw, Y(o.band[0]) - Y(o.band[1])); }
       const legend = [];
       const series = o.series
@@ -1409,6 +1505,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       const bar = this.host.querySelector(".tu-progress>div"), status = this.host.querySelector(".tu-status"), go = this.host.querySelector(".tu-goto");
       const nd = this.need();
       this.app.attention(nd && nd.tab ? nd.tab : null);
+      const st = this.mode === "steps" ? this.steps[this.i] : null;     // a step that asks to read the curves
+      this.app.curvesHint(!!(st && st.curves && !this.finished));
       if (!bar || !status) return;
       if (this.finished) { bar.style.width = "100%"; status.textContent = K.t("tu_done"); go.hidden = true; return; }
       bar.style.width = Math.min(100, Math.round(100 * ((this.res && this.res.p) || 0))) + "%";
@@ -1429,8 +1527,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 /* ../lib/app.js */
 /* TSCG Kit — app.js
  * The workshop shell, identical for every workshop:
- *   left  : tutorial banner + tabs [Panel | Synoptic]
- *   right : Scale model (drawn by the workshop) + Curves
+ *   top row    : tutorial banner (left) | tabs [Scale model | Curves] (right)
+ *   bottom row : tabs [Synoptic | Panel], full width
  * Owns the clock, the main loop, "under the hood", free mode, the language
  * switch and the session export.
  * Usage: TSCGKit.start(factory), where factory(L) returns the workshop definition
@@ -1439,7 +1537,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.8.0";
+  const VERSION = "0.9.0";
   const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
   const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));
@@ -1469,29 +1567,34 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
          <button id="kTheme" class="k-theme" data-tip="theme_tip"></button>
        </header>
        <main class="k-main">
-         <section class="k-left">
-           <div class="k-banner" id="kBanner" aria-live="polite"></div>
-           <div class="k-split k-split-h" id="kSplitBanner"></div>
+         <div class="k-banner" id="kBanner" aria-live="polite"></div>
+         <div class="k-split k-split-v" id="kSplitCols"></div>
+         <section class="k-right">
            <div class="k-tabs" role="tablist">
-             <button class="k-tab" role="tab" data-tab="panel" data-t="tab_panel"></button>
+             <button class="k-rtab active" role="tab" data-rtab="maquette" data-t="maquette"></button>
+             <button class="k-rtab" role="tab" data-rtab="curves" data-t="curves"></button>
+           </div>
+           <div class="k-rpanes">
+             <div class="k-maquette k-rpane active" data-rpane="maquette"><div class="k-view" id="kView"></div></div>
+             <div class="k-curves k-rpane" data-rpane="curves"><canvas id="kChart"></canvas><div class="k-legend" id="kLegend"></div></div>
+           </div>
+         </section>
+         <div class="k-split k-split-h" id="kSplitBanner"></div>
+         <section class="k-left">
+           <div class="k-tabs" role="tablist">
              <button class="k-tab" role="tab" data-tab="synoptic" data-t="tab_syn"></button>
+             <button class="k-tab" role="tab" data-tab="panel" data-t="tab_panel"></button>
            </div>
            <div class="k-panes">
              <div class="k-pane k-pane-panel" data-pane="panel"></div>
              <div class="k-pane k-pane-synoptic" data-pane="synoptic"></div>
            </div>
          </section>
-         <div class="k-split k-split-v" id="kSplitCols"></div>
-         <section class="k-right">
-           <div class="k-maquette"><h2 class="k-h2" data-t="maquette"></h2><div class="k-view" id="kView"></div></div>
-           <div class="k-split k-split-h" id="kSplitRight"></div>
-           <div class="k-curves"><h2 class="k-h2" data-t="curves"></h2><canvas id="kChart"></canvas><div class="k-legend" id="kLegend"></div></div>
-         </section>
        </main>
        <div class="k-toast" id="kToast" role="status"></div>`;
     const $ = sel => document.querySelector(sel);
 
-    const S = { running: false, speed: 1, hood: false, free: false, tab: "synoptic",
+    const S = { running: false, speed: 1, hood: false, free: false, tab: "synoptic", rtab: "maquette",
                 pieces: new Set(), instruments: new Set(), log: [], t0: Date.now(),
                 predictions: {}, answers: null, done: false };
     const model = new K.Model(W.skins);
@@ -1525,6 +1628,15 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       if (tab === "synoptic") app.synoptic.render(); else app.panel.render();
       log("tab", tab); app.tutorial.refresh();
     };
+    // right column: the scale model and the curves share one compartment, as two tabs
+    app.goRTab = tab => {
+      S.rtab = tab;
+      document.querySelectorAll(".k-rtab").forEach(b => { b.classList.toggle("active", b.dataset.rtab === tab); b.setAttribute("aria-selected", b.dataset.rtab === tab); b.classList.remove("attn"); });
+      document.querySelectorAll(".k-rpane").forEach(p => p.classList.toggle("active", p.dataset.rpane === tab));
+      if (tab === "curves") app.chart.draw();
+      log("rtab", tab);
+    };
+    app.curvesHint = on => { const b = document.querySelector('.k-rtab[data-rtab="curves"]'); if (b) b.classList.toggle("attn", on && S.rtab !== "curves"); };
     app.goFree = () => {
       S.free = true; $("#kFree").classList.add("on");
       app.tutorial.mode = "free"; log("mode_free", "");
@@ -1587,13 +1699,12 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     $("#kFast").onclick = () => setSpeed(+1);
 
     // ---- splitters: drag to resize the compartments (double-click resets); remembered per browser
-    const main = $(".k-main"), left = $(".k-left"), right = $(".k-right"), banner = $("#kBanner"), curves = $(".k-curves");
+    // layout: top row = tutorial (left) + scale model / curves (right); bottom row, full width = Synoptic / Panel
+    const main = $(".k-main");
     const layout = (() => { try { return JSON.parse(localStorage.getItem(LAYOUT_KEY)) || {}; } catch (e) { return {}; } })();
     const applyLayout = () => {
       main.style.gridTemplateColumns = layout.cols ? `${layout.cols}px 6px minmax(300px,1fr)` : "";
-      if (layout.banner) { banner.style.height = layout.banner + "px"; banner.style.maxHeight = "none"; } else { banner.style.height = ""; banner.style.maxHeight = ""; }
-      right.classList.toggle("sized", !!layout.curves);
-      curves.style.height = layout.curves ? layout.curves + "px" : "";
+      main.style.gridTemplateRows = layout.top ? `${layout.top}px 6px minmax(0,1fr)` : "";
     };
     const saveLayout = () => { try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout)); } catch (e) { /* storage blocked */ } };
     const relayout = () => { app.synoptic.render(); app.panel.render(); app.chart.draw(); };
@@ -1607,9 +1718,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       el.addEventListener("dblclick", () => { delete layout[key]; applyLayout(); saveLayout(); relayout(); });
     }
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-    splitter($("#kSplitCols"), "cols", ev => { const r = main.getBoundingClientRect(); return clamp(ev.clientX - r.left, 380, r.width - 306); });
-    splitter($("#kSplitBanner"), "banner", ev => { const r = left.getBoundingClientRect(); return clamp(ev.clientY - r.top, 60, r.height - 180); });
-    splitter($("#kSplitRight"), "curves", ev => { const r = right.getBoundingClientRect(); return clamp(r.bottom - ev.clientY, 130, r.height - 140); });
+    splitter($("#kSplitCols"), "cols", ev => { const r = main.getBoundingClientRect(); return clamp(ev.clientX - r.left, 300, r.width - 306); });
+    splitter($("#kSplitBanner"), "top", ev => { const r = main.getBoundingClientRect(); return clamp(ev.clientY - r.top, 140, r.height - 220); });
     applyLayout();
     $("#kReset").onclick = () => { model.resetAll(); app.tutorial.restartCurrent(); log("reset", ""); app.synoptic.render(); };
     $("#kHood").onclick = e => {
@@ -1636,6 +1746,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       log("export", "");
     };
     document.querySelectorAll(".k-tab").forEach(b => b.onclick = () => app.goTab(b.dataset.tab));
+    document.querySelectorAll(".k-rtab").forEach(b => b.onclick = () => app.goRTab(b.dataset.rtab));
     window.addEventListener("keydown", e => {
       const typing = /INPUT|TEXTAREA/.test(document.activeElement.tagName);
       if ((e.key === "Delete" || e.key === "Backspace") && !typing && S.tab === "synoptic") { e.preventDefault(); app.synoptic.deleteSelected(); }
@@ -1754,7 +1865,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     },
 
     chart: {
-      range: [0, 100], tickY: 25, span: 120, tick: 20, label: t => t + " s",
+      range: [0, 100], tickY: 25, span: 120, unit: 1,
       series: [{ piece: "tete", label: L("Liquid in the head", "Liquide dans la tête"), color: "#c0392b", unit: "%", decimals: 0 }],
       lines: [{ piece: "bascule", value: n => n.p.set + n.p.h / 2, label: L("tips at", "bascule à"), color: "--bad", unit: "%", decimals: 0 },
               { piece: "bascule", value: n => n.p.set - n.p.h / 2, label: L("straightens at", "se redresse à"), color: "--good", unit: "%", decimals: 0 }],
@@ -1810,6 +1921,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
                    choices: [L("Drink once, then stay upright", "Boire une fois, puis rester debout"), L("Settle half-leaning", "Se stabiliser à moitié penché"), L("Drink again and again", "Boire encore et encore")] },
         goal: L("Place a <b>Return</b>. Wire the Head's <i>back down</i> output to it, and the Tilt's <i>tipped</i> output to the Return's <i>opening</i>. Let the bird drink <b>4 times</b>.",
                 "Pose un <b>Retour</b>. Relie-lui la sortie <i>redescente</i> de la Tête, et la sortie <i>penché</i> de la Bascule à l'<i>ouverture</i> du Retour. Laisse l'oiseau boire <b>4 fois</b>."),
+        curves: true,
         hint: L("Look at the curve: between which two lines does the level travel?", "Regarde la courbe : entre quelles deux lignes le niveau voyage-t-il ?"),
         need: app => { const m = app.model;
           return !m.linked("evap", "flow", "tete", "in") ? syn(KEEP_HEAD) : !m.linked("tete", "level", "bascule", "x") ? syn(KEEP_TILT) :

@@ -1,7 +1,9 @@
 /* TSCG Kit — chart.js
  * Curves read from the Model history (one point per simulation step).
  * Configured by the workshop (W.chart):
- *   range:[lo,hi], tickY, span, tick, label(t)   axes, in the workshop's time unit
+ *   range:[lo,hi], tickY, span                   axes; span in the workshop's time unit
+ *   unit                                         seconds per time unit (3600: hours, 1: seconds)
+ *   the time axis is labelled in s / min / h / days / months, with a line at every midnight
  *   band:[a,b], showBand(app)                    optional target zone
  *   series:[{piece, label, color, unit, decimals, fmt}]   default: every storage
  *   lines:[{piece, param | value(node), label, color, unit}]   dashed horizontal line at a parameter (e.g. set point)
@@ -12,6 +14,38 @@
  */
 (function (K) {
   "use strict";
+  // ---- time axis: a tick step chosen to fit, labels in the largest unit that names the tick
+  const MIN = 60, HOUR = 3600, DAY = 86400, MONTH = 30 * DAY;
+  const STEPS = [0.1, 0.2, 0.5, 1, 2, 5, 10, 15, 30, MIN, 2 * MIN, 5 * MIN, 10 * MIN, 15 * MIN, 30 * MIN,
+                 HOUR, 2 * HOUR, 3 * HOUR, 6 * HOUR, 12 * HOUR, DAY, 2 * DAY, 7 * DAY, 15 * DAY, MONTH];
+  function timeLabel(s, step) {
+    const r = x => Math.round(x * 10) / 10, D = K.L("d", "j"), M = K.L("mo", "m");
+    if (step < MIN) return s % MIN === 0 && s > 0 ? `${s / MIN} min` : `${r(s % MIN)} s`;
+    if (step < HOUR) return s % HOUR === 0 && s > 0 ? `${s / HOUR} h` : `${Math.round(s % HOUR / MIN)} min`;
+    if (step < DAY) return s % DAY === 0 ? `${D}${s / DAY + 1}` : `${Math.round(s % DAY / HOUR)} h`;
+    if (step < MONTH) return s % MONTH === 0 && s > 0 ? `${M}${s / MONTH + 1}` : `${D}${Math.floor(s / DAY) + 1}`;
+    return `${M}${Math.floor(s / MONTH) + 1}`;
+  }
+  function timeAxis(c, X, t0, t1, unit, pw, g) {
+    const s0 = t0 * unit, s1 = t1 * unit, want = Math.max(2, Math.floor(pw / 64));
+    const step = STEPS.find(st => (s1 - s0) / st <= want) || MONTH;
+    // midnight: a vertical line across the plot separates the days
+    if (s1 - s0 >= 3 * HOUR) {
+      c.save(); c.strokeStyle = g.quiet; c.globalAlpha = .45; c.lineWidth = 1;
+      for (let d = Math.ceil(s0 / DAY) * DAY; d <= s1 + 1e-6; d += DAY) {
+        const x = Math.round(X(d / unit)) + .5; c.beginPath(); c.moveTo(x, g.T); c.lineTo(x, g.T + g.ph); c.stroke();
+      }
+      c.restore();
+    }
+    c.fillStyle = g.quiet; c.textAlign = "center";
+    for (let s = Math.ceil(s0 / step - 1e-9) * step; s <= s1 + 1e-6; s += step) {
+      const sr = Math.round(s * 1000) / 1000, x = X(sr / unit);
+      if (x < g.L + 6 || x > g.w - g.R - 6) continue;
+      c.fillText(timeLabel(sr, step), x, g.h - 2);
+    }
+    c.textAlign = "start";
+  }
+
   class Chart {
     constructor(canvas, model, o) { this.c = canvas; this.m = model; this.o = o; }
     draw() {
@@ -41,8 +75,7 @@
         c.strokeStyle = v("--grid"); c.beginPath(); c.moveTo(L, Y(y)); c.lineTo(w - R, Y(y)); c.stroke();
         c.fillStyle = v("--quiet"); c.fillText(String(y), 2, Y(y) + 4);
       }
-      const tick = o.tick || 2, label = o.label || (t => t + " h");
-      for (let t = Math.ceil(t0 / tick - 1e-9) * tick; t <= t1 + 1e-9; t += tick) { c.fillStyle = v("--quiet"); c.fillText(label(+t.toFixed(6)), X(t) - 8, h - 2); }
+      timeAxis(c, X, t0, t1, o.unit || 3600, pw, { L, T, ph, w, h, R, quiet: v("--quiet"), strong: v("--rule"), grid: v("--grid") });
       if (o.band && (!o.showBand || o.showBand(o.app))) { c.fillStyle = v("--band"); c.fillRect(L, Y(o.band[1]), pw, Y(o.band[0]) - Y(o.band[1])); }
       const legend = [];
       const series = o.series

@@ -18,7 +18,7 @@
     pageTitle: L("TSCG Workshop — Thermostat", "TSCG Atelier — Thermostat"),
     fluxLabel: L("flux (heat)", "flux (chaleur)"),
     chart: {
-      range: [0, 32], tickY: 10, span: 8, tick: 2, label: t => t + " h",
+      range: [0, 32], tickY: 10, span: 8, unit: 3600,
       band: [19, 21], showBand: app => app.S.free || app.S.pieces.has("heater"),
       series: [{ piece: "room", label: L("Room", "Pièce"), color: "#d9822b", unit: "°C" },
                { piece: "radiator", label: L("Radiator", "Radiateur"), color: "#c0392b", unit: "°C" }],
