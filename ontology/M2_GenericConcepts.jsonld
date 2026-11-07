@@ -21,8 +21,8 @@
       "dcterms:description": "Second layer of the TSCG Layer Cake: transdisciplinary GenericConcepts, each built by structural composition of M3 primitive types and characterised by its structural formula, family, epistemic gap and polarity. Formulas use the three M3 grammars — Gt (×, Territory), Gm (+, Map) and Gs (|, Stereopsis), whose alphabets are defined in M3 — and m2:isStereopsic flags the GenericConcepts whose formula uses | or a Gs primitive. M2 is restricted to patterns valid across all knowledge domains without exception.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
-      "dcterms:modified": "2026-10-12",
-      "owl:versionInfo": "16.36.0",
+      "dcterms:modified": "2026-11-08",
+      "owl:versionInfo": "16.37.0",
       "owl:imports": [
         { "@id": "M3_GenesisGrammar.jsonld" }
       ],
@@ -110,6 +110,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "16.37.0",
+          "dcterms:date": "2026-11-08",
+          "adms:versionNotes": "m2:Adaptation dcterms:requires m2:FeedbackLoop (Michel, 2026-11-08: adaptation requires a feedback loop; the feedback loop is a means to realise adaptation). A necessary-condition link between two M2 concepts, not a composition: FeedbackLoop stays an atomic M2 concept and is NOT put inside a formula of Adaptation (Fm2 means 'built from'; a means is not a part). Standard Dublin Core term reused, no new TSCG property. Kit friction log (Sunflower workshop)."
+        },
+        {
           "owl:versionInfo": "16.36.0",
           "dcterms:date": "2026-10-12",
           "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain). Obsolete m2:KnowledgeFieldConceptNote removed (it documented KnowledgeField classes that no longer exist); KnowledgeField wording in live comments replaced (domain concept, DomainConceptCombo, knowledge domain). m2:DomainConceptCombo m2:supersedes m2:KnowledgeFieldConceptCombo kept as the record of the SC-1 rename."
@@ -118,11 +123,6 @@
           "owl:versionInfo": "16.35.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "Lot S (statecharts, Michel 2026-10-11). m2:State is now rdfs:subClassOf m2:Node (still a GenericConcept through Node): the nodes of a statechart are states linked by transitions triggered by m2:Event — groundwork for the Protocol candidate (use cases of an m2:Workflow in a UML swimlane; m1:extension:biology:CellularCommunication to specialise it). Same formula as Node for now: It -> St × It | L (hence m2:isStereopsic true, hasDominantM3 + Structure); family m2:Ontological -> m2:Structural."
-        },
-        {
-          "owl:versionInfo": "16.34.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "m2:producingFunction: owl:DatatypeProperty → owl:AnnotationProperty, rdfs:domain removed (Michel, 2026-10-11). It annotates the COMBO CLASS ITSELF with the signature of the function producing its members (Fm2, Fm1m2); as a data property with rdfs:domain m2:GenericConceptCombo it typed m2:GenericConceptCombo and m2:DomainConceptCombo as members of GenericConceptCombo (OWL 2 punning) — Owlready2 inheritance cycle found by owl_reasoning_test 2.0.0 once M2 could be reasoned with its imports. Comment: F_x notation removed."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -1169,6 +1169,9 @@
       },
       "rdfs:label": "Adaptation",
       "rdfs:comment": "Progressive modification of structure or behavior in response to environmental changes.",
+      "dcterms:requires": {
+        "@id": "m2:FeedbackLoop"
+      },
       "m2:hasFamily": "m2:Adaptive",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
