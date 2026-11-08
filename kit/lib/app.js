@@ -10,7 +10,7 @@
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.9.2";
+  const VERSION = "0.9.3";
   const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
   const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));
@@ -26,9 +26,10 @@
          <h1 id="kTitle"></h1>
          <div class="k-transport">
            <button id="kPlay" class="primary" data-tip="play_tip"></button>
-           <button id="kSlow" class="k-arrow" data-tip="speed_down">▼</button>
-           <span id="kSpeed" class="k-speed" data-tip="speed_label"></span>
-           <button id="kFast" class="k-arrow" data-tip="speed_up">▲</button>
+           <span class="k-gap" aria-hidden="true"></span>
+           <button id="kSlow" class="k-ff" data-tip="speed_down"><svg class="k-icon" viewBox="0 0 16 12" width="16" height="12" aria-hidden="true"><path d="M8 1 L1 6 L8 11 Z M15 1 L8 6 L15 11 Z" fill="currentColor"/></svg></button>
+           <span id="kSpeed" class="k-speed"></span>
+           <button id="kFast" class="k-ff" data-tip="speed_up"><svg class="k-icon" viewBox="0 0 16 12" width="16" height="12" aria-hidden="true"><path d="M1 1 L8 6 L1 11 Z M8 1 L15 6 L8 11 Z" fill="currentColor"/></svg></button>
            <button id="kReset" data-tip="reset_tip">↺</button>
            <span id="kClock" class="k-clock"></span>
          </div>
@@ -167,7 +168,7 @@
       document.querySelectorAll("[data-t]").forEach(e => { e.textContent = K.t(e.dataset.t); });
       document.querySelectorAll("[data-tip]").forEach(e => { e.title = K.t(e.dataset.tip); });
       playLabel();
-      $("#kSpeed").textContent = app.speedText ? app.speedText() : "";
+      if (app.showSpeed) app.showSpeed();
     }
     // Switching language rebuilds the workshop texts; the graph, the panel, the clock and
     // the tutorial progress are kept.
@@ -190,7 +191,8 @@
     // ---- header controls
     const setPlay = on => { S.running = on; playLabel(); log(on ? "play" : "pause", ""); app.tutorial.refresh(); };
     $("#kPlay").onclick = () => setPlay(!S.running);
-    // speed: arrows step through SPEEDS; the label says how much simulated time one real second covers
+    // speed: the buttons step through SPEEDS; the label shows the speed in percent (100% =
+    // the workshop's own pace), the tooltip how much simulated time one real second covers
     const num = v => (Math.round(v * 10) / 10).toString();
     const speedText = () => {
       const spr = CLK.stepsPerSec * S.speed * CLK.dt;          // model units per real second
@@ -200,10 +202,15 @@
     };
     const setSpeed = d => {
       const i = Math.max(0, Math.min(SPEEDS.length - 1, SPEEDS.indexOf(S.speed) + d));
-      S.speed = SPEEDS[i]; $("#kSpeed").textContent = speedText(); log("speed", S.speed);
+      S.speed = SPEEDS[i]; showSpeed(); log("speed", S.speed);
       $("#kSlow").disabled = i === 0; $("#kFast").disabled = i === SPEEDS.length - 1;
     };
-    app.speedText = speedText;
+    const showSpeed = () => {
+      const el = $("#kSpeed");
+      el.textContent = `${K.t("speed")}: ${Math.round(S.speed * 100)}%`;
+      el.title = `${K.t("speed_label")}: ${speedText()}`;
+    };
+    app.speedText = speedText; app.showSpeed = showSpeed;
     $("#kSlow").onclick = () => setSpeed(-1);
     $("#kFast").onclick = () => setSpeed(+1);
 

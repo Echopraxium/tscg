@@ -60,7 +60,7 @@
       tool_erase: "Delete the selected block or wire (Delete key)", tool_erase_pn: "Remove the selected instrument (Delete key)",
       tool_snap: "Snap the instruments to the grid", tools: "Tools",
       zoom_out: "Zoom out (Ctrl + wheel)", zoom_in: "Zoom in (Ctrl + wheel)", zoom_reset: "Back to 100 %", zoom_fit: "Show every block",
-      speed_down: "Slower", speed_up: "Faster", speed_label: "Real time ↔ simulated time",
+      speed: "Speed", speed_down: "Slower", speed_up: "Faster", speed_label: "Real time ↔ simulated time",
       home_tip: "All workshops", lang_btn: "FR", lang_tip: "Passer en français",
       g_threshold: "Threshold (hysteresis)", g_gradient: "Gradient (gap)", g_clock: "Clock (rhythm)"
     },
@@ -98,7 +98,7 @@
       tool_erase: "Effacer le bloc ou le fil sélectionné (touche Suppr)", tool_erase_pn: "Retirer l'instrument sélectionné (touche Suppr)",
       tool_snap: "Aligner les instruments sur la grille", tools: "Outils",
       zoom_out: "Dézoomer (Ctrl + molette)", zoom_in: "Zoomer (Ctrl + molette)", zoom_reset: "Revenir à 100 %", zoom_fit: "Afficher tous les blocs",
-      speed_down: "Plus lent", speed_up: "Plus rapide", speed_label: "Temps réel ↔ temps simulé",
+      speed: "Vitesse", speed_down: "Plus lent", speed_up: "Plus rapide", speed_label: "Temps réel ↔ temps simulé",
       home_tip: "Tous les ateliers", lang_btn: "EN", lang_tip: "Switch to English",
       g_threshold: "Threshold (hystérésis)", g_gradient: "Gradient (écart)", g_clock: "Clock (rythme)"
     }
