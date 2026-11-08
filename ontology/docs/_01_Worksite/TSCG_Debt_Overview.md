@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.17.0
+**Version**: 1.18.0
 **Date**: 2026-11-08
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -213,6 +213,29 @@ concept may legitimately stay pure Territory).
   no coercion). Remaining: 15 FAILED + 8 no status → an M0 reasoner campaign (one
   explanation per instance, `pellet explain`); measuring it in the gate is a possible
   instrumentation lot.
+- **M0 reasoner campaign (2026-11-08): 41/43 PASSED.** One `pellet explain` per failing
+  instance; three mechanical causes, repaired in 23 instance files (minor version bump
+  and changelog entry each):
+  (A) scores written as JSON numbers (xsd:double) against the xsd:float range of
+  `M0_Common` → `@context` coercion to xsd:float, only for the keys holding numbers and
+  only where `m0:` is bound to `M0_Common`;
+  (B) `"rdf:type": "m0:Poclet"` written as a plain string (a literal; the reasoner stopped
+  on it), redundant with `m3:ontologyType m3:Poclet`, `m0:Poclet` declared nowhere →
+  deleted (7 nodes);
+  (C) no `owl:imports` (the file was reasoned alone) → the four standard imports added
+  (6 files). Gate moves, all repairs: M0 checker C09 −6 and C15 −3 (imports), C12 −1
+  (a ⊗ in a changelog entry dropped by the retention rule, history, not a formula).
+  **Left, not mechanical:**
+  - `M0_Bmc`: the score predicates `m0:scoreA`… are reused inside
+    `m0:scoringJustification` with TEXT values (justifications), against their xsd:float
+    range → needs a decision (a justification property).
+  - `M0_Yggdrasil`: `rdfs:range`/`rdfs:domain` written as strings with double-colon
+    names (`m0:yggdrasil:World`) → S5-3.
+  - **22 instances bind `m0:` to their own namespace** instead of `M0_Common` (so their
+    `m0:score…` are not the `M0_Common` properties at all, and A was not applied): the
+    largest hidden item found by the campaign; a namespace lot (WS-1 / WS-10).
+  - `m0:epistemicGap` holds an object (`formula`, `delta`, … bare keys) in 9 instances,
+    whereas it is an xsd:float datatype property.
 
 ## 6. Questions for Michel
 
@@ -816,6 +839,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.18.0 (2026-11-08)** — §5: M0 reasoner campaign, 41/43 PASSED; three mechanical
+  causes repaired (23 files); left: Bmc, Yggdrasil, 22 instances with `m0:` misbound,
+  `m0:epistemicGap` as an object in 9. Gate: C09 −6, C15 −3, C12 −1 (repairs).
 - **1.17.0 (2026-11-08)** — §5: M0 OWL consistency measured for the first time (17/43
   PASSED); root cause in `M0_Common` (`owl:oneOf` not written as lists) fixed in 1.7.0;
   xsd:double/xsd:float on Thermostat fixed. No gate count moved.
