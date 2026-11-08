@@ -12,7 +12,59 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "m0.thermostat": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/Thermostat/M0_Thermostat.jsonld#"
+    "m0.thermostat": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/Thermostat/M0_Thermostat.jsonld#",
+    "m0:scoreA": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreA",
+      "@type": "xsd:float"
+    },
+    "m0:scoreS": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreS",
+      "@type": "xsd:float"
+    },
+    "m0:scoreF": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreF",
+      "@type": "xsd:float"
+    },
+    "m0:scoreIt": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreIt",
+      "@type": "xsd:float"
+    },
+    "m0:scoreD": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreD",
+      "@type": "xsd:float"
+    },
+    "m0:scoreR": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreR",
+      "@type": "xsd:float"
+    },
+    "m0:scoreE": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreE",
+      "@type": "xsd:float"
+    },
+    "m0:scoreV": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreV",
+      "@type": "xsd:float"
+    },
+    "m0:scoreO": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreO",
+      "@type": "xsd:float"
+    },
+    "m0:scoreIm": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreIm",
+      "@type": "xsd:float"
+    },
+    "m0:asfidMean": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#asfidMean",
+      "@type": "xsd:float"
+    },
+    "m0:revoiMean": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#revoiMean",
+      "@type": "xsd:float"
+    },
+    "m0:epistemicGap": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#epistemicGap",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
@@ -20,7 +72,7 @@
       "@type": "owl:Ontology",
       "rdfs:label": "Thermostat (studio flat, F1)",
       "rdfs:comment": "A one-room flat heated by a heater and a radiator, losing heat through its wall and window to the outside, and kept near a set point by a wall thermostat with hysteresis (on/off control). The minimal technical negative feedback loop: the room never rests on the set point but oscillates in a sawtooth between the two edges of the hysteresis band. First TSCG Kit workshop to go through the instance pipeline: its playable scale model (Synoptic, Panel, Scale model, Curves) is the simulation of this poclet.",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.2.0",
       "dcterms:modified": "2026-11-08",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-11-07",
@@ -70,6 +122,11 @@
       "m0:focalApplicable": false,
       "skos:note": "Scores. Territory: F and D are highest (two explicit heat and information flows; exponential relaxations, a limit cycle and a radiator delay). It is lowest: the command is one bit and the measurement a single temperature. Map: R and V are highest (the block diagram exists as a playable model whose curves can be checked against the physics); Im is lowest because three concepts needed to type it are missing or misfit in the framework (gaps G1-G3).",
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.2.0",
+          "dcterms:date": "2026-11-08",
+          "adms:versionNotes": "The ASFID/REVOI scores and their means are typed xsd:float in @context, as in M0_FireTriangle: written as JSON numbers they expanded to xsd:double, outside the xsd:float range declared in M0_Common (Pellet: inconsistent, revoiMean)."
+        },
         {
           "owl:versionInfo": "1.1.0",
           "dcterms:date": "2026-11-08",

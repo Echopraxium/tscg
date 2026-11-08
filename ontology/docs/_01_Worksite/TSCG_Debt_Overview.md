@@ -1,8 +1,8 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.16.3
-**Date**: 2026-11-01
+**Version**: 1.17.0
+**Date**: 2026-11-08
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
 it does not replace the per-worksite notes.
@@ -200,6 +200,19 @@ concept may legitimately stay pure Territory).
   `vsm/M0_VSM_Prerequisites_Analysis.md` (39) = 81 markers. The move lowers no counter (none
   measured either place); it is written here so the debt stays visible. Measuring it
   (e.g. a `⊗` count over `.md` in the health map) is a possible instrumentation lot.
+- **M0 OWL consistency (measured 2026-11-08, not frozen).** `owl_reasoning_test.py` run
+  on the 43 M0 files (Java 25), HEAD `f6a55c6` + lots Adaptation and Hysteresis:
+  17 PASSED, 18 FAILED, 8 no status (reasoner crash or timeout: ColorSynthesis ×4,
+  ExposureTriangle, MtgColorWheel, TPACK, Yggdrasil). The 18 failures were exactly the
+  18 instances that import `M0_Common`, which was itself inconsistent: its three
+  `owl:oneOf` were plain JSON arrays (separate values, not an RDF list), read as empty
+  enumerations. Fixed in `M0_Common` 1.7.0 (`{"@list": [...]}`); with that fix, 3 of the
+  18 pass. Second cause found on Thermostat: scores written as JSON numbers expand to
+  `xsd:double`, outside the `xsd:float` range of `M0_Common` (fixed in `M0_Thermostat`
+  1.2.0 by `@context` coercion, as in `M0_FireTriangle`; 11 of the 15 still failing have
+  no coercion). Remaining: 15 FAILED + 8 no status → an M0 reasoner campaign (one
+  explanation per instance, `pellet explain`); measuring it in the gate is a possible
+  instrumentation lot.
 
 ## 6. Questions for Michel
 
@@ -803,6 +816,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.17.0 (2026-11-08)** — §5: M0 OWL consistency measured for the first time (17/43
+  PASSED); root cause in `M0_Common` (`owl:oneOf` not written as lists) fixed in 1.7.0;
+  xsd:double/xsd:float on Thermostat fixed. No gate count moved.
 - **1.16.3 (2026-11-01)** — §5: retired vocabulary in the narrative docs of the instances
   measured (75/140 `.md`, 1605 markers, 1347 `⊗`), including the 3 analyses moved from
   `ontology/docs`. No count moved.
