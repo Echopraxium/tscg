@@ -55,6 +55,20 @@ USAGE
     python run_all_layers.py --update-golden # accept the current counts as the new reference
                                              # (use ONLY after a deliberate fix — it rewrites
                                              #  golden_values.json and records the delta)
+    python run_all_layers.py --reasoner      # + the OWL reasoner on EVERY M0 instance (1.7.0)
+
+THE M0 REASONER SWEEP (1.7.0, 2026-11-08)
+-----------------------------------------
+Until 2026-11-08 the OWL consistency of the M0 corpus was measured nowhere: the first
+sweep found 17/43 consistent, and every instance importing M0_Common inconsistent
+because M0_Common itself was (owl:oneOf written as plain arrays). --reasoner runs
+owl_reasoning_test.py on every M0 file (in parallel) and compares with the frozen
+section "M0_REASONER" of golden_values.json: the COUNT of files not PASSED and their
+NAMES (a repaired file and a newly broken one would leave the count unchanged).
+It needs Java >= 25 (owlready2's bundled Jena): without it, --reasoner reports
+"RUNNER FAILED: not run" — never "passed". Without --reasoner the sweep is skipped
+and the gate says so; the verdict then covers the other counters only. Opt-in because
+it takes minutes, not seconds.
 """
 
 from __future__ import annotations
@@ -71,7 +85,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, TOOLCHAIN_DIR, verify_layout  # noqa: E402
 
-__version__ = "1.6.0"   # 2026-11-01: reasoner reminder for Michel (1.5.0: K0 engine plane, G8)
+__version__ = "1.7.0"   # 2026-11-08: M0 reasoner sweep (--reasoner); 1.6.0 reasoner reminder; 1.5.0 K0 engine plane, G8
 
 GOLDEN_FILE = TOOLCHAIN_DIR / "golden_values.json"
 
@@ -487,6 +501,84 @@ def reasoner_reminder() -> None:
     print("-" * 62)
 
 
+def java_major() -> int | None:
+    try:
+        p = subprocess.run(["java", "-version"], capture_output=True, text=True)
+    except OSError:
+        return None
+    import re
+    m = re.search(r'version "(\d+)', p.stderr + p.stdout)
+    return int(m.group(1)) if m else None
+
+
+def run_m0_reasoner(workers: int = 6) -> dict:
+    """The OWL reasoner on every M0 file. Status per file: PASSED, FAILED (inconsistent
+    or unsatisfiable class), or ERROR (the reasoner could not run on it)."""
+    major = java_major()
+    if major is None or major < 25:
+        return {"_error": f"not run: Java {major or 'absent'} — the reasoner needs Java >= 25 "
+                          f"(owlready2's bundled Jena). Not run is never 'passed'."}
+    script = TOOLCHAIN_DIR / "owl_reasoning_test" / "owl_reasoning_test.py"
+    files = sorted(str(p.relative_to(REPO_ROOT)).replace(os.sep, "/")
+                   for p in (REPO_ROOT / "instances").rglob("M0_*.jsonld"))
+    from concurrent.futures import ThreadPoolExecutor
+
+    def one(rel):
+        try:
+            p = subprocess.run([sys.executable, str(script), "--file", rel], cwd=REPO_ROOT,
+                               capture_output=True, text=True, env=_utf8_env(),
+                               encoding="utf-8", errors="replace", timeout=600)
+            out = p.stdout + p.stderr
+        except subprocess.TimeoutExpired:
+            return rel, "ERROR"
+        if "Status" in out and "PASSED" in out.split("Status", 1)[1][:120]:
+            return rel, "PASSED"
+        if "Status" in out and "FAILED" in out.split("Status", 1)[1][:120]:
+            return rel, "FAILED"
+        return rel, "ERROR"
+
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        status = dict(ex.map(one, files))
+    bad = {k: v for k, v in sorted(status.items()) if v != "PASSED"}
+    return {"files": len(files), "not_passed": len(bad),
+            "failed": sum(v == "FAILED" for v in bad.values()),
+            "error": sum(v == "ERROR" for v in bad.values()),
+            "files_not_passed": bad}
+
+
+def compare_reasoner(actual: dict | None, golden: dict) -> bool:
+    print("\n── M0 reasoner sweep (--reasoner) " + "─" * 28)
+    if actual is None:
+        print(f"  {C_DIM}[--] not run (add --reasoner; needs Java >= 25). The verdict below "
+              f"does not cover the OWL consistency of M0.{C_END}")
+        return True
+    if "_error" in actual:
+        print(f"  {C_BAD}[{M_BAD}] RUNNER FAILED{C_END} — {actual['_error']}")
+        return False
+    g = golden.get("M0_REASONER")
+    if g is None:
+        print(f"  {C_BAD}[{M_BAD}] NOT FROZEN yet: {actual['not_passed']} of {actual['files']} "
+              f"files not PASSED — review, then --reasoner --update-golden.{C_END}")
+        for k, v in actual["files_not_passed"].items():
+            print(f"     {v:<6} {k}")
+        return False
+    ok = True
+    for key in ("files", "not_passed", "failed", "error"):
+        e, a = g.get(key), actual.get(key)
+        if e == a:
+            print(f"  {C_OK}[{M_OK}] {key:<10} {a:>4}{C_END}")
+        else:
+            print(f"  {C_BAD}[{M_BAD}] {key:<10} {a:>4}   expected {e}   ({a - e:+d}){C_END}")
+            ok = False
+    eg, ag = g.get("files_not_passed", {}), actual["files_not_passed"]
+    if eg != ag:
+        ok = False
+        for k in sorted(set(eg) | set(ag)):
+            if eg.get(k) != ag.get(k):
+                print(f"  {C_BAD}[{M_BAD}]{C_END} {k}: {eg.get(k, 'PASSED')} -> {ag.get(k, 'PASSED')}")
+    return ok
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="TSCG ontology acceptance gate (M3 → M0)")
     ap.add_argument("--verbose", "-v", action="store_true", help="per-code breakdown")
@@ -494,6 +586,8 @@ def main() -> int:
                     help="plain output (auto-detected, but forceable — e.g. for CI logs)")
     ap.add_argument("--update-golden", action="store_true",
                     help="accept the CURRENT counts as the new reference (deliberate fixes only)")
+    ap.add_argument("--reasoner", action="store_true",
+                    help="also run the OWL reasoner on every M0 instance (Java >= 25, minutes)")
     args = ap.parse_args()
 
     print("=" * 62)
@@ -542,6 +636,8 @@ def main() -> int:
     ok = True
     for layer in ("M3", "M2", "M1", "M0"):
         ok &= compare(layer, results.get(layer), golden, args.verbose)
+    reasoner = run_m0_reasoner() if args.reasoner else None
+    ok &= compare_reasoner(reasoner, golden)
 
     if args.update_golden:
         # ⚠ Capture EVERY tracked counter, not a hand-written subset. On 2026-07-14 this
@@ -579,6 +675,14 @@ def main() -> int:
                     print(f"\n  {C_WARN}[!!] {layer}: {deltas}{C_END}")
                     print(f"     {C_DIM}Recorded under '_previous' and '_delta'. WRITE DOWN WHY, "
                           f"in the commit message.{C_END}")
+        if reasoner and "_error" not in reasoner:
+            old = golden.get("M0_REASONER")
+            if old != {**(old or {}), **reasoner} or old is None:
+                golden["M0_REASONER"] = {**reasoner,
+                    "_previous": {k: v for k, v in (old or {}).items() if not k.startswith("_")} or None,
+                    "_updated": str(date.today())}
+                print(f"\n  {C_WARN}[!!] M0_REASONER frozen: {reasoner['not_passed']} of "
+                      f"{reasoner['files']} not PASSED. WRITE DOWN WHY, in the commit message.{C_END}")
         golden["_measured"] = f"{date.today()}, real repository (--update-golden)"
         save_golden(golden)
         reasoner_reminder()

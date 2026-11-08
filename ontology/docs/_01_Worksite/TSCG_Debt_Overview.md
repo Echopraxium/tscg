@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.19.0
+**Version**: 1.20.0
 **Date**: 2026-11-08
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -233,9 +233,16 @@ concept may legitimately stay pure Territory).
     names (`m0:yggdrasil:World`) → S5-3.
   - **22 instances bind `m0:` to their own namespace** instead of `M0_Common` (so their
     `m0:score…` are not the `M0_Common` properties at all, and A was not applied): the
-    largest hidden item found by the campaign; a namespace lot (WS-1 / WS-10).
+    largest item left by the campaign; a namespace lot (WS-1 / WS-10). Already measured
+    by the gate: it is check_m0 C02 (`m0: = M0_Common#`), frozen at 22.
   - `m0:epistemicGap` holds an object (`formula`, `delta`, … bare keys) in 9 instances,
     whereas it is an xsd:float datatype property.
+- **M0 reasoner sweep in the gate (run_all_layers 1.7.0, 2026-11-08).** `--reasoner` runs
+  the OWL reasoner on every M0 file and compares with the frozen section `M0_REASONER` of
+  `golden_values.json`: 43 files, 2 not PASSED (`M0_Bmc` FAILED, `M0_Yggdrasil` ERROR),
+  names frozen too. Opt-in (minutes; Java >= 25): without the flag the gate says "not run";
+  with it and no Java 25, "RUNNER FAILED", never "passed". Negative test: a Thermostat score
+  coerced back to xsd:double → `not_passed` +1 and "Thermostat: PASSED -> FAILED".
 - **Fm2 notation (2026-11-08, Michel; D11 resolved).** Grammar
   `ontology/toolchain/grammars/Fm2_notation.ebnf` (single source) → parser `fm2_notation.py`
   → generated SHACL pattern (M1 SHACL 1.9.0 SHAPE 14) + meaning checks in `check_M1` 1.9.0
@@ -849,6 +856,8 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.20.0 (2026-11-08)** — §5: the M0 reasoner sweep enters the gate (`--reasoner`, frozen
+  2/43); the 22 misbound `m0:` are C02 (already counted).
 - **1.19.0 (2026-11-08)** — §5: Fm2 notation (argument blocks), GCC009 5 → 1; the structured
   RDF form of the signature recorded as a follow-up (needs the `possibleValues` bare keys
   repaired first).
