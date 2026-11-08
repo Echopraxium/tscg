@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.18.0
+**Version**: 1.19.0
 **Date**: 2026-11-08
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -236,6 +236,16 @@ concept may legitimately stay pure Territory).
     largest hidden item found by the campaign; a namespace lot (WS-1 / WS-10).
   - `m0:epistemicGap` holds an object (`formula`, `delta`, … bare keys) in 9 instances,
     whereas it is an xsd:float datatype property.
+- **Fm2 notation (2026-11-08, Michel; D11 resolved).** Grammar
+  `ontology/toolchain/grammars/Fm2_notation.ebnf` (single source) → parser `fm2_notation.py`
+  → generated SHACL pattern (M1 SHACL 1.9.0 SHAPE 14) + meaning checks in `check_M1` 1.9.0
+  (GCC011/012/013). Guards removed from Oscillator, ButterflyEffect, LALI,
+  CascadeAmplification: GCC009 5 → 1, M1 SHACL results −8 (SHAPE 9) and +1 (SHAPE 14 on
+  `m1:Processor`). Left: `m1:Processor` `| V + R` (monoidal suffix, SC-6). Not yet
+  measurable in RDF: the meaning checks read the raw JSON because `m2:possibleValues`
+  stores each value under a bare key `value` (WS-1); a structured RDF form of the
+  signature (arguments, bindings, constraints as triples, so that SHACL core can check
+  everything) is the follow-up, after that WS-1 repair.
 
 ## 6. Questions for Michel
 
@@ -839,6 +849,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.19.0 (2026-11-08)** — §5: Fm2 notation (argument blocks), GCC009 5 → 1; the structured
+  RDF form of the signature recorded as a follow-up (needs the `possibleValues` bare keys
+  repaired first).
 - **1.18.0 (2026-11-08)** — §5: M0 reasoner campaign, 41/43 PASSED; three mechanical
   causes repaired (23 files); left: Bmc, Yggdrasil, 22 instances with `m0:` misbound,
   `m0:epistemicGap` as an object in 9. Gate: C09 −6, C15 −3, C12 −1 (repairs).

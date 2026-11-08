@@ -4,7 +4,16 @@
 # Covers: M1_CoreConcepts.jsonld + all M1 Extension files
 # ============================================================================
 # Author : Echopraxium with the collaboration of Claude AI
-# Version: 1.8.0
+# Version: 1.9.0
+# 1.9.0 (Fm2 notation, Michel 2026-11-08): an argument may carry a block
+#   { properties: [...], constraints: [...] } (ontology/toolchain/grammars/Fm2_notation.ebnf).
+#   SHAPE 9: the primitive-argument and arity patterns skip the blocks (a block is read as
+#   one unit), so that "range(F)" inside a constraint is not taken for a primitive argument.
+#   NEW SHAPE 14 Fm2NotationShape: the whole notation, as one sh:pattern GENERATED from the
+#   grammar (python ontology/toolchain/grammars/fm2_notation.py --shacl-pattern); a test
+#   (validator/tests/test_fm2_notation.py) asserts that the pattern below is the generated one.
+#   Scope: the GenericConceptCombos of M1_CoreConcepts (the extension combos still carry the
+#   SC-6 monoidal backlog, DCC006).
 # 1.8.0 (SC-5 Domain fusion, 2026-10-12): domains are CLASSES rdfs:subClassOf m1:Domain, never
 #   individuals (Michel, 2026-10-11/12). SHAPE 3 loses the phantom m2:knowledgeField requirement
 #   (declared nowhere). SHAPE 4 KnowledgeFieldInstanceShape retired (targeted the obsolete
@@ -466,7 +475,8 @@ m1:ComboFormulaShape
     # GenericConcept, hence not a legal argument.
     sh:property [
         sh:path m1:structuralGrammarFormula ;
-        sh:not [ sh:pattern "[(,][ ]*(A|S|F|I|D|R|E|V|O|T|K|L|St|Ss|It|Im)[ ]*[,)]" ] ;
+        # (1.9.0) the match must lie OUTSIDE any { } block: a block is consumed as one unit.
+        sh:not [ sh:pattern "^([^{}]|\\{[^{}]*\\})*[(,][ ]*(A|S|F|I|D|R|E|V|O|T|K|L|St|Ss|It|Im)[ ]*[,)]" ] ;
         sh:severity sh:Violation ;
         sh:message "FORBIDDEN (SC-1): primitive type used as an argument of Fm2/Fm1m2. Arguments must be NAMED CONCEPTS declared in M2_GenericConcepts.jsonld or M1_CoreConcepts.jsonld."
     ] ;
@@ -477,7 +487,8 @@ m1:ComboFormulaShape
     # (A domain-less Fm1m2 is an Fm2 that mislabelled itself.)
     sh:property [
         sh:path m1:structuralGrammarFormula ;
-        sh:pattern "^(Fm2|Fm1m2)\\([^,()]+,[^()]+\\)$" ;
+        # (1.9.0) a { } block is consumed as one unit (it may hold commas and parentheses).
+        sh:pattern "^(Fm2|Fm1m2)\\(([^,(){}]|\\{[^{}]*\\})+,([^(){}]|\\{[^{}]*\\})+\\)$" ;
         sh:severity sh:Violation ;
         sh:message "REQUIRED (SC-1): formula must be a well-formed signature Fm2(a, b, ...) or Fm1m2(Domain, a, ...) with at least two arguments. Fm2 needs >= 2 concepts (an emergence needs two ingredients); Fm1m2 needs >= 1 Domain AND >= 1 GenericConcept."
     ] ;
@@ -724,4 +735,31 @@ m1:NoComboPunningShape
         sh:not [ sh:in ( m2:GenericConceptCombo m2:DomainConceptCombo ) ] ;
         sh:severity sh:Violation ;
         sh:message "FORBIDDEN: a combo class typed as an INSTANCE of a combo class. Remove m2:GenericConceptCombo / m2:DomainConceptCombo from @type (keep \"owl:Class\") and attach it with rdfs:subClassOf {\"@id\": \"m2:...ConceptCombo\"} (lot C2, class/instance separation)."
+    ] .
+
+
+# ============================================================================
+# SHAPE 14 : Fm2NotationShape — the combo-formula notation (1.9.0, Michel 2026-11-08)
+# ----------------------------------------------------------------------------
+# Grammar: ontology/toolchain/grammars/Fm2_notation.ebnf (single source).
+#   Fm2(Component, Process, Trajectory { properties: [shape: Circular, final: true] })
+#   Fm2(Amplification, Regulation { constraints: [range(Amplification.F) << range(F)] })
+# The pattern is GENERATED (fm2_notation.py --shacl-pattern), never edited by hand.
+# It checks the FORM only; the MEANING (the property is an attribute of the argument,
+# the value one of its possibleValues, a constraint names real arguments and
+# dimensions) is checked by check_M1.py (GCC012 / GCC013): the possibleValues are
+# stored under a bare key "value" (WS-1 debt) and are invisible in RDF.
+# ============================================================================
+
+m1:Fm2NotationShape
+    a sh:NodeShape ;
+    sh:name "Fm2NotationShape" ;
+    sh:description "The formula of a GenericConceptCombo of M1_CoreConcepts follows the notation of Fm2_notation.ebnf: named arguments, each optionally followed by a { properties / constraints } block, nothing after the closing parenthesis." ;
+    sh:target [ a sh:SPARQLTarget ;
+        sh:select "SELECT DISTINCT ?this WHERE { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#GenericConceptCombo> . FILTER NOT EXISTS { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo> } }" ] ;
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:pattern "^(Fm2²|Fm2|Fm1m2)\\([ \\t]*[A-Z][A-Za-z0-9]*([ \\t]*\\{[ \\t]*(properties[ \\t]*:[ \\t]*(\\[[ \\t]*([A-Za-z][A-Za-z0-9_]*)[ \\t]*:[ \\t]*([A-Za-z][A-Za-z0-9_\\-]*)[ \\t]*(,[ \\t]*final[ \\t]*:[ \\t]*(true|false)[ \\t]*)?\\]|\\[[ \\t]*\\[[ \\t]*([A-Za-z][A-Za-z0-9_]*)[ \\t]*:[ \\t]*([A-Za-z][A-Za-z0-9_\\-]*)[ \\t]*(,[ \\t]*final[ \\t]*:[ \\t]*(true|false)[ \\t]*)?\\]([ \\t]*,[ \\t]*\\[[ \\t]*([A-Za-z][A-Za-z0-9_]*)[ \\t]*:[ \\t]*([A-Za-z][A-Za-z0-9_\\-]*)[ \\t]*(,[ \\t]*final[ \\t]*:[ \\t]*(true|false)[ \\t]*)?\\])*[ \\t]*\\])([ \\t]*,[ \\t]*constraints[ \\t]*:[ \\t]*\\[[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))[ \\t]*(<<|>>|<=|>=|<|>|=|≠)[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))([ \\t]*,[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))[ \\t]*(<<|>>|<=|>=|<|>|=|≠)[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)))*[ \\t]*\\])?|constraints[ \\t]*:[ \\t]*\\[[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))[ \\t]*(<<|>>|<=|>=|<|>|=|≠)[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))([ \\t]*,[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))[ \\t]*(<<|>>|<=|>=|<|>|=|≠)[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)))*[ \\t]*\\])[ \\t]*\\})?([ \\t]*,[ \\t]*[A-Z][A-Za-z0-9]*([ \\t]*\\{[ \\t]*(properties[ \\t]*:[ \\t]*(\\[[ \\t]*([A-Za-z][A-Za-z0-9_]*)[ \\t]*:[ \\t]*([A-Za-z][A-Za-z0-9_\\-]*)[ \\t]*(,[ \\t]*final[ \\t]*:[ \\t]*(true|false)[ \\t]*)?\\]|\\[[ \\t]*\\[[ \\t]*([A-Za-z][A-Za-z0-9_]*)[ \\t]*:[ \\t]*([A-Za-z][A-Za-z0-9_\\-]*)[ \\t]*(,[ \\t]*final[ \\t]*:[ \\t]*(true|false)[ \\t]*)?\\]([ \\t]*,[ \\t]*\\[[ \\t]*([A-Za-z][A-Za-z0-9_]*)[ \\t]*:[ \\t]*([A-Za-z][A-Za-z0-9_\\-]*)[ \\t]*(,[ \\t]*final[ \\t]*:[ \\t]*(true|false)[ \\t]*)?\\])*[ \\t]*\\])([ \\t]*,[ \\t]*constraints[ \\t]*:[ \\t]*\\[[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))[ \\t]*(<<|>>|<=|>=|<|>|=|≠)[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))([ \\t]*,[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))[ \\t]*(<<|>>|<=|>=|<|>|=|≠)[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)))*[ \\t]*\\])?|constraints[ \\t]*:[ \\t]*\\[[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))[ \\t]*(<<|>>|<=|>=|<|>|=|≠)[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))([ \\t]*,[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L))[ \\t]*(<<|>>|<=|>=|<|>|=|≠)[ \\t]*([a-z][A-Za-z0-9_]*[ \\t]*\\([ \\t]*([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)[ \\t]*\\)|([A-Z][A-Za-z0-9]*\\.)?(St|Ss|It|Im|A|S|F|I|D|R|E|V|O|T|K|L)))*[ \\t]*\\])[ \\t]*\\})?)*[ \\t]*\\)$" ;
+        sh:severity sh:Violation ;
+        sh:message "REQUIRED (Fm2 notation): Fm2(Arg, Arg { properties: [name: value, final: true|false], constraints: [expr] }, ...) — see ontology/toolchain/grammars/Fm2_notation.ebnf. Nothing may follow the closing parenthesis (a trailing '| ...' guard overloads the Gs operator)."
     ] .

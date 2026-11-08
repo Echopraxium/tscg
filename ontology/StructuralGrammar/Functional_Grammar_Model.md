@@ -1,7 +1,7 @@
 # The Functional Grammar Model (`Fm2` / `Fm1m2`)
 
-**Version**: 2.1.0
-**Date**: 2026-07-13
+**Version**: 2.2.0
+**Date**: 2026-11-08
 **Author**: Echopraxium with the collaboration of Claude AI
 **Project**: TSCG (Transdisciplinary System Construction Game)
 **Sub-worksite**: SC-1 (root — see `_00_TSCG_Worksite_Map.md` §1.1)
@@ -161,7 +161,7 @@ The rule above is not academic. Scanning the real formulas:
 | **B** — unqualified `S`/`I` | `Fm1m2(Music, S × I × F)` | class A **+** the SC-2 monoid-qualification defect |
 | **C** — wrong function | `Fm1m2(Cascade, Duplication, Network)` (`M1_CoreConcepts`) | three valid M2 concepts, **zero domain** → this is an `Fm2` that mislabelled itself |
 | **D** — scalar guard | `Fm1m2(Cascade, Amplification) \| gain_per_stage > 1` | a **scalar** appended to the signature. Scalars are M0 measurements; **M1 describes structure, not values**. Same residue class as the `k·` coefficients purged in SC-8. Also overloads `\|`, which is reserved to the Gs monoid. |
-| **E** — qualitative guard | `Fm2(Component, Process, Trajectory) \| trajectoryShape=Circular` | **not** a scalar and **not** residue — a controlled enumerated value, i.e. real semantics (the *differentia specifica*). But it still overloads `\|`. **2 occurrences, 1 axis** → below TSCG's own admission threshold. **Do not delete; do not grave a mechanism either** — see D11. |
+| **E** — qualitative guard | `Fm2(Component, Process, Trajectory) \| trajectoryShape=Circular` | **not** a scalar and **not** residue — a controlled enumerated value, i.e. real semantics (the *differentia specifica*). But it still overloads `\|`. **2 occurrences, 1 axis** → below TSCG's own admission threshold. **Do not delete; do not grave a mechanism either** — see D11. *(2026-11-08: resolved by the argument block, §13 — `Trajectory { properties: [shape: Circular, final: true] }`.)* |
 
 Class A/B is **not a handful of entries: it is the normal regime of the M1
 extension layer** (`M1_Optics`, `M1_Music`, `M1_Economics`, … — every `Fm1m2`
@@ -361,7 +361,7 @@ in SC-1; it belongs to SC-4/SC-9).
 | **D8** | `m1:structuralGrammarFormulaExpanded`? | **Retired.** It stored `lattice_join(dims(parents))` — the compositional thesis as data. No monoidal expansion exists. 12 occurrences in `M1_CoreConcepts` (half already empty), removal = SC-6. |
 | **D9** | `m2:morphism_emergence`? | **`owl:deprecated true` + `m2:supersededBy m2:producingFunction`.** It declared emergence to be a category-theoretic *morphism* — the ROOT from which `⊗⇒`, `lattice_join` and `…FormulaExpanded` all descend. A morphism composes; an emergence does not. |
 | **D10** | `m2:hasComboComponent` absent from all of M1 — reify arguments as IRIs? | **Raised, deferred** (SC-4/SC-6). Consequence: D6 (argument provenance) is **not SHACL-checkable** — arguments exist only as text inside a string. SC-1 validates the *syntax*, not that `Refraction` really exists in M2. |
-| **D11** | Guards (`\| trajectoryShape=Circular`) — options slot? | **Deferred to SC-3.** An "option" (orthogonal axis + controlled value-set) is the *definition of a facet*. Graving an options mechanism in SC-1 would create, in parallel, what SC-3 is about to formalise — the `Domain`/`KnowledgeField` duplicate all over again. **Do not invent grammar under pressure.** |
+| **D11** | Guards (`\| trajectoryShape=Circular`) — options slot? | **Deferred to SC-3.** An "option" (orthogonal axis + controlled value-set) is the *definition of a facet*. Graving an options mechanism in SC-1 would create, in parallel, what SC-3 is about to formalise — the `Domain`/`KnowledgeField` duplicate all over again. **Do not invent grammar under pressure.** **RESOLVED 2026-11-08 (Michel)** — not an options slot and not a facet: a block attached to the ARGUMENT that carries the attribute, §13. |
 
 ---
 
@@ -385,6 +385,40 @@ but `M2` came out **57 lines over**, and that discrepancy is what exposed it.
 > **`/mnt/project/` is not an authority. It is a partial, silently stale snapshot.**
 > The only authority is **`git show HEAD:<file>`**. Check the version **before** editing,
 > never after.
+
+---
+
+## 13. The argument block (2026-11-08, Michel) — D11 resolved
+
+The qualitative guard is not a property of the combo: it binds an attribute of ONE
+argument. It therefore moves INTO the signature, attached to that argument, and the
+`|` (reserved to the Gs monoid) leaves the formula:
+
+```
+Fm2(Component, Process, Trajectory { properties: [shape: Circular, final: true] })     Oscillator
+Fm2(Amplification, Trajectory { properties: [shape: Chaotic, final: true] })           ButterflyEffect
+Fm2(Amplification, Regulation { constraints: [range(Amplification.F) << range(F)] })   LALI
+```
+
+- `properties: [name: value, final: true|false]` (or a list of such tuples): `name` is an
+  `m2:hasAttribute` label of the argument, `value` one of its `m2:possibleValues`. `final:
+  true` fixes it (OOP sense: not overridable); absent `final` = `false` = a default value
+  that an M0 instance may override.
+- `constraints: [expr, …]`: relations carried by the argument; `F` alone is a dimension of
+  the carrying argument, `Other.F` a dimension of another argument of the same combo.
+- It is not a facet (SC-3): a facet is a Map role conferred in M0; a block restricts the
+  structure of the combo itself.
+- **Trap (2026-11-08).** A restriction must not already contain the emergent result: for
+  Hysteresis, `Threshold { threshold_behavior: Hysteretic }` would count the memory twice,
+  hence `Fm2(Threshold, Memory)` without a block.
+- Scalar guards (`gain_per_stage > 1`, `λ > 0`) are still deleted (class D): M1 describes
+  structure, not values.
+
+The grammar is `ontology/toolchain/grammars/Fm2_notation.ebnf` (single source); the parser
+`fm2_notation.py` follows it and generates the SHACL pattern of SHAPE 14; `check_M1.py`
+checks the meaning (GCC011 malformed block, GCC012 unknown attribute or value, GCC013
+constraint on an unknown argument or dimension). The remaining guard `| V + R` of
+`m1:Processor` is a monoidal suffix (SC-6 class), not a guard to convert.
 
 ---
 
