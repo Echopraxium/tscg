@@ -1,0 +1,75 @@
+(* ==========================================================================
+   Fm2_notation.ebnf — the notation of a combo formula (Fm2 / Fm1m2)
+   ==========================================================================
+   Author  : Echopraxium with the collaboration of Claude AI
+   Version : 1.0.0  (2026-11-08)
+   Home    : ontology/toolchain/grammars/Fm2_notation.ebnf
+
+   SINGLE SOURCE of the notation (Michel, 2026-11-08). Everything else derives
+   from this file and is tested against it:
+     - fm2_notation.py   the parser (one function per production below) and the
+                         generator of the SHACL pattern (--shacl-pattern);
+     - check_M1.py       the signature and meaning checks (GCC/DCC 006-009,
+                         011-013), through the parser;
+     - M1_Schema_shacl.ttl  the sh:pattern of SHAPE 2b, generated, and a test
+                         asserts that the pattern in the file is the generated one.
+
+   A combo formula IS the signature of the function that produces it (SC-1):
+   named arguments, no monoidal operator, no primitive as argument. A block in
+   braces is attached to the argument it FOLLOWS: it binds properties of that
+   argument and states constraints carried by it. Nothing may follow the closing
+   parenthesis: the old "guard" ("| shape=Circular") overloaded "|", which is
+   reserved to the Gs monoid (GCC009).
+
+   ISO/IEC 14977 conventions: "," concatenation, "|" alternative, [ ] option,
+   { } repetition, "..." terminal. Spaces and tabs are allowed between tokens.
+   ========================================================================== *)
+
+formula          = function , "(" , argument , { "," , argument } , ")" ;
+function         = "Fm2" | "Fm2²" | "Fm1m2" ;
+
+(* an argument is a named concept (M2 GenericConcept, M1 combo or, for Fm1m2,
+   a Domain), optionally followed by its block *)
+argument         = concept_name , [ block ] ;
+concept_name     = upper , { letter | digit } ;
+
+(* the block: properties, constraints, or both, in this order *)
+block            = "{" , ( properties , [ "," , constraints ] | constraints ) , "}" ;
+
+(* properties: one tuple, or a list of tuples *)
+properties       = "properties" , ":" , ( property_tuple | property_list ) ;
+property_list    = "[" , property_tuple , { "," , property_tuple } , "]" ;
+property_tuple   = "[" , property_name , ":" , property_value ,
+                   [ "," , "final" , ":" , boolean ] , "]" ;
+property_name    = lower_or_upper , { letter | digit | "_" } ;   (* an m2:hasAttribute label of the argument *)
+property_value   = lower_or_upper , { letter | digit | "_" | "-" } ;  (* one of its possibleValues *)
+boolean          = "true" | "false" ;                             (* absent final = false = a default value *)
+
+(* constraints: a list of relations; a reference is a dimension of the carrying
+   argument ("F") or of another argument of the same combo ("Amplification.F") *)
+constraints      = "constraints" , ":" , "[" , relation , { "," , relation } , "]" ;
+relation         = term , relop , term ;
+relop            = "<<" | ">>" | "<=" | ">=" | "<" | ">" | "=" | "≠" ;
+term             = measure , "(" , reference , ")" | reference ;
+measure          = lower , { letter | digit | "_" } ;              (* range, rate, gain... *)
+reference        = [ concept_name , "." ] , dimension ;
+dimension        = "St" | "Ss" | "It" | "Im"
+                 | "A" | "S" | "F" | "I" | "D" | "R" | "E" | "V" | "O" | "T" | "K" | "L" ;
+
+upper            = "A" | ... | "Z" ;
+lower            = "a" | ... | "z" ;
+lower_or_upper   = upper | lower ;
+letter           = lower_or_upper ;
+digit            = "0" | ... | "9" ;
+
+(* Examples (the test suite parses every one of them):
+     Fm2(Memory, Entropy)
+     Fm2(Component, Process, Trajectory { properties: [shape: Circular, final: true] })
+     Fm2(Component, Process, Trajectory { properties: [shape: Circular] })
+     Fm2(Amplification, Regulation { constraints: [range(Amplification.F) << range(F)] })
+     Fm2(Component, Trajectory { properties: [[shape: Circular, final: true], [direction: Clockwise]] })
+   Meaning (checked by check_M1.py, not by the grammar):
+     GCC012  property_name is an m2:hasAttribute label of the argument and
+             property_value one of its m2:possibleValues;
+     GCC013  in a reference, concept_name is an argument of the same combo and
+             the dimension appears in that argument's M2 formula. *)

@@ -16,7 +16,7 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.17.0",
+      "owl:versionInfo": "2.18.0",
       "dcterms:created": "2026-05-12",
       "dcterms:modified": "2026-11-08",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
@@ -54,6 +54,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.18.0",
+          "dcterms:date": "2026-11-08",
+          "adms:versionNotes": "m3:grammar_foundation:Fm2: the argument block { properties: [...], constraints: [...] } added to the definition of the signature (Michel, 2026-11-08; resolves D11). Grammar: ontology/toolchain/grammars/Fm2_notation.ebnf."
+        },
+        {
           "owl:versionInfo": "2.17.0",
           "dcterms:date": "2026-11-08",
           "adms:versionNotes": "dcterms:requires declared in the apex (ExternalVocabularyPolicy: external terms are declared once here), for its first use: m2:Adaptation dcterms:requires m2:FeedbackLoop (M2 16.37.0, Michel 2026-11-08)."
@@ -82,11 +87,6 @@
           "owl:versionInfo": "2.12.0",
           "dcterms:date": "2026-10-08",
           "adms:versionNotes": "WS-5 DEBT LOT (A), decision Michel 2026-10-08 (Debt Overview §8.0): m3:ontologyType, m3:TscgOntologyType, m3:TscgOntologyTypeScheme and its 11 concepts are now DECLARED here, in the apex (moved from M3_GenesisGrammar, which imports the other M3 files: using the property there was a level crossing). IRIs unchanged. Split (option c): the descriptive blocks of SystemicFramework, SymbolicSystemGrammar, TscgTool, TransDisclet (bare keys) stay in M3_GenesisGrammar on the same @id until WS-1/B2 declares them, so that @vocab owl# here does not mint them as owl: terms. Texts of m3:Genesis (2 files) and m3:GenesisExtension (three perspectives: Territory, Map, Stereopsis) rewritten. New m3:metaphoricLabel (annotation). This file typed m3:Genesis. m3:metaphoricLabel values: Eagle Eye, Sphinx Eye, Odin's Wisdom (the three lenses, Debt Overview §8.0b). m3:expectedCount removed from all 11 concepts of the scheme (read by no tool; duplicated the 'Exactly N… Closed set' scope notes) — Michel, 2026-10-10. Formalism named precisely (Michel, 2026-10-10): the COMMUTATIVE Lambek calculus — Lambek's 1958 calculus is non-commutative; the three TSCG operators ×, +, | are commutative on the types of their monoid, primitive or derived. Precedence unchanged: × (Gt) > + (Gm) > | (Gs)."
-        },
-        {
-          "owl:versionInfo": "2.11.0",
-          "dcterms:date": "2026-10-06",
-          "adms:versionNotes": "WS-5 DEBT LOT (2a), decision D5(a) (Michel, 2026-10-06): removed the legacy 'changelog' object from the 'metadata' block (option i: dropped, not folded). Its entries (v1.1.0, v1.0.0) predate the m3:changelog entries kept here and remain in git history; folding them would have exceeded the 7-entry M3 window. The only changelog is m3:changelog on the owl:Ontology node."
         }
       ],
       "three_alphabets": {
@@ -739,7 +739,7 @@
       "@id": "m3:grammar_foundation:Fm2",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Fm2 — GenericConcept Combination (function)",
-      "rdfs:comment": "Producing FUNCTION for GenericConceptCombos. Fm2 : GenericConcept²⁺ → GenericConceptCombo. Fm2 is NOT a morphism and NOT a functor: its essence is combination with EMERGENCE, which is non-compositional, while a morphism/functor must preserve composition. (The word 'functor' stays reserved for M0 dimension evaluation F_x : System → Score.) Consequently a combo has NO monoidal expansion: its formula IS this signature. Arguments are ≥2 NAMED CONCEPTS declared in M2_GenericConcepts.jsonld or M1_CoreConcepts.jsonld — never primitive types, never a monoidal expression, juxtaposed by comma and never joined by a grammar operator (×, +, |). Supersedes the retired ⊗⇒ notation.",
+      "rdfs:comment": "Producing FUNCTION for GenericConceptCombos. Fm2 : GenericConcept²⁺ → GenericConceptCombo. Fm2 is NOT a morphism and NOT a functor: its essence is combination with EMERGENCE, which is non-compositional, while a morphism/functor must preserve composition. (The word 'functor' stays reserved for M0 dimension evaluation F_x : System → Score.) Consequently a combo has NO monoidal expansion: its formula IS this signature. Arguments are ≥2 NAMED CONCEPTS declared in M2_GenericConcepts.jsonld or M1_CoreConcepts.jsonld — never primitive types, never a monoidal expression, juxtaposed by comma and never joined by a grammar operator (×, +, |). An argument may be followed by a block in braces, attached to that argument: { properties: [name: value, final: true|false], constraints: [expr, …] } — properties bind an m2:hasAttribute of the argument to one of its possibleValues (final: true = fixed, absent = false = a default value), constraints relate dimensions of the arguments (Fm2(Amplification, Regulation { constraints: [range(Amplification.F) << range(F)] })). Nothing follows the closing parenthesis. Grammar: ontology/toolchain/grammars/Fm2_notation.ebnf (Michel, 2026-11-08; resolves D11). Supersedes the retired ⊗⇒ notation.",
       "skos:example": "Fm2(Memory, Entropy) = Inertia  |  Fm2(Incoherence, Invariant) = TopologicalDefect  |  Fm2(Process, Step, Trajectory) = PipelineProcess",
       "m3:grammar_foundation:signature": "Fm2 : GenericConcept²⁺ → GenericConceptCombo",
       "m3:grammar_foundation:operatesAt": "𝕋₁ (GenericConcept level — not 𝕋₀ primitive level)",

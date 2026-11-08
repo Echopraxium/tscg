@@ -3,12 +3,22 @@
 check_M1.py — TSCG M1 Layer Validation & Correction Script
 ===========================================================
 Author  : Echopraxium with the collaboration of Claude AI
-Version : 1.8.0
-Date    : 2026-10-11
+Version : 1.9.0
+Date    : 2026-11-08
 Location: ontology/toolchain/check-M1/check_M1.py
 
 Changelog
 ---------
+  1.9.0 (2026-11-08) — Fm2 notation (Michel, 2026-11-08). The signature is now read by the
+      parser of ontology/toolchain/grammars/Fm2_notation.ebnf (fm2_notation.py), so that an
+      argument may carry a block { properties: [...], constraints: [...] } without being
+      mistaken for a guard, an operator or an extra argument. GCC006/007/008/009 and DCC010
+      read the parsed argument NAMES; a formula the parser rejects is checked as before
+      (unchanged counts on the DCC backlog). NEW ERRORS: GCC011 / DCC011 malformed block;
+      GCC012 / DCC012 a bound property is not an m2:hasAttribute label of the argument, or
+      its value is not one of its m2:possibleValues; GCC013 / DCC013 a constraint names a
+      concept that is not an argument of the combo, or a dimension absent from that
+      argument's M2 formula.
   1.8.0 (2026-10-12) — SC-5 Domain fusion. Domains are CLASSES (rdfs:subClassOf m1:Domain), never
       individuals: DCC010 now reads every class descending from m1:Domain, transitively, across
       M1_Domains, M1_CoreConcepts and the extensions (a subdomain may have several parents).
@@ -74,6 +84,8 @@ import sys as _sys
 from pathlib import Path as _Path
 _sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
 from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, find_schema   # noqa: E402
+_sys.path.insert(0, str(_Path(__file__).resolve().parent.parent / "grammars"))
+import fm2_notation                                            # noqa: E402
 # ------------------------------------------------------------------------------
 
 import argparse
@@ -541,9 +553,26 @@ class M1Checker:
                     "Rewrite as a named-argument list.",
                 auto_fixable=False))
 
+        # The notation parser (Fm2_notation.ebnf). When it accepts the formula, the
+        # checks below read the parsed argument NAMES, so that a block
+        # { properties / constraints } is neither an operator, nor a primitive, nor an
+        # argument. When it rejects it, they run on the raw text as before.
+        try:
+            parsed = fm2_notation.parse(formula, allow_trailing=True)
+        except fm2_notation.NotationError as err:
+            parsed, parse_error = None, err
+        names_sig = (f"{parsed.function}({', '.join(parsed.names)})" if parsed else None)
+        if parsed is None and "{" in formula:
+            # a malformed block: GCC011 below; the raw checks run on the text without
+            # its blocks, so that "range(F)" is not taken for a primitive argument.
+            formula_raw = re.sub(r"\s*\{[^{}]*\}", "", formula)
+        else:
+            formula_raw = formula
+
         # A monoidal operator inside a signature (× / + / |).
         # THIS IS THE BULK OF THE SC-6 BACKLOG (109 entries measured 2026-07-12).
-        inside = m.group(1) if (m := re.match(r"^(Fm(?:2|1m2)\([^()]*\))", formula)) else formula
+        inside = names_sig if parsed else (
+            m.group(1) if (m := re.match(r"^(Fm(?:2|1m2)\([^()]*\))", formula_raw)) else formula_raw)
         if self._MONOIDAL_OP.search(inside):
             self.issues.append(Issue("ERROR", f"{code}006",
                 f"Monoidal operator (× / + / |) inside a combo signature: {nid} → {inside[:60]}",
@@ -554,7 +583,7 @@ class M1Checker:
                 auto_fixable=False))
 
         # A bare primitive type as an argument.
-        if self._BARE_PRIMITIVE_ARG.search(formula):
+        if self._BARE_PRIMITIVE_ARG.search(names_sig if parsed else formula_raw):
             self.issues.append(Issue("ERROR", f"{code}007",
                 f"Primitive type used as an argument of {fname}: {nid} → {formula[:60]}",
                 fix="Arguments must be NAMED CONCEPTS declared in M2_GenericConcepts.jsonld "
@@ -572,8 +601,8 @@ class M1Checker:
         #     slot? but an "option" IS a facet → ruled in SC-3).
         # Either way the guard overloads `|`, which is reserved to the Gs monoid.
         # Reported separately from arity so the message does not lie.
-        m = re.match(r"^(Fm(?:2|1m2)\([^()]*\))(.*)$", formula)
-        trailing = (m.group(2).strip() if m else "")
+        m = re.match(r"^(Fm(?:2|1m2)\([^()]*\))(.*)$", formula_raw)
+        trailing = parsed.trailing if parsed else (m.group(2).strip() if m else "")
         if trailing:
             self.issues.append(Issue("ERROR", f"{code}009",
                 f"Guard appended after the {fname} signature: {nid} → {trailing[:40]}",
@@ -587,9 +616,9 @@ class M1Checker:
 
         # DCC010 — Fm1m2's first argument MUST be a registered Domain.
         if fname == "Fm1m2":
-            sig = re.match(r"^Fm1m2\(([^()]*)\)", formula)
-            if sig:
-                args = [a.strip() for a in sig.group(1).split(",") if a.strip()]
+            sig = re.match(r"^Fm1m2\(([^()]*)\)", formula_raw)
+            if parsed or sig:
+                args = parsed.names if parsed else [a.strip() for a in sig.group(1).split(",") if a.strip()]
                 registry = load_domain_registry(ONTOLOGY_DIR)
                 if args and registry and args[0].lower() not in registry:
                     self.issues.append(Issue("ERROR", f"{code}010",
@@ -606,7 +635,7 @@ class M1Checker:
         # Arity (D5): Fm2 needs >= 2 concepts; Fm1m2 needs >= 1 domain AND >= 1 concept.
         # Checked on the SIGNATURE ONLY, guard stripped — otherwise a well-formed
         # signature carrying a guard would be mis-reported as an arity error.
-        signature = m.group(1) if m else formula
+        signature = names_sig if parsed else (m.group(1) if m else formula_raw)
         if re.match(r"^Fm(?:2|1m2)\(", signature) and not self._ARITY_2PLUS.match(signature):
             hint = ("Fm2 needs >= 2 named concepts (an emergence needs two ingredients; "
                     "Fm2(X) would be an identity)."
@@ -616,6 +645,76 @@ class M1Checker:
             self.issues.append(Issue("ERROR", f"{code}008",
                 f"Wrong arity for {fname}: {nid} → {signature[:60]}",
                 fix=hint, auto_fixable=False))
+
+        # GCC011 — a block that the notation rejects (and no earlier check explains).
+        if parsed is None and "{" in formula:
+            self.issues.append(Issue("ERROR", f"{code}011",
+                f"Malformed argument block in {fname}: {nid} → {parse_error}",
+                fix="Arg { properties: [name: value, final: true|false], constraints: [expr, …] } "
+                    "— see ontology/toolchain/grammars/Fm2_notation.ebnf.",
+                auto_fixable=False))
+        if parsed:
+            self._check_notation_meaning(nid, parsed, fname, code)
+
+    # The meaning of a block: read from M2 (and M1 combos) once.
+    _CONCEPTS = None
+
+    @classmethod
+    def _concepts(cls):
+        if cls._CONCEPTS is None:
+            idx = {}
+            for fn in ("M2_GenericConcepts.jsonld", "M1_CoreConcepts.jsonld"):
+                try:
+                    g = json.loads((Path(ONTOLOGY_DIR) / fn).read_text(encoding="utf-8")).get("@graph", [])
+                except (OSError, ValueError):
+                    continue
+                for n in g:
+                    nid = n.get("@id", "")
+                    if isinstance(nid, str) and nid.startswith(("m2:", "m1:")):
+                        idx.setdefault(nid.split(":", 1)[1], n)
+            cls._CONCEPTS = idx
+        return cls._CONCEPTS
+
+    @staticmethod
+    def _dimensions(node):
+        f = node.get("m2:hasStructuralGrammarFormula", "")
+        text = " ".join(f) if isinstance(f, list) else str(f)
+        return set(re.findall(r"[A-Za-z]+", text)) & set(fm2_notation.DIMENSION.split("|"))
+
+    def _check_notation_meaning(self, nid, parsed, fname, code):
+        idx = self._concepts()
+        names = parsed.names
+        for arg in parsed.arguments:
+            node = idx.get(arg.name)
+            for b in arg.properties:
+                attrs = {a.get("rdfs:label"): a for a in (node or {}).get("m2:hasAttribute", [])
+                         if isinstance(a, dict)}
+                if b.name not in attrs:
+                    self.issues.append(Issue("ERROR", f"{code}012",
+                        f"Property '{b.name}' is not an attribute of {arg.name}: {nid}",
+                        fix=f"Known attributes of {arg.name}: {sorted(k for k in attrs if k) or 'none'}.",
+                        auto_fixable=False))
+                    continue
+                values = [v.get("value") if isinstance(v, dict) else v
+                          for v in attrs[b.name].get("m2:possibleValues", [])]
+                if b.value not in values:
+                    self.issues.append(Issue("ERROR", f"{code}012",
+                        f"Value '{b.value}' is not a possible value of {arg.name}.{b.name}: {nid}",
+                        fix=f"Possible values: {values}.", auto_fixable=False))
+            for rel in arg.constraints:
+                for _measure, ref in (rel.left, rel.right):
+                    owner = ref.concept or arg.name
+                    if owner not in names:
+                        self.issues.append(Issue("ERROR", f"{code}013",
+                            f"Constraint '{rel.text}' names {owner}, not an argument of {fname}: {nid}",
+                            fix=f"Arguments: {names}.", auto_fixable=False))
+                        continue
+                    onode = idx.get(owner)
+                    if onode is None or ref.dimension not in self._dimensions(onode):
+                        self.issues.append(Issue("ERROR", f"{code}013",
+                            f"Constraint '{rel.text}': dimension {ref.dimension} is not in the M2 formula of {owner}: {nid}",
+                            fix="A constraint compares dimensions that the arguments really carry.",
+                            auto_fixable=False))
 
     def check_no_monoidal_expansion(self):
         """
