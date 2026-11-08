@@ -32,7 +32,7 @@ description: >
 - Approve/reject structural changes
 - Resolve ambiguous cases
 - Make final go/no-go decisions
-- Run the OWL reasoner on changed ontology files (Java 25, his machine) and report the result
+- Confirm the OWL reasoner on changed ontology files (Java 25, his machine) before the push — Claude runs it first in the VM (see 3.3)
 
 **Should NOT:** Execute repetitive technical tasks, manual renaming, boilerplate
 
@@ -67,7 +67,9 @@ description: >
   (`golden_values.json`), plus, for M1 and M0, a separate `engine` section (document plane
   + cross-file checks, lot K0). The final word on every change. Since 1.6.0 it ends with a
   REASONER block asking Michel to run the reasoner on the ontology files changed since
-  `origin/main`.
+  `origin/main`. Since 1.7.0 `--reasoner` also runs the reasoner on EVERY M0 instance and
+  compares with the frozen section `M0_REASONER` (count AND names of the files not PASSED;
+  opt-in, minutes, Java >= 25; without Java 25 it says RUNNER FAILED, never passed).
 - `validator/tscg_validator.py` — the validation engine: `--doc` (document plane
   D1–D7: bare keys, `@vocab`, changelog, strict JSON-LD expansion…), `--ext`
   (cross-file G1b/G5/G6 and **G8 phantom predicates**: a TSCG predicate used but declared
@@ -77,7 +79,10 @@ description: >
 - `owl_reasoning_test/rdfs_diagnostic.py` — RDFS/OWL modeling errors
 - `owl_reasoning_test/fix_owl_literals.py` — automated OWL literal fixes
 - `owl_reasoning_test/owl_reasoning_test.py` — reasoner (logical consistency; owlready2's
-  bundled Jena needs Java 25)
+  bundled Jena needs Java 25 — installable in the VM, see 3.3)
+- `grammars/Fm2_notation.ebnf` + `grammars/fm2_notation.py` — the combo-formula notation
+  (argument blocks `{ properties: [...], constraints: [...] }`), single source of the
+  parser, of the SHACL pattern (M1 SHAPE 14) and of check_M1 GCC011/012/013
 - `tscg_metrics.py` — gauges (VOC, CTX, FRB, DUP, EXT…)
 - `tscg_layercake_health_map.py` — the LayerCake Health Map (where the debt is)
 
@@ -250,16 +255,44 @@ python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file <modif
 `UnsupportedClassVersionError … class file version 69.0` is an environment fault (Java
 older than 25), not an ontology result: report "not run", never "passed".
 
-**Who runs it — Michel (2026-11-01).** The reasoner needs Java 25 and does not run in
-Claude's cloud VM. Whenever a lot changes an ontology file (M3/M2/M1, M1 extensions, M0
-instances), Claude **asks Michel to run the reasoner himself** on each changed file —
-giving the exact commands — and **waits for his result** before declaring the lot done
-or proposing the push. The gate (`run_all_layers.py` ≥ 1.6.0) prints the same request
-at the end of every run, listing the ontology files changed since `origin/main`. Record
-the result (PASSED / not run + reason) in the Debt Overview or the HandOver. A lot that
-changes no ontology file (tooling, docs) needs no reasoner run — say so explicitly.
+**Who runs it — Claude first, Michel confirms (2026-11-08; was Michel only, 2026-11-01).**
+The reasoner needs Java 25. The VM ships an older Java, but Java 25 installs in a minute
+from GitHub releases (allowed by the VM proxy; api.adoptium.net is not):
+```bash
+curl -sSL -o /tmp/jdk25.tgz "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.1%2B8/OpenJDK25U-jdk_x64_linux_hotspot_25.0.1_8.tar.gz"
+tar xzf /tmp/jdk25.tgz -C /tmp && J=$(ls -d /tmp/jdk-25*)/bin
+pip install --break-system-packages owlready2
+PATH=$J:$PATH python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file <file>
+```
+1. Whenever a lot changes an ontology file (M3/M2/M1, M1 extensions, M0 instances),
+   **Claude runs the reasoner itself** on each changed file, and on a lot that touches M0
+   or `M0_Common` runs the sweep `run_all_layers.py --reasoner`.
+2. **Baseline before blame**: on a FAILED, run the same file at HEAD (`git stash` or
+   `git checkout <base> -- <file>`) before attributing the failure to the lot. An
+   inconsistency already present at HEAD is reported as pre-existing, with its cause.
+3. **Explain, don't guess**: get the minimal explanation with Pellet itself — merge the
+   file and its imports (`owl_reasoning_test.load_with_imports`), drop `owl:imports`,
+   serialize to RDF/XML, then
+   `java -cp "<owlready2>/pellet/*" pellet.Pellet explain --ignore-imports file://<merged.owl>`.
+4. **Michel confirms** on his machine before the push: Claude gives him the exact commands
+   (the gate prints them too) and waits for his result before declaring the lot pushed.
+Record the result (PASSED / FAILED + cause / not run + reason) in the commit message, the
+Debt Overview or the HandOver. A lot that changes no ontology file (tooling, docs) needs
+no reasoner run — say so explicitly.
 
-**Exit gate:** Must pass before 3.4 (for Michel's run: before the push)
+**Known causes of M0 inconsistency (2026-11-08 campaign, 17/43 → 41/43):**
+- `owl:oneOf` written as a plain JSON array → separate values, not an RDF list; the
+  enumeration is read as empty (class ≡ owl:Nothing) and every typed individual makes the
+  graph inconsistent. Write `"owl:oneOf": {"@list": [...]}`.
+- Scores written as JSON numbers expand to `xsd:double`, against the `xsd:float` range of
+  `M0_Common` → coerce in `@context` (`"m0:scoreA": {"@id": …, "@type": "xsd:float"}`),
+  only for keys holding numbers, and only where `m0:` is bound to `M0_Common` (check_m0
+  C02); coercing a term whose compact form expands elsewhere raises D7.
+- `"rdf:type": "m0:Poclet"` written as a string is a literal, not a class (the reasoner
+  stops on it).
+- An instance without `owl:imports` is reasoned alone: its PASSED proves little.
+
+**Exit gate:** Must pass before 3.4 (Claude's run); Michel's confirmation before the push
 
 ---
 
@@ -491,7 +524,8 @@ Semantic ambiguity  → Human
 
 ### Pre-Commit Checklist
 - [ ] 🛠️ Linter passes (no new errors)
-- [ ] 🛠️ Reasoner passes (consistent) — run by Michel on every changed ontology file, result reported
+- [ ] 🛠️ Reasoner passes (consistent) — run by Claude on every changed ontology file (baseline checked on a failure), then confirmed by Michel before the push
+- [ ] 🛠️ Lot touching M0 / M0_Common: `run_all_layers.py --reasoner` matches `M0_REASONER`
 - [ ] 🛠️ SHACL validates (if applicable)
 - [ ] 🛠️ Tests pass (no regressions)
 - [ ] 🛠️ Every counter that dropped was checked against the debt-honesty rule (D1 down ⇒ G8 and G2 not up)
@@ -523,6 +557,7 @@ python ontology_linter.py ontology/ --format markdown --output report.md
 ### Reasoner Configuration
 ```bash
 python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file ontology/M2_GenericConcepts.jsonld
+cd ontology/toolchain && python run_all_layers.py --reasoner     # the M0 sweep (Java >= 25)
 ```
 
 ### SHACL Configuration
@@ -575,8 +610,9 @@ This skill **orchestrates** other skills:
 
 ❌ **Skipping formal validation**
 - Commit without running reasoner
-- Declaring a lot done while the reasoner was "not run" in the VM
-- **FIX:** Phase 3 is mandatory; ask Michel to run the reasoner and wait for his result
+- Declaring a lot done while the reasoner was "not run" (install Java 25 in the VM instead)
+- Blaming the lot for a FAILED without checking the same file at HEAD
+- **FIX:** Phase 3 is mandatory; Claude runs the reasoner, Michel confirms before the push
 
 ❌ **Tools interpreting semantics**
 - Linter flags "tensor" as error vs warning
@@ -617,6 +653,8 @@ This skill **orchestrates** other skills:
 - [x] Create SHACL shapes for M2/M3 (structural grammar, WS-5, 2026-10-05)
 - [x] Phantom-predicate check G8 + M1/M0 engine plane in the gate (lot K0, 2026-11-01)
 - [x] G2 refuses hollow comments; gate asks Michel to run the reasoner (2026-11-01)
+- [x] M0 reasoner sweep in the gate, `--reasoner`, frozen section `M0_REASONER` (2026-11-08)
+- [x] Fm2 notation grammar (EBNF) → parser, SHACL SHAPE 14, check_M1 GCC011/012/013 (2026-11-08)
 - [ ] G2 hollow-comment guard for M1/M0
 - [ ] Build SPARQL test suite
 
@@ -692,9 +730,12 @@ This skill **breaks the Ouroboros** by:
 
 **Status:** Active skill
 
-**Version:** 1.3.0
+**Version:** 1.4.0
 
-**Last Updated:** 2026-11-01 (1.3.0: Michel runs the reasoner himself, Claude asks and
+**Last Updated:** 2026-11-08 (1.4.0: Claude runs the reasoner in the VM with Java 25 —
+install recipe, baseline-before-blame, Pellet explain recipe —, Michel confirms before
+the push; gate `--reasoner` M0 sweep; known causes of M0 inconsistency; Fm2 notation
+tools. 1.3.0, 2026-11-01: Michel runs the reasoner himself, Claude asks and
 waits, the gate reminds; G2 hollow comments in the debt-honesty rule; 1.2.0:
 debt-honesty rule, G8 phantom predicates, M1/M0 engine section of the gate, Scenario 5
 bare-key reduction, Java 25 note for the reasoner)
