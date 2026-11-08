@@ -80,7 +80,8 @@ for the sawtooth — see Gap G3. Domain: Physics (thermodynamics); `M1_Physics` 
   flow. `m2:Dissipation` types what crosses it, not the wall itself. `m2:Boundary` is a
   known phantom (WS-5 lot-NSRESOLVE, WS-13 D9 / Addendum A DA3). The window is
   `m1:Permeability`, whose formula still uses the phantom `m2:Interface`.
-- **G2 — No concept for hysteresis.** A threshold whose switching value depends on
+- **G2 — No concept for hysteresis.** *(Closed 2026-11-08: `m1:Hysteresis =
+  Fm2(Threshold, Memory)` in M1_CoreConcepts 2.25.0; M0 1.1.0 uses it.)* A threshold whose switching value depends on
   the direction of travel is `Threshold` + `Memory`. Candidate M1 combo:
   `m1:Hysteresis = Fm2(Threshold, Memory)` — transdisciplinary (magnetism, thermostats,
   Schmitt triggers, the drinking bird's tilt, labour markets). To go through
