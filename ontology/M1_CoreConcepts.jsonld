@@ -29,8 +29,8 @@
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-11-01",
-      "owl:versionInfo": "2.24.0",
+      "dcterms:modified": "2026-11-08",
+      "owl:versionInfo": "2.25.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -227,11 +227,11 @@
         ]
       },
       "m1:validationStatus": {
-        "m1:conceptsDefined": 14,
-        "m1:conceptsValidated": 14,
-        "m1:genericConceptCombos": 12,
+        "m1:conceptsDefined": 15,
+        "m1:conceptsValidated": 15,
+        "m1:genericConceptCombos": 13,
         "m1:patterns": 2,
-        "m1:note": "11 instances of m2:GenericConceptCombo + 2 instances of m1:CorePattern"
+        "m1:note": "13 subclasses of m2:GenericConceptCombo + 2 instances of m1:CorePattern"
       },
       "m1:changelog": {
         "v2.1.0": {
@@ -256,6 +256,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.25.0",
+          "dcterms:date": "2026-11-08",
+          "adms:versionNotes": "NEW m1:Hysteresis = Fm2(Threshold, Memory), dual polarity (Michel, 2026-11-08; gap G2 of the Thermostat poclet, TSCG Kit friction log). Passed tscg-m2-candidate-filter: decomposable (emergent dead band and bistability), so M1, not M2. No restriction on Threshold: its value threshold_behavior=Hysteretic already means a memory effect, and Memory is the other argument. The fiche uses only properties required by SHAPE 9 or declared terms (skos:example, dcterms:*); polarity is stated in rdfs:comment because M1 has no declared polarity property (m1:hasPolarity is a phantom)."
+        },
+        {
           "owl:versionInfo": "2.24.0",
           "dcterms:date": "2026-11-01",
           "adms:versionNotes": "ontology/docs housekeeping round 2 (Michel, 2026-11-01). rdfs:seeAlso of the ontology node repointed from the obsolete ontology/docs/TSCG_M1_Architecture.md (January design note, now removed) to the live M1_CoreConcepts_README.md, and written as an IRI ({\"@id\": ...}, resolved against @base) instead of a plain string, as in M2_GenericConcepts. No class or property changed."
@@ -264,11 +269,6 @@
           "owl:versionInfo": "2.23.0",
           "dcterms:date": "2026-10-12",
           "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12). m1:Domain comment: a domain is a class (extension domain classes and M1_Domains classes are its subclasses), never an individual; DCC010 reads the hierarchy. NEW m1:relatedDomains declared owl:AnnotationProperty (IRI values: domain classes) — an object property between classes would pun them. NEW m1:domain declared owl:AnnotationProperty (IRI values: domain classes); it replaces the obsolete m2:knowledgeField on M1 classes. Obsolete KnowledgeField vocabulary purged from the live text (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain)."
-        },
-        {
-          "owl:versionInfo": "2.22.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "WS-1 B2 lot C1b. m1:Domain declared (owl:Class): a disciplinary knowledge domain, replacing the retired m1:KnowledgeField (Michel, 2026-10-11). The registry M1_Domains.jsonld typed its 22 entries m1:Domain while the class was declared nowhere; m1:extension:education:Education was a subclass of the phantom m1:KnowledgeField and is re-pointed to m1:Domain."
         }
       ]
     },
@@ -1688,6 +1688,27 @@
       },
       "m1:migrationNote": "New concept v2.0.0 — not migrated from M2",
       "dcterms:created": "2026-03-13",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m1:Hysteresis",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m2:GenericConceptCombo"
+      },
+      "rdfs:label": "Hysteresis",
+      "rdfs:comment": "A switching threshold whose crossing value depends on the direction of travel, because the system retains the state it is in: it switches up at one value and back down at another, and between the two edges (the dead band) both states are stable. Combination of m2:Threshold (a critical value triggering a qualitative change) and m2:Memory (retention of past states influencing current behaviour). Emergent property, absent from both parents: the dead band and the bistability inside it, with path dependence (the output depends on where the input came from). A threshold alone switches at the same value both ways; a memory alone does not switch. Dual polarity: the up branch and the down branch, i.e. the two stable states. Distinct from the value 'Hysteretic' of the m2:Threshold attribute threshold_behavior, which describes the observed behaviour of a threshold; this combo is the concept built from Threshold and Memory (Michel, 2026-11-08: Fm2(Threshold, Memory), without a restriction on Threshold, so that the memory is not counted twice).",
+      "m1:structuralGrammarFormula": "Fm2(Threshold, Memory)",
+      "skos:example": [
+        "Physics — ferromagnetic B-H loop",
+        "Electronics — Schmitt trigger (different thresholds up and down)",
+        "Engineering — on/off thermostat with a dead band (TSCG Kit, M0_Thermostat)",
+        "Mechanics — latch, ratchet, stick-slip friction",
+        "Biology — bistable gene switch (lambda phage)",
+        "Ecology — regime shifts with different tipping points forward and back",
+        "Economics — unemployment hysteresis"
+      ],
+      "dcterms:created": "2026-11-08",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {

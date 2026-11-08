@@ -67,7 +67,7 @@ as a working scale model before being formalised.
 | Wall and window | `Dissipation` (gap G1) |
 | Outside | `Environment` |
 | Inside–outside gap | `Gradient` |
-| Thermostat | `Threshold`, `Memory` (gap G2) |
+| Thermostat | `m1:Hysteresis` = `Fm2(Threshold, Memory)` (gap G2, closed) |
 | Temperature, command | `Signal` |
 | Regulation loop | `FeedbackLoop`, `Regulation`, `Homeostasis`, `Balance` |
 | Sawtooth | `Trajectory` (gap G3) |
@@ -90,7 +90,7 @@ Observer (16).
   difference.
 - **Three gaps, recorded rather than patched** (see the analysis):
   G1 the wall is a Boundary, which is not defined (WS-13);
-  G2 no concept for hysteresis — candidate `Hysteresis = Fm2(Threshold, Memory)`;
+  G2 no concept for hysteresis — closed in 1.1.0 by `m1:Hysteresis = Fm2(Threshold, Memory)`;
   G3 the sawtooth is a relaxation oscillation, which `m1:Oscillator` does not describe.
 
 ## Transdisciplinary Analogies
