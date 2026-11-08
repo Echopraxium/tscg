@@ -12,7 +12,19 @@
     "dcterms": "http://purl.org/dc/terms/",
     "adms": "http://www.w3.org/ns/adms#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "m0.triskeleToolchain": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/symbolic-system-grammars/TriskeleToolchain/M0_TriskeleToolchain.jsonld#"
+    "m0.triskeleToolchain": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/symbolic-system-grammars/TriskeleToolchain/M0_TriskeleToolchain.jsonld#",
+    "m0:asfidMean": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#asfidMean",
+      "@type": "xsd:float"
+    },
+    "m0:revoiMean": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#revoiMean",
+      "@type": "xsd:float"
+    },
+    "m0:epistemicGap": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#epistemicGap",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
@@ -31,9 +43,9 @@
       "rdfs:comment": "A computation-oriented Symbolic System Grammar grounded in the TSCG M3 Structural Grammar. The 16 monoidal primitives of the three TSCG grammars (Gt/ASFID × 5, Gm/REVOI × 5, Gs/TKSL × 6) form a Base16 encoding alphabet that defines: (1) TriskeleVM — a register-based virtual machine whose ISA encodes 256 opcodes via 16 primitive categories × 16 instructions; (2) TriskeleL — a high-level language grounded in M2 GenericConcept semantics compiled to TriskeleVM bytecode. Proof-of-concept target: running Wolfenstein 3D (and subsequently Doom) via a C compiler targeting TriskeleVM bytecode.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-05-30",
-      "owl:versionInfo": "0.5.0",
+      "owl:versionInfo": "0.6.0",
       "m1:domain": "Virtual machine design, compiler theory, symbolic computation, formal grammars, game engine",
-      "dcterms:modified": "2026-09-30",
+      "dcterms:modified": "2026-11-08",
       "m0:asfidMean": 0.9,
       "m0:revoiMean": 0.864,
       "m0:epistemicGap": 0.0255,
@@ -43,6 +55,11 @@
       "m0:spectralClassNote": "δ₁ = |0.90 − 0.864| / √2 = 0.0255. High S_score (0.95) reflects the rigorous structural specification of ISA, format .tvm and register file. High It_score (0.92) reflects the information-theoretic grounding (Base16 = log₂(16) = 4 bits per symbol). V_score (0.82) is lower than R/E/O because formal verification of the full toolchain is pending (Wolf3D PoC not yet executed). Im_score (0.87) reflects the SDL2/FFI interoperability design — high but not maximal since native bindings are not yet validated.",
       "m3:changelog": [
         {
+          "owl:versionInfo": "0.6.0",
+          "dcterms:date": "2026-11-08",
+          "adms:versionNotes": "M0 reasoner campaign (2026-11-08). 3 score properties (m0:asfidMean, m0:revoiMean, m0:epistemicGap) typed xsd:float in @context: written as JSON numbers (or numeric strings) they expanded to xsd:double (or xsd:string), outside the xsd:float range declared in M0_Common (reasoner: inconsistent)."
+        },
+        {
           "owl:versionInfo": "0.5.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -51,11 +68,6 @@
           "owl:versionInfo": "0.4.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
-        },
-        {
-          "owl:versionInfo": "0.3.0",
-          "dcterms:date": "2026-06-26",
-          "adms:versionNotes": "ACTION3: Added m0:focalApplicable=true."
         }
       ],
       "m0:grammarSpec": {

@@ -14,7 +14,19 @@
     "dcterms": "http://purl.org/dc/terms/",
     "adms": "http://www.w3.org/ns/adms#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "m0.tscgPocletMiner": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/tscg-tools/TscgPocletMiner/M0_TscgPocletMiner.jsonld#"
+    "m0.tscgPocletMiner": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/tscg-tools/TscgPocletMiner/M0_TscgPocletMiner.jsonld#",
+    "m0:asfidMean": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#asfidMean",
+      "@type": "xsd:float"
+    },
+    "m0:revoiMean": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#revoiMean",
+      "@type": "xsd:float"
+    },
+    "m0:epistemicGap": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#epistemicGap",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
@@ -33,9 +45,9 @@
       "rdfs:comment": "TSCG Poclet Miner — Multi-backend LLM tool with on-the-fly RAG for TSCG ontology exploration and poclet generation assistance.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-03-16",
-      "owl:versionInfo": "1.3.0",
+      "owl:versionInfo": "1.4.0",
       "m1:domain": "TSCG",
-      "dcterms:modified": "2026-09-30",
+      "dcterms:modified": "2026-11-08",
       "A_score": {
         "@value": "0.75",
         "@type": "xsd:float"
@@ -84,6 +96,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.4.0",
+          "dcterms:date": "2026-11-08",
+          "adms:versionNotes": "M0 reasoner campaign (2026-11-08). 3 score properties (m0:asfidMean, m0:revoiMean, m0:epistemicGap) typed xsd:float in @context: written as JSON numbers (or numeric strings) they expanded to xsd:double (or xsd:string), outside the xsd:float range declared in M0_Common (reasoner: inconsistent)."
+        },
+        {
           "owl:versionInfo": "1.3.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -92,11 +109,6 @@
           "owl:versionInfo": "1.2.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
-        },
-        {
-          "owl:versionInfo": "1.1.1",
-          "dcterms:date": "2026-06-26",
-          "adms:versionNotes": "ACTION3: Added m0:focalApplicable=false."
         }
       ],
       "m0.tscgPocletMiner:scoreJustification": {

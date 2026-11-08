@@ -13,7 +13,11 @@
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
     "m0.cMY_Subtractive": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/CMY_Subtractive/M0_CMY_Subtractive.jsonld#",
-    "m0.cmySubtractive": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/CMY_Subtractive/M0_CMY_Subtractive.jsonld#"
+    "m0.cmySubtractive": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/CMY_Subtractive/M0_CMY_Subtractive.jsonld#",
+    "m0:epistemicGap": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#epistemicGap",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
@@ -26,9 +30,8 @@
       "rdfs:comment": "Subtractive color synthesis using Cyan, Magenta, Yellow pigment primaries. Theoretical model for pigment/ink mixing. Each channel is a SIGNAL (m2:Signal) carrying absorption/filtering information. The three signals undergo FUSION (m2:Fusion) through spectral filtering to produce perceived color.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-17",
-      "owl:versionInfo": "1.3.0",
+      "owl:versionInfo": "1.4.0",
       "m1:domain": "Optics / Color Science / Printing",
-      "rdf:type": "m0:Poclet",
       "m0:pocletType": "Composite (Specialized)",
       "m0:partOfFederation": {
         "@id": "m0:ColorSynthesisFederated",
@@ -452,8 +455,13 @@
         "Pointer, M. R. (1980). The Gamut of Real Surface Colours",
         "Hunt, R. W. G. (2004). The Reproduction of Colour (6th ed.)"
       ],
-      "dcterms:modified": "2026-09-30",
+      "dcterms:modified": "2026-11-08",
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.4.0",
+          "dcterms:date": "2026-11-08",
+          "adms:versionNotes": "M0 reasoner campaign (2026-11-08). 1 score property (m0:epistemicGap) typed xsd:float in @context: written as JSON numbers (or numeric strings) they expanded to xsd:double (or xsd:string), outside the xsd:float range declared in M0_Common (reasoner: inconsistent); \"rdf:type\": \"m0:Poclet\" deleted: a plain string (a literal, not a class; the reasoner stopped on it) redundant with m3:ontologyType m3:Poclet; m0:Poclet is declared nowhere."
+        },
         {
           "owl:versionInfo": "1.3.0",
           "dcterms:date": "2026-09-30",
@@ -463,11 +471,6 @@
           "owl:versionInfo": "1.2.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
-        },
-        {
-          "owl:versionInfo": "1.1.1",
-          "dcterms:date": "2026-06-27",
-          "adms:versionNotes": "ACTION3: Added m0:focalApplicable=true (sub-ontology of ColorSynthesis federated Poclet)."
         }
       ],
       "owl:imports": [

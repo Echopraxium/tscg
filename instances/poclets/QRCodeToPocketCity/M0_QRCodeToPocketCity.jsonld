@@ -16,7 +16,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "m0.qRCodeToPocketCity": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/QRCodeToPocketCity/M0_QRCodeToPocketCity.jsonld#"
+    "m0.qRCodeToPocketCity": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/QRCodeToPocketCity/M0_QRCodeToPocketCity.jsonld#",
+    "m0:scoreA": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreA",
+      "@type": "xsd:float"
+    },
+    "m0:scoreS": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreS",
+      "@type": "xsd:float"
+    },
+    "m0:scoreF": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreF",
+      "@type": "xsd:float"
+    },
+    "m0:scoreIt": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreIt",
+      "@type": "xsd:float"
+    },
+    "m0:scoreD": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreD",
+      "@type": "xsd:float"
+    },
+    "m0:scoreR": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreR",
+      "@type": "xsd:float"
+    },
+    "m0:scoreE": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreE",
+      "@type": "xsd:float"
+    },
+    "m0:scoreV": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreV",
+      "@type": "xsd:float"
+    },
+    "m0:scoreO": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreO",
+      "@type": "xsd:float"
+    },
+    "m0:scoreIm": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreIm",
+      "@type": "xsd:float"
+    },
+    "m0:epistemicGap": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#epistemicGap",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
@@ -24,7 +68,8 @@
       "@type": "owl:Ontology",
       "rdfs:label": "QR Code to Pocket City",
       "rdfs:comment": "A QR code is deterministically transformed into a navigable 3D miniature city, under one binding constraint: seen orthographically from directly above, the city must still be a scannable QR code encoding the original payload. The same information therefore carries two simultaneous encodings — one machine-readable, one human-inhabitable — that are required not to conflict. The generative seed acts as the city's identity: same text produces the same city, always.",
-      "owl:versionInfo": "1.3.0",
+      "owl:versionInfo": "1.4.0",
+      "dcterms:modified": "2026-11-08",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-08-02",
       "owl:imports": [
@@ -67,6 +112,11 @@
       "m0:scoringRationale": "S is highest on the Territory side: the module grid, finder patterns and building geometry are fully determined and inspectable. F is lowest: flow exists (the scanner's reading path, the explorer's traversal) but is not the system's centre of gravity. On the Map side V is exceptionally high because the model is directly falsifiable — point a scanner at the Bird's-eye view and it either decodes the payload or it does not. This is a rare case where a TSCG instance carries its own empirical test.",
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.4.0",
+          "dcterms:date": "2026-11-08",
+          "adms:versionNotes": "M0 reasoner campaign (2026-11-08). 11 score properties (m0:scoreA, m0:scoreS, m0:scoreF, m0:scoreIt, m0:scoreD, m0:scoreR, m0:scoreE, m0:scoreV, m0:scoreO, m0:scoreIm, m0:epistemicGap) typed xsd:float in @context: written as JSON numbers (or numeric strings) they expanded to xsd:double (or xsd:string), outside the xsd:float range declared in M0_Common (reasoner: inconsistent)."
+        },
+        {
           "owl:versionInfo": "1.3.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -75,11 +125,6 @@
           "owl:versionInfo": "1.2.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
-        },
-        {
-          "owl:versionInfo": "1.1.0",
-          "dcterms:date": "2026-08-28",
-          "adms:versionNotes": "Migrated the Democratization facet to the M3 Facet mechanism (SC-3): m0:hasFacet m0:facet.Democratization -> m3:hasFacetValue m3:audience.KitUser. Dropped m0:roleGrounding and m0:illustratesConcept (contract not carried to KitUser); pedagogical intent now read as targetAudience = KitUser."
         }
       ],
       "m0:note": "Candidate for a future m3:ExploratorySpace instance type (navigable artifact with Gs as primary grammar). Typed m3:Poclet pending the ≥3 instances required to admit a new type."
