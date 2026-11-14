@@ -409,9 +409,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 </script>
 <script>
-/* ../lib/sim.js */
-/* TSCG Kit — sim.js
- * Generic pieces and the fixed-step simulation.
+/* ../../lib/simulation/ThreeLegs/engine/sim.js */
+/* TSCG simulation engine — lib/simulation/ThreeLegs/engine/sim.js
+ * Generic pieces, their laws (K.LAWS) and the fixed-step simulation. Used by the Kit
+ * workshops and by poclet pages; scope: kit/ENGINE_SCOPE.md.
  * The graph (nodes + wires) is the single source of truth: the Panneau and the
  * Maquette only read it (and write parameters through bindings).
  * Time is in the workshop's own unit (hours, seconds…): model.step(dt).
@@ -759,9 +760,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 </script>
 <script>
-/* ../lib/synoptic.js */
-/* TSCG Kit — synoptic.js
- * The Synoptique: an SVG node editor over the Model. Pieces are added from a
+/* ../../lib/simulation/ThreeLegs/synoptics/synoptic.js */
+/* TSCG synoptics — lib/simulation/ThreeLegs/synoptics/synoptic.js
+ * The Synoptique: an SVG node editor over the Model. It does not depend on the engine's
+ * laws (the host passes them as o.law). Meant to become reusable outside TSCG. Pieces are added from a
  * palette, moved by their title bar, and wired from an output (right) to an
  * input (left) of the same kind. Selecting a piece shows its parameters.
  * Author: Echopraxium with the collaboration of Claude AI
@@ -800,7 +802,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   }
 
   class Synoptic {
-    // o: { order, home, fluxLabel(), isUnlocked(type), hood(), toast(msg), onChange() }
+    // o: { order, home, fluxLabel(), isUnlocked(type), hood(), law(kind), toast(msg), onChange() }
     constructor(host, model, o) {
       this.m = model; this.o = o;
       this.selected = null; this.drag = null; this.dragWire = null; this.live = [];
@@ -852,9 +854,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         (open ? "" : `<p class="k-muted">${K.t("locked_info")}</p>`);
     }
     skin(n) { return this.m.skins[n.type]; }
-    // "under the hood": the law the engine applies to this kind (K.LAWS in sim.js), as stated there
+    // "under the hood": the law the engine applies to this kind, given by the host (o.law),
+    // so the editor never depends on the engine
     lawHtml(kind) {
-      const law = K.LAWS && K.LAWS[kind];
+      const law = this.o.law ? this.o.law(kind) : null;
       return law ? `<p class="k-muted sy-law"><code>${law.element}</code> ${K.L(law.law[0], law.law[1])}</p>` : "";
     }
     nodeHeight(n) {
@@ -1725,7 +1728,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     const changed = () => { app.panel.renderToolbar(); app.panel.update(); app.tutorial.refresh(); };
     app.synoptic = new K.Synoptic($('[data-pane="synoptic"]'), model, {
       order: W.order, home: W.home, fluxLabel: () => app.W.fluxLabel,
-      isUnlocked: t => S.free || S.pieces.has(t), hood: () => S.hood, toast, onChange: changed });
+      isUnlocked: t => S.free || S.pieces.has(t), hood: () => S.hood, law: kind => K.LAWS && K.LAWS[kind], toast, onChange: changed });
     app.panel = new K.Panel($('[data-pane="panel"]'), model, {
       instruments: W.instruments, skins: W.skins,
       isUnlocked: k => (S.free || S.instruments.has(k)), toast, log, onChange: () => app.tutorial.refresh() });

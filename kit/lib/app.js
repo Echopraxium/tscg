@@ -87,7 +87,7 @@
     const changed = () => { app.panel.renderToolbar(); app.panel.update(); app.tutorial.refresh(); };
     app.synoptic = new K.Synoptic($('[data-pane="synoptic"]'), model, {
       order: W.order, home: W.home, fluxLabel: () => app.W.fluxLabel,
-      isUnlocked: t => S.free || S.pieces.has(t), hood: () => S.hood, toast, onChange: changed });
+      isUnlocked: t => S.free || S.pieces.has(t), hood: () => S.hood, law: kind => K.LAWS && K.LAWS[kind], toast, onChange: changed });
     app.panel = new K.Panel($('[data-pane="panel"]'), model, {
       instruments: W.instruments, skins: W.skins,
       isUnlocked: k => (S.free || S.instruments.has(k)), toast, log, onChange: () => app.tutorial.refresh() });

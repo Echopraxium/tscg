@@ -92,7 +92,7 @@ def find_sim(folder, name):
 
 def rebundle_kit_page(root, src_dir, dst_dir, name):
     """A poclet whose simulation is a TSCG Kit workshop keeps its sources in static/src/
-    (index.src.html + workshop.js, shared libraries in kit/lib/). Re-bundle the published
+    (index.src.html + workshop.js, shared libraries in kit/lib/ and lib/simulation/). Re-bundle the published
     single file static/M0_<Name>.html from them, so it is never stale (added 2026-11-07)."""
     import subprocess
     page=os.path.join(src_dir,"static","src","index.src.html")
@@ -295,7 +295,8 @@ def copy_kit(root, outdir):
     import subprocess
     node=shutil.which("node"); bundler=os.path.join(root,KIT_DIR,"tools","bundle.js")
     for ws in sorted(os.listdir(dst)):
-        page=os.path.join(dst,ws,"index.src.html")
+        # bundle from the repo sources: shared libraries also live outside kit/ (lib/simulation/)
+        page=os.path.join(src,ws,"index.src.html")
         if node and os.path.isfile(bundler) and os.path.isfile(page):
             r=subprocess.run([node,bundler,page,os.path.join(dst,ws,"index.html")],capture_output=True,text=True)
             if r.returncode: print(f"  warning: kit bundle failed for {ws}: {r.stderr.strip()}")

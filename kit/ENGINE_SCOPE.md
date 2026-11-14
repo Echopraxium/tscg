@@ -7,7 +7,7 @@ Concept names were read from `ontology/M2_GenericConcepts.jsonld` and
 
 ## Why this file exists
 
-The Kit engine (`lib/sim.js`) is a lumped, deterministic, fixed-step simulator: blocks
+The Kit engine (`lib/simulation/ThreeLegs/engine/sim.js`, at the repository root) is a lumped, deterministic, fixed-step simulator: blocks
 exchange **fluxes** (power) and **information** (signals), and storages integrate.
 Its laws are now data (`K.LAWS`, one entry per generic kind, plus `K.ENGINE` for the
 solver's own rules), shown "under the hood". That kind of engine can only simulate a

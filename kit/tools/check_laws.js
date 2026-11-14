@@ -22,9 +22,9 @@ const fs = require("fs"), path = require("path");
 const ROOT = path.resolve(__dirname, "..", "..");
 // the law parameters are the ones K.LAWS reads: load sim.js in a stub window and collect them
 function lawParams() {
-  const src = fs.readFileSync(path.join(ROOT, "kit", "lib", "sim.js"), "utf8");
+  const src = fs.readFileSync(path.join(ROOT, "lib", "simulation", "ThreeLegs", "engine", "sim.js"), "utf8");
   const start = src.indexOf("const LAWS = {"), end = src.indexOf("const ENGINE = [");
-  if (start < 0 || end < 0) throw new Error("check_laws: K.LAWS not found in kit/lib/sim.js");
+  if (start < 0 || end < 0) throw new Error("check_laws: K.LAWS not found in lib/simulation/ThreeLegs/engine/sim.js");
   const block = src.slice(start, end), names = new Set();
   for (const m of block.matchAll(/\.p\.([A-Za-z_]\w*)/g)) names.add(m[1]);
   return names;
