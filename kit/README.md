@@ -93,7 +93,7 @@ Kit home page, which stays in `kit/`. First validated workshop: **Thermostat**
 |---|---|
 | `lib/i18n.js` | language (English default, French), theme (dark default, light), shared interface strings |
 | `lib/icons.js` | line icons for blocks (`icon:` in a skin, generic kind as fallback) |
-| `lib/sim.js` | generic kinds (storage, sink, source, threshold, amplify, transducer, gradient, clock), Model (graph + fixed-step simulation + bindings). Skin options: optional ports (a Sink with a `cmd` input exists only if its skin names it), `above` (a Threshold that switches on above its band), `on` (a Source on by default) |
+| `lib/sim.js` | generic kinds (storage, sink, source, threshold, amplify, transducer, gradient, clock); their laws as data (`K.LAWS`: effort/flow element, statement EN/FR, hooks) and the solver's rules (`K.ENGINE`), both shown under the hood; Model (graph + fixed-step simulation + bindings). What the engine can and cannot simulate: [`ENGINE_SCOPE.md`](ENGINE_SCOPE.md). Skin options: optional ports (a Sink with a `cmd` input exists only if its skin names it), `above` (a Threshold that switches on above its band), `on` (a Source on by default) |
 | `lib/synoptic.js` | SVG node editor (palette + info panel, icons, animated flow chevrons) |
 | `lib/panel.js` | grid of instruments |
 | `lib/chart.js` | curves, configured per workshop (`W.chart`: axes, series, strips) |

@@ -86,10 +86,15 @@
       if (!t || !this.m.skins[t]) { this.info.innerHTML = `<span class="k-muted">${K.t("pal_hint")}</span>`; return; }
       const s = this.m.skins[t], open = this.o.isUnlocked(t);
       this.info.innerHTML = `<div class="sy-info-h">${K.iconSvg(K.iconOf(s), "k-icon")}<b>${s.name}</b></div><p>${s.blurb}</p>` +
-        (this.o.hood() ? `<p class="k-muted">${K.generic(s.kind)}</p>` : "") +
+        (this.o.hood() ? `<p class="k-muted">${K.generic(s.kind)}</p>${this.lawHtml(s.kind)}` : "") +
         (open ? "" : `<p class="k-muted">${K.t("locked_info")}</p>`);
     }
     skin(n) { return this.m.skins[n.type]; }
+    // "under the hood": the law the engine applies to this kind (K.LAWS in sim.js), as stated there
+    lawHtml(kind) {
+      const law = K.LAWS && K.LAWS[kind];
+      return law ? `<p class="k-muted sy-law"><code>${law.element}</code> ${K.L(law.law[0], law.law[1])}</p>` : "";
+    }
     nodeHeight(n) {
       const rows = Math.max(this.m.ports(n, "in").length, this.m.ports(n, "out").length, 1);
       return HEAD + 8 + rows * ROW + 24;
@@ -306,7 +311,7 @@
       if (this.selected[0] === "w") { box.innerHTML = `<span>${K.t("wire_selected")}</span><button class="sy-del">${K.t("del_wire")}</button>`; box.querySelector(".sy-del").onclick = () => this.deleteSelected(); return; }
       const n = this.m.byId(+this.selected.slice(1)); if (!n) return;
       const s = this.skin(n), ps = s.params || {};
-      box.innerHTML = `<b>${this.m.label(n)}</b>${this.o.hood() ? ` <span class="k-muted">· ${K.generic(s.kind)}</span>` : ""}` +
+      box.innerHTML = `<b>${this.m.label(n)}</b>${this.o.hood() ? ` <span class="k-muted">· ${K.generic(s.kind)}</span>${this.lawHtml(s.kind)}` : ""}` +
         Object.entries(ps).filter(([k, d]) => !d.hidden).map(([k, d]) => `<label>${d.label}<input type="number" data-k="${k}" step="${d.step}"${d.min !== undefined ? ` min="${d.min}"` : ""}${d.max !== undefined ? ` max="${d.max}"` : ""} value="${n.p[k]}"></label>`).join("") +
         `<button class="sy-del">${K.t("del_piece")}</button>`;
       box.querySelectorAll("input").forEach(inp => inp.onchange = () => {
