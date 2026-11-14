@@ -103,6 +103,7 @@ Kit home page, which stays in `kit/`. First validated workshop: **Thermostat**
 | `<workshop>/workshop.js` | clock (time unit), skins, instruments, chart, steps, final card, Maquette drawing |
 | `<workshop>/index.src.html` | source page (works directly, classic scripts) |
 | `<workshop>/index.html` | **generated** single file |
+| `tools/check_laws.js` | rule check: no law recomputed outside `K.LAWS` (FAIL), no direct state write (WARN, `// law-ok: reason` to exempt): `node kit/tools/check_laws.js` |
 | `tools/bundle.js` | inlines CSS and scripts: `node kit/tools/bundle.js kit/larsen/index.src.html` (a poclet page: give the output path, e.g. `static/M0_Thermostat.html`) |
 
 The GitHub Pages build (`cli_tools/compendium/build_compendium.py`) copies `kit/` and

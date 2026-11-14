@@ -98,5 +98,7 @@ meta-classes (GenericConceptCombo, …) are not concepts to simulate.
 1. A workshop may only **claim** a concept of A or B. Tier B must emerge from the wiring.
 2. No physics outside `K.LAWS`: the Maquette, the Panel and the curves read the model
    (`n.s`, `w.power`), they never recompute a law.
+   Checked by `node kit/tools/check_laws.js` (exit 1 on a FAIL; it flags the pre-fix
+   Thermostat Maquette at `5a26560`). Not yet wired into the acceptance gate.
 3. Adding a kind to `K.LAWS` (R as a block, I) is an engine change; the corresponding
    concept goes through the M2 candidate filter first.
