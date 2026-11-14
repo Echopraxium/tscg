@@ -847,7 +847,7 @@ Target format (Michel, 2026-10-10): one associative array per grammar, keys suff
   dropped on JSON-LD expansion; part of the M0 bare-key gauge whose owner is still
   to decide) — SHACL and the reasoner cannot see the scores.
 - Readers to update with the keys: `cli_tools/regenerate_simulation_gallery/
-  generate_index.js`, `src/tscg/simulation-engine/transistor_sim.py`,
+  generate_index.js`, `lib/simulation/FourLegs/transistor_sim.py`,
   `complex_chemical_synapse_sim.py`, `ontology/toolchain/check-M0/
   migrate_m0_to_v1_5.py`, `ontology/toolchain/modernize_m0.py`.
 - Open: drop `mean` (derived, drifts when a score changes)? Where do the
