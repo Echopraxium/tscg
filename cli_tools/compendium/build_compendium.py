@@ -256,6 +256,34 @@ def run_health_map(root, outdir):
         return {"status": "ok", "svg": HEALTH_FILE, "snapshot": os.path.basename(svg),
                 "width": int(m.group(1)) if m else 1600, "height": int(m.group(2)) if m else 1700}
 
+WORKSITE_GRAPH_SCRIPT = "ontology/toolchain/worksite_graph.py"
+WORKSITE_GRAPH_FILE = "worksites_dependency_graph.svg"
+
+def run_worksite_graph(root, outdir):
+    """Worksites dependency graph (added 2026-11-14, WS-14 session): regenerated at EVERY
+    build from worksite.yaml (field depends_on) and published as
+    dist/worksites_dependency_graph.svg. Same rule as the health map: a failure never
+    breaks the site, the tab says 'unavailable' with the reason."""
+    import subprocess, sys, tempfile
+    script = os.path.abspath(os.path.join(root, WORKSITE_GRAPH_SCRIPT))
+    if not os.path.exists(script):
+        return {"status": "unavailable", "reason": f"generator not found: {WORKSITE_GRAPH_SCRIPT}"}
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            proc = subprocess.run([sys.executable, script, "--out", tmp], cwd=os.path.dirname(script),
+                                  capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=120)
+        except Exception as e:
+            return {"status": "unavailable", "reason": f"generator did not run: {e}"}
+        svg = os.path.join(tmp, WORKSITE_GRAPH_FILE)
+        if proc.returncode != 0 or not os.path.isfile(svg):
+            tail = (proc.stdout + proc.stderr).strip().splitlines()[-6:]
+            return {"status": "unavailable", "reason": f"generator exit {proc.returncode}: " + " | ".join(tail)}
+        m = re.search(r'width="(\d+)" height="(\d+)"', read(svg)[:400])
+        shutil.copyfile(svg, os.path.join(outdir, WORKSITE_GRAPH_FILE))
+        print(f"  worksites graph: {os.path.join(outdir, WORKSITE_GRAPH_FILE)}")
+        return {"status": "ok", "svg": WORKSITE_GRAPH_FILE,
+                "width": int(m.group(1)) if m else 940, "height": int(m.group(2)) if m else 900}
+
 def build_stamp(root):
     """Commit + UTC date of this build, shown in the footer so a stale page is visible
     at a glance (added 2026-10-03). CI: GITHUB_SHA; local: git rev-parse HEAD."""
@@ -315,7 +343,8 @@ def main():
     docs=build_docs(a.root,a.out)
     assign_folders(docs,load_folder_rules(os.path.join(os.path.dirname(os.path.abspath(a.template)),FOLDERS_FILE)))
     health=run_health_map(a.root,a.out)
-    data=json.dumps({"subjects":subjects,"docs":docs,"build":build_stamp(a.root),"health":health},ensure_ascii=False)
+    wsgraph=run_worksite_graph(a.root,a.out)
+    data=json.dumps({"subjects":subjects,"docs":docs,"build":build_stamp(a.root),"health":health,"wsgraph":wsgraph},ensure_ascii=False)
     html=read(a.template)
     if '"@@DATA@@"' not in html:
         raise SystemExit("template missing the \"@@DATA@@\" placeholder")
@@ -330,6 +359,7 @@ def main():
     print(f"  subjects: {len(subjects)}  (playable copied & linked: {played})")
     print(f"  docs: {len(docs)}")
     print(f"  kit workshops copied: {kits}")
+    print(f"  worksites graph: {wsgraph.get('status')}" + (f" ({wsgraph.get('reason')})" if wsgraph.get("reason") else ""))
     print(f"  health map: {health.get('status')}" + (f" ({health.get('reason')})" if health.get("reason") else ""))
 
 if __name__=="__main__": main()

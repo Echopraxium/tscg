@@ -556,10 +556,28 @@ function renderDocs(sec){
 function renderProject(){
   const ds=DATA.docs.filter(d=>inAud(d)&&d.section==="Project management").filter(d=>matchTxt(d.title,d.path));
   const wip=DATA.subjects.filter(inAud).filter(s=>s.mode==="under-construction").filter(s=>matchTxt(s.title,s.name));
-  let html="";
+  let html=renderWorksiteGraph();
   if(wip.length) html+=`<section class="group"><h2><span>Instances under construction</span><span>${wip.length}</span></h2><div class="cards">${wip.sort((a,b)=>a.title.localeCompare(b.title)).map(subjectCard).join("")}</div></section>`;
   if(ds.length) html+=docsTreeHtml("Project management",ds);
   return html||`<p class="empty">Nothing here at this level.</p>`;
+}
+
+// First item of Project management (Michel, 2026-11-14): the worksites and their dependencies,
+// regenerated at every build from worksite.yaml (ontology/toolchain/worksite_graph.py).
+function renderWorksiteGraph(){
+  const G=DATA.wsgraph||{status:"unavailable",reason:"no worksite graph in this build"};
+  const yml=BLOB+"ontology/docs/_01_Worksite/worksite.yaml", gen=BLOB+"ontology/toolchain/worksite_graph.py";
+  if(query&&!matchTxt("Worksites dependency graph")) return "";
+  if(G.status!=="ok") return `<section class="group"><h2><span>Worksites dependency graph</span><span>N/A</span></h2>
+    <p class="health-intro">${esc(G.reason||"unknown reason")}</p></section>`;
+  return `<section class="group"><h2><span>Worksites dependency graph</span><span>regenerated at this build</span></h2>
+    <p class="health-intro">One box per worksite (colour = status, P = priority), one arrow per declared dependency
+    (field <code>depends_on</code>). <b>Hover</b> a box or an arrow for details. Priorities and dependencies change in
+    <a href="${yml}">worksite.yaml</a> (and <code>WS-*/worksite.yaml</code>); the graph follows at the next build.</p>
+    <div class="health-frame"><object type="image/svg+xml" data="${esc(G.svg)}" style="aspect-ratio:${G.width}/${G.height}"
+      aria-label="Worksites dependency graph">Worksites dependency graph (SVG)</object></div>
+    <p class="health-intro">Generator: <a href="${gen}">worksite_graph.py</a> · open the graph alone:
+      <a href="${esc(G.svg)}" target="_blank" rel="noopener">${esc(G.svg)}</a></p></section>`;
 }
 
 function renderHealth(){

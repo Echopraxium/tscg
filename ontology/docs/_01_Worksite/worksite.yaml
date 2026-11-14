@@ -10,6 +10,12 @@
 # split applied to our own process): what exists, its status, and the gauge each
 # item drives toward a target. Anything a human reads as narrative is out of scope.
 #
+# Dependencies (2026-11-14): optional per-worksite field
+#   depends_on: [ { ws: WS-n, kind: hard | soft | batched, why: "..." } ]
+# read by ontology/toolchain/worksite_graph.py (the Worksites dependency graph, first
+# item of the Compendium's Project management page). Only this field is drawn, never
+# the prose notes. hard = must come first; soft = defer / measured by; batched = same files.
+#
 # Addressing (from map §1): WS-n / sub-item / step. sub-item taxonomies are per
 # worksite (SC-n, CTX-n, VOC, …) and are NEVER renumbered.
 
@@ -33,6 +39,9 @@ worksites:
     readme: ontology/docs/_01_Worksite/WS-0/README.md
     status: partial            # 2 of 11 done; bulk ahead
     priority: mixed            # items span several ranks — see per-item rank
+    depends_on:                 # extracted 2026-11-14 from this worksite's notes; Michel validates (hard | soft | batched)
+      - { ws: WS-1, kind: hard, why: "SC-11b (M2 graph grammar) is blocked by WS-1" }
+      - { ws: WS-5, kind: soft, why: "SC-3 Facet record: graved after WS-5" }
     items:
       - { id: SC-0,  title: "staging commit 2026-07-03",            status: staged }
       - { id: SC-1,  title: "functional grammar (root result)",     status: done,
@@ -92,6 +101,8 @@ worksites:
     readme: ontology/docs/_01_Worksite/WS-3/
     status: scoped
     priority: 6
+    depends_on:                 # extracted 2026-11-14 from this worksite's notes; Michel validates (hard | soft | batched)
+      - { ws: WS-5, kind: hard, why: "its gauge (S5-1, no bare S / I) is built by the WS-5 engine before the rebalancing" }
     note: "register opened; Michel's semantic decisions, no deadline. README v1.1.0 (2026-10-11): L cluster merged."
     gauge: "share of M2 formulas using a nominal Gs primitive (T, K, Ss, L)"
     target: null          # adopted WITHOUT a target (Michel, 2026-10-10): its evolution is followed
@@ -117,6 +128,12 @@ worksites:
     readme: ontology/docs/_01_Worksite/WS-13/WS-13_Phase0_Structural_Core.md
     status: scoped
     priority: null        # TO SET BY MICHEL (HandOver 2026-10-11 §3.1)
+    depends_on:                 # extracted 2026-11-14 from this worksite's notes; Michel validates (hard | soft | batched)
+      - { ws: WS-3, kind: hard, why: "GS-3" }
+      - { ws: WS-1, kind: hard, why: "decision B2" }
+      - { ws: WS-5, kind: hard, why: "L1 prerequisite: lot-NSRESOLVE built" }
+      - { ws: WS-9, kind: batched, why: "M0 migration L5 rides along the WS-9 lots (same files)" }
+      - { ws: WS-10, kind: batched, why: "M0 migration L5 rides along the WS-10 lots (same files)" }
     note: >
       Registered 2026-10-11 (session 2026-10-10, test bench Digital-Logic-Sim). Depends on WS-3 GS-3,
       WS-1 decision B2, SC-6; batched with WS-9 / WS-10 for the M0 migration (L5). Measured by WS-5
