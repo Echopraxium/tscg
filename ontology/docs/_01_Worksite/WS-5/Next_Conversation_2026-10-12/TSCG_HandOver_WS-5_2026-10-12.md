@@ -26,7 +26,7 @@
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: the commit carrying this HandOver, on top of `a02f4de` (Lot SC-5), pushed
+- **HEAD**: the commit carrying this HandOver, on top of `d15a85b` (Lot SC-5), pushed
   2026-10-12. Confirm with `git log --oneline -8`.
 - **Gate**: `cd ontology/toolchain && python run_all_layers.py` → `GATE: PASS`:
 
@@ -46,10 +46,10 @@
 
 | Commit | Lot | Content |
 |---|---|---|
-| `8dd7820` | **C2** | combo punning removed from 139 M1 combos and forbidden (M1 SHACL SHAPE 12, `check_M1` CMB001) |
-| `e7b6086` | **C1b** | 69 non-combo `subClassOf` strings → IRIs; phantom parents resolved; `m1:Domain` declared |
-| `bac1720` | **S** | `m2:State ⊑ m2:Node` (statecharts), formula/family aligned on Node |
-| `a02f4de` | **SC-5** | domains are classes ⊑ `m1:Domain`; registry, DCC010, M1 SHACL 1.8.0; KnowledgeField purged, `m2:knowledgeField` → `m1:domain`; golden M1 149/1/446 → 133/1/296 |
+| `69b0a2f` | **C2** | combo punning removed from 139 M1 combos and forbidden (M1 SHACL SHAPE 12, `check_M1` CMB001) |
+| `355bc34` | **C1b** | 69 non-combo `subClassOf` strings → IRIs; phantom parents resolved; `m1:Domain` declared |
+| `bfed54e` | **S** | `m2:State ⊑ m2:Node` (statecharts), formula/family aligned on Node |
+| `d15a85b` | **SC-5** | domains are classes ⊑ `m1:Domain`; registry, DCC010, M1 SHACL 1.8.0; KnowledgeField purged, `m2:knowledgeField` → `m1:domain`; golden M1 149/1/446 → 133/1/296 |
 
 ### Decisions taken (Michel, 2026-10-11/12) — recorded in Debt Overview §8.0f
 

@@ -4,7 +4,7 @@
 **Date**: 2026-11-07 — v1.0.0
 **Status**: Phase 0 — decisions taken by Michel (2026-11-07); **no ontology file modified**
 **Amends**: [`WS-13_Phase0_Structural_Core.md`](WS-13_Phase0_Structural_Core.md) v1.1.0 — revises D5, D6 and lot L1, closes Q1
-**Measured on**: HEAD `559acff` — re-measure at session start (head-over-memory)
+**Measured on**: HEAD `025b16d` — re-measure at session start (head-over-memory)
 **Evidence source**: TSCG Kit (`kit/`), the "map of scenarios" design and its *friction log*
 (Claude Doc "TSCG Kit — Articulation des scénarios", 2026-11-07)
 **Pipeline**: `tscg-m2-candidate-filter` (for `m2:Boundary`) + `tscg-ontology-diagnosis-pipeline` (Phases 0 → 5)
@@ -86,7 +86,7 @@ the Digital-Logic-Sim bench had found. Two independent benches, one diagnosis.
 L4 is unchanged in content: `m1:Component = Fm2(System, Interface, Role, Convergence)`
 now takes an M1 combo as argument, which A3 allows.
 
-## 5. Impact (measured at HEAD `559acff`)
+## 5. Impact (measured at HEAD `025b16d`)
 
 | Change | Files referencing today |
 |---|---|
@@ -133,4 +133,4 @@ Those of v1.1.0 §9, plus: `m2:Interoperability` absent from the live corpus, ru
 
 | Version | Date | Changes |
 |---|---|---|
-| 1.0.0 | 2026-11-07 | Interface as `Fm2(Boundary, Mediator, Code)` (DA1); Interoperability removed, not renamed (DA2); Boundary first (DA3); D5 revised (DA4); Q1 closed (DA5); SC-1 rule recalled (DA6); L1 split into L1a–L1f; impact measured at `559acff`. |
+| 1.0.0 | 2026-11-07 | Interface as `Fm2(Boundary, Mediator, Code)` (DA1); Interoperability removed, not renamed (DA2); Boundary first (DA3); D5 revised (DA4); Q1 closed (DA5); SC-1 rule recalled (DA6); L1 split into L1a–L1f; impact measured at `025b16d`. |

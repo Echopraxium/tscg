@@ -26,7 +26,7 @@ for "what next"; keep it for the SC-5b scope) and, through it, the 2026-10-12 Ha
 ## 1. Fresh session state (at handover — re-verify)
 
 - **HEAD**: the commit carrying this HandOver, on top of the SC-5b commit ("Lot SC-5b:
-  subdomains become domain classes; gate M1 133/1/296 -> 132/1/294"), on top of `3b18796`.
+  subdomains become domain classes; gate M1 133/1/296 -> 132/1/294"), on top of `a1c5bcf`.
 - **Gate**: `GATE: PASS` with M1 132 / 1 / 294 (`--update-golden` done in the SC-5b commit,
   reason written under `M1._delta_reason`).
 - **Pellet reasoner**: PASSED on the 6 key SC-5b files (M1_Domains, Biology, Physics,
@@ -77,7 +77,7 @@ M1 file must be flagged once the lot is in.
   the M1 `shacl_violations` golden value is 2 × the real number of results (already noted
   in `golden_values.json` for lot C1). A fix would halve the frozen value — its own lot.
 - **LayerCake Health Map, same tool on both trees**: M1 green 98/297 (2026-10-06,
-  `e643f73`) → 167/324 (after SC-5b). M3 red rose 79 → 94: the `@vocab` defect (D2) moved
+  `ce88ccd`) → 167/324 (after SC-5b). M3 red rose 79 → 94: the `@vocab` defect (D2) moved
   from `M3_BicephalousPerspective` to its larger successor `M3_OdinsWisdom` (and
   `M3_GrammarFoundation` still has it); the four D5 of M3 are gone. Biggest levers left:
   `@vocab` out of those two M3 files (≈94 cells), the M0 lot (30/43 red), M2 bare keys.

@@ -27,7 +27,7 @@ This file only adds what the 2026-10-10 session changed.
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: `e45bae0` (2026-10-10 20:26). No commit was produced by the 2026-10-10
+- **HEAD**: `6e8035d` (2026-10-10 20:26). No commit was produced by the 2026-10-10
   session: it was analysis and decisions only. Confirm with `git log --oneline -5`.
 - **Gate**: not re-run in that session — run `cd ontology/toolchain && python
   run_all_layers.py` first; expect `GATE: PASS` with the 2026-10-06 frozen counts

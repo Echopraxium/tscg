@@ -24,7 +24,7 @@ Then read at HEAD:
 
 ## 2. Session state (perishable — verify, do not trust)
 
-- Pushed by Michel: 16 commits on top of `3425171`, the last ones "Compendium: sub-worksites
+- Pushed by Michel: 16 commits on top of `2697cdf`, the last ones "Compendium: sub-worksites
   nested under their worksite (WS-0 > SC-3)" and "Compendium: cross-links between the
   worksites graph and the health map". *Check with `git log --oneline -17`.*
 - Checks run before the push: acceptance gate `GATE: PASS` (incl. PATH_CHECK 0 finding),

@@ -4,7 +4,7 @@
 **Date**: 2026-10-11 (session of 2026-10-10)
 **Target**: merge into `ontology/docs/_01_Worksite/WS-3/M2_Formulas_Review_with_Gs_README.md`
 (§5 decision records, §6 findings, §8 next candidates, §9 changelog → v1.1.0, §10 status)
-**Measured on**: HEAD `e45bae0` — re-measure at session start (head-over-memory)
+**Measured on**: HEAD `6e8035d` — re-measure at session start (head-over-memory)
 **Replaces**: the draft "WS-13 — Audit of L" (folded here: an L audit is a sub-scope of
 the Gs review, not a parallel worksite)
 **Consumer**: WS-13 Structural Core — `m1:Component` needs an M2 parent carrying L

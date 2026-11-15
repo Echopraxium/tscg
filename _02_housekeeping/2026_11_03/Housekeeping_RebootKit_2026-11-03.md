@@ -8,11 +8,11 @@
 and summaries placed in `docs/reboot-kit/` to be loaded into Project Knowledge.
 
 **Before the triage** (same day series):
-- `cfd1e63` — root `CLAUDE.md` rewritten as a thin guide (573 → ~120 lines).
-- `10c17f5` — skills `tscg-instance-pipeline` (2.2.2), `tscg-article-pipeline` and
+- `a9a7b26` — root `CLAUDE.md` rewritten as a thin guide (573 → ~120 lines).
+- `0aa97a2` — skills `tscg-instance-pipeline` (2.2.2), `tscg-article-pipeline` and
   `ontology/TSCG_InstanceGrammar/DEPLOYMENT_GUIDE.md` repointed from reboot-kit copies to HEAD.
 
-**Triage**: `RebootKit_Cleanup_Triage.xlsx` (this folder), measured on HEAD `10c17f5`:
+**Triage**: `RebootKit_Cleanup_Triage.xlsx` (this folder), measured on HEAD `0aa97a2`:
 52 files (43 in `docs/reboot-kit/`, 9 in `docs/` outside `papers/` and `CoreHypotheses/`).
 Method as in round 2 of `ontology/docs`: one lot at a time, Michel decides, one commit per
 lot, every live citing line fixed in the same commit. Nothing lost:

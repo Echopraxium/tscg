@@ -47,7 +47,7 @@ Consequences for every decision in this note:
 A subdomain class is created only if an M0 instance or an M1 concept points to it today
 (the parents it needs come with it). The others are dropped and recreated when an instance
 needs them; the strings stay in git history and in the decision table. Consistent with the
-2026-10-12 rule *what can be inferred is not stored*. Effect measured on HEAD `0a64d58`:
+2026-10-12 rule *what can be inferred is not stored*. Effect measured on HEAD `1b8e1e3`:
 77 → 26 KEEP.
 
 ## 3. Three relations between domains
@@ -176,7 +176,7 @@ Organology ("Music Instruments") is a field and may be a subdomain.
   (property) and `m1:Domain` (class) differed only by case. The class `m1:Domain` keeps its
   name (stabilised by SC-5). Apply in the **lot M0**, which rewrites the 44 M0 values from
   strings to IRIs anyway; plus the 8 M1 files and `M0_INSTANCE_TEMPLATE.jsonld` (measured on
-  HEAD `0a64d58`). Rejected names: ApplicationDomain / domainApplication (clash with the
+  HEAD `1b8e1e3`). Rejected names: ApplicationDomain / domainApplication (clash with the
   `AbstractionLevel` value Application, and wrong for combos and tools),
   reificationOfDomain (*reification* is a doctrinal term in M3/M2 — "no reification of
   composite domains" — and an RDF technique). The nuance "an M0 instance exemplifies a
@@ -295,7 +295,7 @@ OpenAlex projection computable. A worksite of its own, beyond SC-5c, when needed
   `M0_Vco` → `m0.vco`). Open: keep `m1` for M1_CoreConcepts or rename it `m1.coreconcepts`.
   Fixes a hidden defect: today the prefix `m1` → `M1_CoreConcepts.jsonld#`, so these IRIs
   expand into CoreConcepts although the classes are defined in M1_Domains / the extension
-  files. Measured on HEAD `40e4af9`: 45 `m1:domain:X` and 1,536 `m1:extension:<ext>:X`
+  files. Measured on HEAD `0e8ee2d`: 45 `m1:domain:X` and 1,536 `m1:extension:<ext>:X`
   occurrences in 29 files. Mechanical rename by Claude, verified by the gate; SC-5b creates
   its classes in the current convention so that only one convention exists at any time.
 

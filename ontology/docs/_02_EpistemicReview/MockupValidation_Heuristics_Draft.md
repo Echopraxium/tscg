@@ -4,7 +4,7 @@
 **Version**: 0.2.0 (draft) · **Date**: 2026-11-15
 **Status**: **DRAFT** — meant to start a reflection, not to be graved. No ontology,
 tool or check is proposed for implementation here.
-**Measured at**: HEAD `e2e80d2` (the facts in §5).
+**Measured at**: HEAD `ee07f1a` (the facts in §5).
 **Context**: the retirement of the scores and of the epistemic gap
 (`ontology/docs/_01_Worksite/WS-15/`, note ≥ 0.5.0).
 

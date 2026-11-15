@@ -29,7 +29,7 @@ and/or Project Knowledge.
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: `60bb98e` on `main` (WS-1 lot 1g). Confirm with `git log --oneline -8`.
+- **HEAD**: `761d76d` on `main` (WS-1 lot 1g). Confirm with `git log --oneline -8`.
 - **Push path**: no GitHub write access from Claude's sandbox. Claude commits in
   its clone → `git format-patch` → Michel `git am <patch>`, runs the gate,
   `git push origin main`. Deliver ONE patch per lot, rebased on Michel's HEAD;

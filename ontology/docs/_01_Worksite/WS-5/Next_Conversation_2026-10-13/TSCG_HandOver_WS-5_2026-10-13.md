@@ -25,10 +25,10 @@
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: the commit carrying this HandOver, on top of `0a64d58` (HandOver 2026-10-12).
-  Ontologies unchanged since `a02f4de` (Lot SC-5). Gate `GATE: PASS` with the 2026-10-12
+- **HEAD**: the commit carrying this HandOver, on top of `1b8e1e3` (HandOver 2026-10-12).
+  Ontologies unchanged since `d15a85b` (Lot SC-5). Gate `GATE: PASS` with the 2026-10-12
   counts (M1 17 / 133 / 1 / 296).
-- **Measured on HEAD `0a64d58`**: `m1:subdomains` = 139 strings on 22 domain classes
+- **Measured on HEAD `1b8e1e3`**: `m1:subdomains` = 139 strings on 22 domain classes
   (128 unique) **+ 22 strings on 6 physics combos** (LatentHeat, TriplePoint, CriticalPoint,
   OrderParameter, PhaseDiagram, Nucleation — ⊑ `m2:DomainConceptCombo`, not domains).
 

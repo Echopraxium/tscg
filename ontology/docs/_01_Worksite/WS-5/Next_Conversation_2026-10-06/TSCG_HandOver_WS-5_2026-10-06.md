@@ -35,7 +35,7 @@ bottom-right), its Graphviz sources `TSCG_RemainingWork.dot` and `legend.dot`, a
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: the commit carrying this HandOver, on top of `e643f73`. Confirm with
+- **HEAD**: the commit carrying this HandOver, on top of `ce88ccd`. Confirm with
   `git log --oneline -12`.
 - **Gate**: `cd ontology/toolchain && python run_all_layers.py` → `GATE: PASS`, the
   four layers INSTRUMENTED:
@@ -62,16 +62,16 @@ bottom-right), its Graphviz sources `TSCG_RemainingWork.dot` and `legend.dot`, a
 
 | Commit | Content |
 |---|---|
-| `b5a27bf` | `ontology/cli-tools` → `ontology/toolchain` (git mv); `owl_reasoning_test` moved in from root `cli_tools/`; `CLI_TOOLS_DIR` → `TOOLCHAIN_DIR` (alias kept); live refs updated, dated archives untouched |
-| `7c1b898` | WS-5 (1) generic SHACL runner (`validator/checks/shacl_runner.py`, engine 0.2.0): one finding per `sh:ValidationResult`, focus count per shape, SHACL-BLIND, missing pyshacl = ERROR |
-| `7269f4e` | WS-5 (2) document plane D1–D7 (`checks/doc.py`, `--doc`, engine 0.3.0), decision D5(a) |
-| `7647c15` | WS-5 (3) structural grammar G1–G4 (`ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl`, registered for M3 and M2) + EXT G1b/G5/G6 (`checks/ext.py`, `--ext`, engine 0.4.0) |
-| `4019310` | WS-5 (4) M3/M2 INSTRUMENTED (`run_all_layers.py` 1.4.0 `run_engine`); first golden capture reviewed and frozen; `--update-golden` no longer rewrites unchanged layers' history |
-| `9c5911b` | `TSCG_Debt_Overview.md` (master level) + map generator + first snapshot |
-| `9662a64` | `requirements.txt`, gate start-up package check (1.4.1), UserGuide setup step + dead `validate_m0_instance.py` path fixed |
-| `9f24d62` | `python -m pip` everywhere; gate prints its interpreter (1.4.2) |
-| `e643f73` | UserGuide: Claude project is **"TSCG Workshop v1"** (was "TSCG Cyclop v0") |
-| *(this series)* | map renamed **LayerCake Health Map** (`tscg_layercake_health_map.py` 0.4.0, `_01_Worksite/LayerCakeHealthMap/`), snapshot regenerated on `e643f73`; this HandOver; **Compendium tab "LayerCake Health"** (map regenerated at every build, `pages.yml` installs `requirements.txt`) |
+| `71916dc` | `ontology/cli-tools` → `ontology/toolchain` (git mv); `owl_reasoning_test` moved in from root `cli_tools/`; `CLI_TOOLS_DIR` → `TOOLCHAIN_DIR` (alias kept); live refs updated, dated archives untouched |
+| `37c3fcb` | WS-5 (1) generic SHACL runner (`validator/checks/shacl_runner.py`, engine 0.2.0): one finding per `sh:ValidationResult`, focus count per shape, SHACL-BLIND, missing pyshacl = ERROR |
+| `d300103` | WS-5 (2) document plane D1–D7 (`checks/doc.py`, `--doc`, engine 0.3.0), decision D5(a) |
+| `f350d81` | WS-5 (3) structural grammar G1–G4 (`ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl`, registered for M3 and M2) + EXT G1b/G5/G6 (`checks/ext.py`, `--ext`, engine 0.4.0) |
+| `7769690` | WS-5 (4) M3/M2 INSTRUMENTED (`run_all_layers.py` 1.4.0 `run_engine`); first golden capture reviewed and frozen; `--update-golden` no longer rewrites unchanged layers' history |
+| `d668eac` | `TSCG_Debt_Overview.md` (master level) + map generator + first snapshot |
+| `155ce3f` | `requirements.txt`, gate start-up package check (1.4.1), UserGuide setup step + dead `validate_m0_instance.py` path fixed |
+| `ee39fbe` | `python -m pip` everywhere; gate prints its interpreter (1.4.2) |
+| `ce88ccd` | UserGuide: Claude project is **"TSCG Workshop v1"** (was "TSCG Cyclop v0") |
+| *(this series)* | map renamed **LayerCake Health Map** (`tscg_layercake_health_map.py` 0.4.0, `_01_Worksite/LayerCakeHealthMap/`), snapshot regenerated on `ce88ccd`; this HandOver; **Compendium tab "LayerCake Health"** (map regenerated at every build, `pages.yml` installs `requirements.txt`) |
 
 ### Decisions taken (Michel, 2026-10-03 → 10-06)
 

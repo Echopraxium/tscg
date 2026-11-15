@@ -9,7 +9,7 @@ it does not replace the per-worksite notes.
 
 > **Authority.** The frozen counts live in `ontology/toolchain/golden_values.json` and
 > are enforced by `ontology/toolchain/run_all_layers.py` (the gate). Numbers quoted
-> below are a **dated snapshot** (HEAD `e643f73`, 2026-10-06) given for orientation
+> below are a **dated snapshot** (HEAD `ce88ccd`, 2026-10-06) given for orientation
 > only — re-measure before acting (`head-over-memory`). The map is regenerated, never
 > drawn by hand.
 
@@ -82,7 +82,7 @@ no link to M2.
 - The thick M2 → M3 links almost all go to Eagle Eye (Gt): the monoidal imbalance
   that WS-3 owns (§4).
 
-## 3. Debt by owner (snapshot 2026-10-06, HEAD `e643f73`)
+## 3. Debt by owner (snapshot 2026-10-06, HEAD `ce88ccd`)
 
 | Layer | Defect | Snapshot | Owner |
 |---|---|---|---|
@@ -178,11 +178,11 @@ concept may legitimately stay pure Territory).
   - `M0_NuclearReactorsTypology.jsonld` uses `m1:CriticalityRegime`,
     `m1:SelfSustainingReaction` (and lists `ModeratorMechanism`, `DualCircuitArchitecture`,
     `PassiveSafety` as strings); `M0_PhaseTransition.jsonld` uses `m2:CriticalityRegime`.
-    Former definitions: `git show 8a32055:ontology/docs/M1_CoreConcepts_NuclearUpdate.jsonld`
+    Former definitions: `git show e687d3b:ontology/docs/M1_CoreConcepts_NuclearUpdate.jsonld`
     (only `CascadeAmplification` of its 6 concepts reached `M1_CoreConcepts`).
   - `M0_Yggdrasil.jsonld` uses `m1:CatastrophicBifurcation` (l. 95, and
     `m0:instantiatesM1Concept` l. 757). Former definition:
-    `git show 8a32055:ontology/docs/M1_CoreConcepts_updated.jsonld`; the placement analysis
+    `git show e687d3b:ontology/docs/M1_CoreConcepts_updated.jsonld`; the placement analysis
     now sits next to the instance (`yggdrasil/CatastrophicBifurcation_M1_Analysis.md`).
     HEAD has `m2:Bifurcation`.
   Lot M0 decides, per concept, declare in M1 (meaning written or approved by Michel),
@@ -201,7 +201,7 @@ concept may legitimately stay pure Territory).
   measured either place); it is written here so the debt stays visible. Measuring it
   (e.g. a `⊗` count over `.md` in the health map) is a possible instrumentation lot.
 - **M0 OWL consistency (measured 2026-11-08, not frozen).** `owl_reasoning_test.py` run
-  on the 43 M0 files (Java 25), HEAD `d5dc8b3` + lots Adaptation and Hysteresis:
+  on the 43 M0 files (Java 25), HEAD `ce5fee5` + lots Adaptation and Hysteresis:
   17 PASSED, 18 FAILED, 8 no status (reasoner crash or timeout: ColorSynthesis ×4,
   ExposureTriangle, MtgColorWheel, TPACK, Yggdrasil). The 18 failures were exactly the
   18 instances that import `M0_Common`, which was itself inconsistent: its three
@@ -271,10 +271,10 @@ concept may legitimately stay pure Territory).
 1. **Small safe lots on M3/M2** (~25 points): 5 headers (G1), 5 changelog vestiges
    (D5), 10 labels/comments (G2 — the text is Michel's). Each lowers a counter that
    is re-frozen with a written reason.
-   *Progress (2026-10-08):* lot (2a) — the 4 M3 D5 vestiges dropped (`1179f2b`,
+   *Progress (2026-10-08):* lot (2a) — the 4 M3 D5 vestiges dropped (`07edaeb`,
    M3 errors 148 → 141, warnings 619 → 604; the 5th, `m2:changeLog` on
    `m2:Trade-off`, moved to the G2 text lot because it carries a rationale); lot
-   (2b-M2) — `rdfs:label` on the M2 header (`0fd426e`, M2 shacl 8 → 7). The 4 M3 G1
+   (2b-M2) — `rdfs:label` on the M2 header (`39df93e`, M2 shacl 8 → 7). The 4 M3 G1
    findings need decision **(A)** first (§8.0).
 2. **Decision B2 (WS-1)** — the largest lever: removing the two `@vocab` turns the
    red core green-or-orange at once (D2 2 and G6 142 drop together) and turns the
@@ -289,7 +289,7 @@ concept may legitimately stay pure Territory).
 
 ## 8. Worksites noted 2026-10-08 (Michel) — not yet frozen
 
-Measured on HEAD `0fd426e` (2026-10-08), archives excluded (`*backup*`,
+Measured on HEAD `39df93e` (2026-10-08), archives excluded (`*backup*`,
 `ontology/Ref/`). Orientation figures from ad-hoc scans, **not gate counters**:
 each worksite starts by building its gauge (with a negative test), and only then
 freezes a count.
@@ -429,7 +429,7 @@ Found and fixed on the way:
    `m3:Genesis` (its `rdfs:comment` repeats the `skos:scopeNote`) and
    `m3:GenesisExtension` (its `rdfs:comment` repeats the `skos:definition`) — kept
    for now because G2 requires an `rdfs:comment` on every TSCG class.
-   *Convention approved (Michel, 2026-10-10).* Inventory on `d5ba5d2`: 50 nodes cumulate
+   *Convention approved (Michel, 2026-10-10).* Inventory on `24ebb6e`: 50 nodes cumulate
    two of the three properties — 5 file headers, 12 SKOS nodes (the 11 ontology types +
    the scheme), 33 OWL classes / properties / individuals (31 in M3, 2 in M2). They are
    paraphrases, not copies: each pair is MERGED, node by node, reviewed by Michel.
@@ -488,7 +488,7 @@ separated: classes live in M2/M1, instances in M0. A combo is a **derived class*
 (`rdfs:subClassOf m2:GenericConceptCombo` / `m2:DomainConceptCombo`), never an instance
 of the combo class (`rdf:type`). Documentation about a class is an annotation.
 
-**Measured on HEAD `6e67ef0`.** 139 M1 combos are punned (`@type [owl:Class,
+**Measured on HEAD `c87477e`.** 139 M1 combos are punned (`@type [owl:Class,
 m2:…ConceptCombo]`): 12 in M1_CoreConcepts, 127 in 14 extensions. Every M1 combo check
 selected combos by that `rdf:type` (5 SHACL shapes via `sh:targetClass`, GCC*/DCC* in
 `check_M1`). Hidden behind it: in 13 extensions `rdfs:subClassOf` was written as plain
@@ -707,7 +707,7 @@ Input for part (a); class/instance mixing seen by the reasoner:
 reveal more of it if needed*. D1 counts a key only when it has no `:` and is not a
 `@context` term; so adding `"role": "m2:role"` to a `@context` made a D1 vanish while
 `m2:role` was declared nowhere — a **phantom predicate**, counted by no tool. Measured on
-HEAD `8a08f8a`: only **165 properties** are declared in the whole M3–M1 stack; among the
+HEAD `5b59b5c`: only **165 properties** are declared in the whole M3–M1 stack; among the
 phantoms are central properties — `m1:structuralGrammarFormula` (15 M1 files, constrained by
 several SHACL shapes), `m2:perspective`, `m2:possibleValues`, `m2:mobilizes`.
 *(Correction 2026-11-01: an earlier wording of this paragraph, and the K0 commit message,
@@ -746,7 +746,7 @@ comment would silence G8 without documenting anything — the debt under another
 structural grammar `grammars/M3_Structural_Schema_shacl.ttl` 0.3.0 adds to G2
 (TermDocumentationShape, M3 + M2) a **hollow-comment** constraint: blank, identical to the
 label, under 3 words, or a placeholder (TODO/TBD/FIXME/XXX/N/A/"…"). Measured on HEAD
-`c829435` first: 0 hollow comments in M3/M2 (shortest: 3 words) — no frozen count moves; a
+`d1a7a1b` first: 0 hollow comments in M3/M2 (shortest: 3 words) — no frozen count moves; a
 pure guard. 5 negative tests (test_structural_grammar 0.3.0, 28/28), including the risk
 itself: a key declared with comment "TODO" → G8 unchanged, G2 +1, the gate fails.
 **Not covered yet: M1 and M0** (G2 is registered for M3/M2 only): before any lot that
@@ -984,6 +984,6 @@ form and is not changed by this decision.
 - **1.0.1 (2026-10-06)** — map renamed "LayerCake Health Map" (Michel):
   `tscg_layercake_health_map.py`, snapshots in `LayerCakeHealthMap/`. The first snapshot
   carried `518df42`, a local commit that never reached `main` (the pushed equivalent
-  has another SHA): replaced by a snapshot of `e643f73`, same counts.
+  has another SHA): replaced by a snapshot of `ce88ccd`, same counts.
 - **1.0.0 (2026-10-06)** — created (decision (c): this master-level document now,
   the worksite-map resync later). Map generated by `tscg_debt_map.py` 0.3.2.

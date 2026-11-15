@@ -5,7 +5,7 @@
 **Pipeline**: `tscg-instance-pipeline` — Step 1 (Proposition) and Step 2 (Analysis)
 **Source**: TSCG Kit workshop `kit/thermostat/` (Kit 0.9.2) — first kit to go through the
 pipeline: the kit is the test airlock, the poclet is where a validated kit lands
-**Measured on**: HEAD `ca6cd14` (formulas below read from `M2_GenericConcepts.jsonld` /
+**Measured on**: HEAD `5b7d14d` (formulas below read from `M2_GenericConcepts.jsonld` /
 `M1_CoreConcepts.jsonld` at that commit)
 
 ---

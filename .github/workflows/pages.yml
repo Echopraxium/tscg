@@ -13,6 +13,7 @@
 #   - check_laws.js             : no physics outside K.LAWS in the Kit workshops
 #   - attribution trailers      : no "Co-Authored-By: Claude" / "Claude-Session:" in any commit
 #                                 message of the history (CLAUDE.md, Authorship)
+#   - commit authors            : never Claude, no unlinked noreply address
 
 name: Build & deploy Compendium
 
@@ -53,6 +54,14 @@ jobs:
             exit 1
           fi
           echo "no attribution trailer in $(git rev-list --count HEAD) commits"
+
+      - name: Commit authors — never Claude, no unlinked noreply address (CLAUDE.md, Authorship)
+        run: |
+          bad=$(git log --format='%h %an <%ae> %s' | grep -E '<(noreply@anthropic\.com|noreply@users\.noreply\.github\.com|noreply@example\.invalid)>' || true)
+          if [ -n "$bad" ]; then
+            echo "::error::commits with a refused author:"; echo "$bad" | head -20; exit 1
+          fi
+          echo "authors OK in $(git rev-list --count HEAD) commits"
 
       - uses: actions/setup-python@v6
         with:

@@ -3,7 +3,7 @@
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-10-01
 **Status**: DONE 2026-10-06 — M3 and M2 INSTRUMENTED in the gate (§10). Decisions Q1–Q5 applied; CTX-5 lot done (§4).
-**Measured on**: HEAD `ca8451b` (after WS-1 lots 1h/1i/1j). Every count below is
+**Measured on**: HEAD `d352d04` (after WS-1 lots 1h/1i/1j). Every count below is
 session state: re-measure before use (`head-over-memory`).
 
 ---
@@ -82,7 +82,7 @@ validate only part of the file and pass. v1 is a **structural** grammar only.
 
 ## 4. Prerequisite — CTX-5 (canonical part), small lot
 
-> **DONE 2026-10-03** (re-measured on HEAD `6cf4407`, baselines §3 unchanged). 30 terms removed
+> **DONE 2026-10-03** (re-measured on HEAD `27dee6d`, baselines §3 unchanged). 30 terms removed
 > from 15 M1 files, graphs isomorphic; pyld expands all 27 canonical files (D7 = 0). A second
 > pyld blocker was found in M1_Economics: the unused relative alias `"m1core"`; on Michel's
 > decision `m1core` was replaced by `m1` everywhere live (10 M0 instances, producers, guides).
@@ -156,7 +156,7 @@ shape, gate integration; bundled `generate_shacl_schema.py` retired.
 
 ## 7. Step (1) — generic SHACL runner: DONE 2026-10-04
 
-Measured on HEAD `b5a27bf`. `validator/checks/shacl_runner.py` 0.1.0, engine 0.2.0
+Measured on HEAD `71916dc`. `validator/checks/shacl_runner.py` 0.1.0, engine 0.2.0
 (`tscg_validator.py --shacl` / `--shapes <ttl>`), negative tests in
 `validator/tests/test_shacl_runner.py` (8/8). The gate is NOT wired yet (step 4):
 golden values untouched, gate PASS unchanged.
@@ -187,7 +187,7 @@ Findings (no lot yet, Michel to decide):
 
 ## 8. Step (2) — document-plane checks D1–D7: DONE 2026-10-04
 
-Measured on HEAD `7c1b898`. `validator/checks/doc.py` 0.1.0, engine 0.3.0
+Measured on HEAD `37c3fcb`. `validator/checks/doc.py` 0.1.0, engine 0.3.0
 (`tscg_validator.py --doc`), negative tests `validator/tests/test_doc.py` (14/14:
 each check moves by exactly the expected delta on a mutated copy of real data).
 Not wired into the gate yet (step 4): nothing frozen.
@@ -224,7 +224,7 @@ Notes:
 
 ## 9. Step (3) — graph-plane checks G1–G7: DONE 2026-10-05
 
-Measured on HEAD `7269f4e`. Engine 0.4.0. One script, `tscg_validator.py`: the
+Measured on HEAD `d300103`. Engine 0.4.0. One script, `tscg_validator.py`: the
 grammar is a data file, the cross-file checks a module of the same engine.
 
 - **Structural grammar** `ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl`
@@ -276,7 +276,7 @@ Counter mapping (also in the golden notes, without numbers):
 SHACL results mapped to their G id. A code absent from the frozen `by_code` that
 appears later fails the gate.
 
-First capture, reviewed number by number with Michel and frozen (HEAD `7647c15`):
+First capture, reviewed number by number with Michel and frozen (HEAD `f350d81`):
 
 | | files | errors | warnings | shacl_violations | by_code |
 |---|---|---|---|---|---|

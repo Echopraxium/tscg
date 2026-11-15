@@ -3,7 +3,7 @@
 **Author:** Echopraxium with the collaboration of Claude AI
 **Status:** DRAFT, proposal to validate. No ontology file is modified by this document.
 Concept names were read from `ontology/M2_GenericConcepts.jsonld` and
-`ontology/M1_CoreConcepts.jsonld` at HEAD `e2e80d2`; re-read them before relying on this list.
+`ontology/M1_CoreConcepts.jsonld` at HEAD `ee07f1a`; re-read them before relying on this list.
 
 ## Why this file exists
 
@@ -99,6 +99,6 @@ meta-classes (GenericConceptCombo, …) are not concepts to simulate.
 2. No physics outside `K.LAWS`: the Maquette, the Panel and the curves read the model
    (`n.s`, `w.power`), they never recompute a law.
    Checked by `node kit/tools/check_laws.js` (exit 1 on a FAIL; it flags the pre-fix
-   Thermostat Maquette at `e2e80d2`). Not yet wired into the acceptance gate.
+   Thermostat Maquette at `ee07f1a`). Not yet wired into the acceptance gate.
 3. Adding a kind to `K.LAWS` (R as a block, I) is an engine change; the corresponding
    concept goes through the M2 candidate filter first.

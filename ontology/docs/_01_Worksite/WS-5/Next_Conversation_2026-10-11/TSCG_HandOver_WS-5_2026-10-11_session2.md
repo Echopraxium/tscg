@@ -31,8 +31,8 @@ valid; the C lots below are not drawn yet).
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: the commit carrying this addendum, on top of `2a10ae7` (this HandOver) and
-  `f76c5bb` (Lot C1), both pushed 2026-10-11. Confirm with `git log --oneline -10`.
+- **HEAD**: the commit carrying this addendum, on top of `e6fadde` (this HandOver) and
+  `527da0e` (Lot C1), both pushed 2026-10-11. Confirm with `git log --oneline -10`.
 - **Gate**: `cd ontology/toolchain && python run_all_layers.py` → `GATE: PASS`:
 
   | Layer | files | errors | warnings | shacl_violations |
@@ -58,15 +58,15 @@ valid; the C lots below are not drawn yet).
 
 | Commit | Content |
 |---|---|
-| `1179f2b` | lot (2a): 4 legacy M3 `changelog` objects dropped (D5) |
-| `0fd426e` | lot (2b-M2): `rdfs:label` on the M2 ontology node (G1) |
-| `cb34312`, `b271c7c` | Debt Overview 1.1.0 / 1.2.0: decision (A), S5-1/S5-2/S5-3, three perspectives |
-| `1e48135` | lot (A): `m3:ontologyType` declared in the apex `M3_GrammarFoundation` (Genesis); three perspectives typed; `m3:metaphoricLabel` |
-| `d5ba5d2` | `owl_reasoning_test` 2.0.0: `owl:imports` resolved locally; inconsistency reported as FAILED |
-| `e45bae0`, `281ae97` | "one role, one property" batches 1–2 (5 headers → `dcterms:description` only; 12 SKOS nodes → `skos:definition` only; grammar 0.2.0) |
-| `dbd029b` | 2026-10-11 complement HandOver, WS-13 registered, WS-3 L cluster, graph v4 |
-| `d8accf7` | **lot R**: `M3_BicephalousPerspective` → `M3_OdinsWisdom`; `m3:bicephalous:X` → `m3:odins_wisdom.X` |
-| `6e67ef0` | **lot P**: `m2:producingFunction` is an `owl:AnnotationProperty`; `m1:Propagation`, `m1:CascadeAmplification` are Fm2; reasoner 2.0.1 |
+| `07edaeb` | lot (2a): 4 legacy M3 `changelog` objects dropped (D5) |
+| `39df93e` | lot (2b-M2): `rdfs:label` on the M2 ontology node (G1) |
+| `5f86f37`, `7a5a30b` | Debt Overview 1.1.0 / 1.2.0: decision (A), S5-1/S5-2/S5-3, three perspectives |
+| `7dd6acf` | lot (A): `m3:ontologyType` declared in the apex `M3_GrammarFoundation` (Genesis); three perspectives typed; `m3:metaphoricLabel` |
+| `24ebb6e` | `owl_reasoning_test` 2.0.0: `owl:imports` resolved locally; inconsistency reported as FAILED |
+| `6e8035d`, `0d216c0` | "one role, one property" batches 1–2 (5 headers → `dcterms:description` only; 12 SKOS nodes → `skos:definition` only; grammar 0.2.0) |
+| `935343b` | 2026-10-11 complement HandOver, WS-13 registered, WS-3 L cluster, graph v4 |
+| `b6deb25` | **lot R**: `M3_BicephalousPerspective` → `M3_OdinsWisdom`; `m3:bicephalous:X` → `m3:odins_wisdom.X` |
+| `c87477e` | **lot P**: `m2:producingFunction` is an `owl:AnnotationProperty`; `m1:Propagation`, `m1:CascadeAmplification` are Fm2; reasoner 2.0.1 |
 | *(Lot C1)* | combos are derived classes: 122 `rdfs:subClassOf` strings → IRIs in 13 extensions; M1 SHACL 1.6.0 / `check_M1` 1.6.0 target combos by `subClassOf`; M1 SHACL 684 → 446 |
 
 ### Founding axioms clarified (Michel, 2026-10-10/11) — see Debt Overview §8.0b
