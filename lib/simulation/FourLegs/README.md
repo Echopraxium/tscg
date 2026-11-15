@@ -3,14 +3,14 @@
 **Author:** Echopraxium with the collaboration of Claude AI
 **Status:** OBSOLETE. Everything written with PyGame is to be migrated to
 [`ThreeLegs`](../ThreeLegs/README.md). Do not extend; do not start a new PyGame simulation.
-Formerly `src/tscg/simulation-engine/` (moved 2026-11-14).
+Formerly `src/tscg/simulation-engine/` (moved 2026-11-14, WS-14).
 
 ## What it is
 
 - `poclet_parser.py` — reads an M0 poclet (JSON-LD): components, thresholds from
   constraints, ASFID / REVOI scores, synergy, epistemic gap. Finds the repository root by
-  walking up from its own folder. Reads score keys that the Debt Overview lists as debt
-  (bare keys, `It_score`).
+  walking up from its own folder. Reads the scoring vocabulary (scores, `epistemicGap`)
+  retired by WS-15: dead on that point, not to be revived by a migration.
 - one `*_sim.py` per poclet, physics hard-coded in each script (the black box that
   ThreeLegs removes: no law is declared, inspectable or checkable).
 - `_00_*.txt`: notes from the time (a reasoner / RAG pipeline to generate PyGame
@@ -24,7 +24,7 @@ then `python <name>_sim.py`.
 | Poclet | PyGame script(s) | TwoLegs page in `static/` | Priority |
 |---|---|---|---|
 | ComplexChemicalSynapse | here + `instances/poclets/ComplexChemicalSynapse/` | none | **PyGame only** |
-| tpack | here + `instances/poclets/tpack/` | none | **PyGame only** |
+| Tpack | here + `instances/poclets/Tpack/` | none | **PyGame only** |
 | TvTestPattern | `instances/poclets/TvTestPattern/` | none | **PyGame only** |
 | ColorSynthesis | here | vanilla JS | |
 | ExposureTriangle | here | p5 | |

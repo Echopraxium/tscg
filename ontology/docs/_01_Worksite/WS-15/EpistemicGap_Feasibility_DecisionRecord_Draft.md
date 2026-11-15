@@ -403,7 +403,7 @@ Section F of `delta1_inventory.py` (command output in `delta1_inventory_5a26560.
 | `ontology/toolchain/modernize_m0.py` | computes and writes `m0:epistemicGap` | producer (migration tool, 2026-10-03) | remove the computation |
 | RAG `src/tscg/rag/create_tscg_rag*.py`, `poclet_corpus_profile.json` | reads `m2:hasEpistemicGap`; snapshot | **dead read** — the M2 field has no value at HEAD | nothing breaks; regenerate snapshots when RAG is next rebuilt |
 | `ontology/sparql/m2_sparql_analysis.py`, `SPARQL_README.md` | `?metaconcept m2:hasEpistemicGap ?gap` | **dead read** — no values, retired "metaconcept" vocabulary, last touched 2026-02-09 | nothing breaks |
-| `src/tscg/simulation-engine/poclet_parser.py` (+ 2 copies in instances) | object form `epistemicGap` | dead (precedent) | nothing breaks |
+| `lib/simulation/FourLegs/poclet_parser.py` (was `src/tscg/simulation-engine/`, WS-14; + 2 copies in instances) | object form `epistemicGap` | dead (precedent) | nothing breaks |
 | TscgOntologyExplorer / TscgOntologyAPIServer | no source on HEAD reads the key; only docs and `tscg_api_client_example.py` | **cannot be assessed on HEAD** — Michel | generic display: the value just disappears |
 | Kit | — | no consumer | — |
 
