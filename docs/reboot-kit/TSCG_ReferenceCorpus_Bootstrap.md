@@ -110,10 +110,17 @@ M3 has three perspectives, named in three coexisting terminology contexts
 - `Gs` (|) — Stereopsis, the synergy of Territory and Map — Odin's Wisdom:
   `TKSsL` + poles; alphabet defined in `M3_OdinsWisdom.jsonld` (read it from HEAD,
   do not enumerate here).
+The epistemological vocabulary (Territory, Map, Stereopsis) is close to second-order
+cybernetics: the observer is part of the description (von Foerster; Maturana & Varela).
+There is one Stereopsis (Gs), the composition of the two views. Inside the model, Odin
+is the figure of the second-order observer — a guide who locates, reads the Map and
+raises warnings, never an evaluator. The legitimate evaluator is the human outside the
+model, who decides: the user of the kit and the observers of the mock-up
+(`docs/CoreHypotheses/LayerCake_Models_The_Kit.md` §6; `ontology/M3_OdinsWisdom_README.md`).
 S and I exist in several monoids: in prose they are ALWAYS suffixed — `St`/`Ss`,
 `It`/`Im` — and so are the acronyms (`AStFItD`, `REVOIm`, `TKSsL`). Identifiers
 (`m0:asfidScores`, `m2:dominantASFID`…) are not renamed.
-**R is Representable — NEVER Reproducible.** "Bicephalous" is retired as a metaphor.
+**R is Representable — NEVER Reproducible.** "Bicephalous" is retired as a metaphor (replaced by "stereopsic", 2026-11-16).
 
 **Classes and instances are separated (2026-10-11).**
 Classes live in M2/M1, instances in M0. A combo is a **derived class**:
