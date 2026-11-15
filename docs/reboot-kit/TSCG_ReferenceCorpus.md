@@ -130,7 +130,7 @@ What remains in project knowledge after cleanup — durable *rationale*, no live
 **Epistemology & philosophy**: `TerritoryMap_Dichotomy.md`, `_00_TSCG_as_StereoscopicGlasses.md`,
 `_01_Narcissus_and_Icarus_as_Safeguards.md`, `CredibilityAccretion_Process.md`,
 `Archetypes_as_CrossCultural_Artifacts.md`, `LegoTechnic_Modularity.md`, `SystemicEsperanto.md`,
-`MultisubjectiveScoreEvaluationProtocol.md`, `TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md`.
+`MultisubjectiveScoreEvaluationProtocol.md`.
 
 **Ontology READMEs (rationale kept — read HEAD for structure)**: `M3_GrammarFoundation_README.md`,
 `M2_GenericConcepts_README.md`, `M1_CoreConcepts_README.md`, `M3_GenesisGrammar_README.md`,

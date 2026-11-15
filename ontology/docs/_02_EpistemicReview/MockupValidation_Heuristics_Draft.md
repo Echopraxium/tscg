@@ -1,7 +1,7 @@
 # Validating a mock-up — three facets and their heuristics (draft for reflection)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.1.0 (draft) · **Date**: 2026-11-15
+**Version**: 0.2.0 (draft) · **Date**: 2026-11-15
 **Status**: **DRAFT** — meant to start a reflection, not to be graved. No ontology,
 tool or check is proposed for implementation here.
 **Measured at**: HEAD `5a26560` (the facts in §5).
@@ -19,7 +19,12 @@ tool or check is proposed for implementation here.
 - **No scores.** Evaluation is **subjective** and the responsibility of the user and of
   the observers of the mock-up. It needs **at least one human observer**. TSCG computes
   no evaluation.
+- **Evaluation is outside the model.** An M0 model is never legitimate to evaluate
+  itself; the principle is now stated in `docs/CoreHypotheses/LayerCake_Models_The_Kit.md`
+  §6.
 - What can already be defined: three **validation facets**.
+- What must be proposed (§6): heuristics of **validation and refutation**, for the
+  mock-ups and also for the **Toolkit** itself — a source of improvement leads.
 
 ## 2. The three facets
 
@@ -102,7 +107,31 @@ answer too.
   classificatory axes: they hold free statements by an observer, not values from a
   vocabulary (Q1).
 
-## 6. Open questions (for Michel)
+## 6. Validation *and refutation*, for mock-ups and for the Toolkit (need recorded)
+
+Recorded need (Michel, 2026-11-15): TSCG should **propose heuristics of validation and
+of refutation** of its mock-ups, and possibly of the **Toolkit** itself; failures found
+this way are a source of improvement leads.
+
+First observations (proposal):
+- **Refutation is not the negative of Realism.** A refutation heuristic looks for the
+  case where the mock-up *misleads*: it behaves like the original for the wrong reason,
+  or it suggests a conclusion the original contradicts. The Reality Check lists what is
+  missing; a refutation shows that what is there is wrong.
+- **Turned on the Toolkit**, the same questions read: which piece of the kit (an M2
+  concept, a combo, a primitive, a simulation template) did the builder have to bend,
+  stretch or work around? Where did several mock-ups of different domains hit the same
+  wall? A recurring failure across mock-ups points at the kit, not at the mock-up — an
+  improvement lead.
+- **Who decides stays the same**: a human observer states the failure; the kit's
+  maintainers decide whether it calls for a change. Nothing is computed, and the
+  ontology-diagnosis pipeline remains the way a change gets into the kit.
+- **Existing seeds**: the Ontological Overfitting filter (Decomposability,
+  Transdisciplinarity, Atomicity) is already a refutation heuristic for candidate M2
+  concepts; `ContextSwitching.md` §11 ("a switch should say what it loses", "a switch
+  can manufacture a correspondence") gives two more.
+
+## 7. Open questions (for Michel)
 
 - **Q1 — The word "facet".** Keep "validation facets" as a working name in prose only,
   or choose another word (aspects, lenses, viewpoints) so that it is never read as an
@@ -118,9 +147,15 @@ answer too.
   a small repair), or is it retired with the scores?
 - **Q6 — The Kit.** A Kit workshop is a natural moment for the three questions (after
   building, before leaving). Should the Kit ask them, without storing anything?
+- **Q7 — Refutation.** Is refutation a fourth facet, or a way of asking each of the three
+  (can this learning be wrong? can this realism be a bluff for the wrong reason? is this
+  Reality Check complete)?
+- **Q8 — Toolkit feedback.** Where are kit-level failures collected, so that they become
+  improvement leads (the Debt Overview, a worksite, `_03_SerendipCrates`)?
 
 ## Changelog
 
 | version | date | change |
 |---|---|---|
+| 0.2.0 | 2026-11-15 | Evaluation outside the model (now in CH4 §6); §6 validation *and refutation* heuristics for mock-ups and for the Toolkit (need recorded); Q7, Q8. |
 | 0.1.0 | 2026-11-15 | First draft: starting points, the three facets (Learning, Realism, Reality Check), heuristic questions, a minimal recording proposal, facts at HEAD (observer field, withdrawn SC-3b "RealityCheck", the M3 meaning of "facet"), six open questions. |

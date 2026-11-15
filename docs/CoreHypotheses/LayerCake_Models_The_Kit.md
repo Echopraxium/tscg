@@ -1,7 +1,7 @@
 # Core Hypothesis 4: The Layer Cake Models the Toolkit, Not the World
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Date**: 2026-09-23
+**Date**: 2026-09-23 · **Updated**: 2026-11-15 (§6, evaluation is outside the model)
 **Framework**: TSCG (Transdisciplinary System Construction Game)
 **Status**: Core Hypothesis — architectural / epistemological grounding
 **Location**: `docs/CoreHypotheses/LayerCake_Models_The_Kit.md`
@@ -120,13 +120,39 @@ coherence of M3–M1 from being mistaken for evidence about the world.
   (does M2 compose cleanly from M3? does M1 plug into M2 via `Fm1m2`?) while M0
   is judged by **fit to its object** — a real system, or the internal coherence
   of a paradigm — two different standards, one per side
-  of the map/territory line.
+  of the map/territory line. That second judgement is never made by M0 itself
+  (§6).
 - It keeps TSCG honest: TSCG is built on an internal, ontology-driven
   architecture — the Layer Cake (see *Credibility Accretion*, §6). That coherence
   is a statement about construction, never a self-proof: TSCG can be neither
   self-validated nor self-refuted.
 
-## 6. Relation to the other Core Hypotheses
+## 6. Evaluation is outside the model
+
+The kit can check that a maquette is **well-built** — the acceptance gate, the SHACL
+grammars and the OWL reasoner test the construction against the rules of M3–M1. It
+cannot say whether the maquette is **good**: whether it teaches something, whether it
+reproduces convincingly what it imitates, what it leaves out of its object.
+
+- **An M0 model is never legitimate to evaluate itself.** A maquette that carries its
+  own grade — a score, a gap, a class, a "validated" status — is a ruler used to
+  confirm that things have length (the *Narcissus* risk) and dresses a construction
+  choice as a measurement of the world (the *Icarus* risk). The M0 layer therefore
+  holds **no scores** and **no gap measures** (decision 2026-11-15).
+- **Evaluation is subjective and belongs to people**: the user of the maquette and its
+  observers, at least one of them human. It happens *outside* the model, in front of
+  it — the way one judges a model car by looking at it, listening to it and knowing
+  what the real car does.
+- **What the kit can offer instead is heuristics**: questions for validating or
+  refuting a maquette, which the observer asks and answers. The same questions can be
+  turned on the **toolkit itself** — where a maquette keeps failing, the kit may be the
+  part to improve. A first draft is
+  `ontology/docs/_02_EpistemicReview/MockupValidation_Heuristics_Draft.md`.
+
+This is the same distinction as §2, one step further: the map is not the territory,
+and the map does not grade itself against the territory.
+
+## 7. Relation to the other Core Hypotheses
 
 - **CH1 (Map–Territory)** supplies the distinction; CH4 turns it on the kit.
 - **CH2 (Systemic Esperanto)** is what M2/M1 *are* — a proposed shared language;
@@ -141,3 +167,8 @@ coherence of M3–M1 from being mistaken for evidence about the world.
 
 *Status note: this is a Core Hypothesis — an open, revisable position, not an
 established result.*
+
+**Changelog**: 2026-11-15 — §6 *Evaluation is outside the model* added (no
+self-evaluation of M0, no scores, evaluation by human observers, validation /
+refutation heuristics for maquettes and for the toolkit); §5 points to it; former §6
+renumbered §7.
