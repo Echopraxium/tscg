@@ -57,6 +57,16 @@ USAGE
                                              #  golden_values.json and records the delta)
     python run_all_layers.py --reasoner      # + the OWL reasoner on EVERY M0 instance (1.7.0)
 
+PATH_CHECK (1.8.0, 2026-11-15)
+------------------------------
+Windows does not distinguish the case of file names; Linux, GitHub raw URLs and GitHub
+Pages do. A wrong case is invisible on a Windows machine and broken online. The section
+PATH_CHECK (path_check.py) counts four kinds of path defect — PC1 instance-folder naming
+norm (initial capital), PC2 disk vs git case, PC3 case collisions in git, PC4 a live
+file citing a repository path with a wrong case — and is frozen like a layer. Seconds,
+always run. The M0 reasoner sweep now takes its file list from git (`git ls-files`),
+not from the disk, so that the names it freezes are the names git tracks.
+
 THE M0 REASONER SWEEP (1.7.0, 2026-11-08)
 -----------------------------------------
 Until 2026-11-08 the OWL consistency of the M0 corpus was measured nowhere: the first
@@ -84,8 +94,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, TOOLCHAIN_DIR, verify_layout  # noqa: E402
+import path_check  # noqa: E402
 
-__version__ = "1.7.0"   # 2026-11-08: M0 reasoner sweep (--reasoner); 1.6.0 reasoner reminder; 1.5.0 K0 engine plane, G8
+__version__ = "1.8.0"   # 2026-11-15: PATH_CHECK, reasoner file list from git; 1.7.0 M0 reasoner sweep; 1.6.0 reasoner reminder; 1.5.0 K0 engine plane, G8
 
 GOLDEN_FILE = TOOLCHAIN_DIR / "golden_values.json"
 
@@ -401,6 +412,13 @@ def compare(layer: str, actual: dict, golden: dict, verbose: bool) -> bool:
         return False
 
     ok = True
+    if not any(k in g for k in ("files", "errors", "warnings", "shacl_violations")):
+        # 1.8.0: an instrumented section with nothing frozen used to compare NOTHING and
+        # pass. Measured but not frozen is not a pass.
+        print(f"  {C_BAD}[{M_BAD}] NOT FROZEN yet: measured "
+              f"{ {k: v for k, v in actual.items() if not k.startswith('_')} } — review, "
+              f"then --update-golden.{C_END}")
+        return False
     for key in ("files", "errors", "warnings", "shacl_violations"):
         exp, got = g.get(key), actual.get(key)
         if exp is None or got is None:
@@ -519,8 +537,17 @@ def run_m0_reasoner(workers: int = 6) -> dict:
         return {"_error": f"not run: Java {major or 'absent'} — the reasoner needs Java >= 25 "
                           f"(owlready2's bundled Jena). Not run is never 'passed'."}
     script = TOOLCHAIN_DIR / "owl_reasoning_test" / "owl_reasoning_test.py"
-    files = sorted(str(p.relative_to(REPO_ROOT)).replace(os.sep, "/")
-                   for p in (REPO_ROOT / "instances").rglob("M0_*.jsonld"))
+    # 1.8.0: the file list comes from git, so the frozen names are the names git tracks.
+    # Listing the DISK (rglob) froze "yggdrasil" on Linux and found "Yggdrasil" on
+    # Windows: the same file reported twice under two names (2026-11-15).
+    try:
+        import fnmatch
+        files = sorted(f for f in path_check.git_files(REPO_ROOT)
+                       if f.startswith("instances/") and fnmatch.fnmatch(f.rsplit("/", 1)[-1], "M0_*.jsonld")
+                       and (REPO_ROOT / f).exists())
+    except RuntimeError:
+        files = sorted(str(p.relative_to(REPO_ROOT)).replace(os.sep, "/")
+                       for p in (REPO_ROOT / "instances").rglob("M0_*.jsonld"))
     from concurrent.futures import ThreadPoolExecutor
 
     def one(rel):
@@ -633,9 +660,17 @@ def main() -> int:
             else:
                 res["engine"] = {k: eng[k] for k in ("errors", "warnings", "by_code")}
 
+    results["PATH_CHECK"] = path_check.run()
+
     ok = True
-    for layer in ("M3", "M2", "M1", "M0"):
-        ok &= compare(layer, results.get(layer), golden, args.verbose)
+    for layer in ("M3", "M2", "M1", "M0", "PATH_CHECK"):
+        layer_ok = compare(layer, results.get(layer), golden, args.verbose)
+        ok &= layer_ok
+        fs = (results.get(layer) or {}).get("_findings")
+        if fs and (args.verbose or not layer_ok):
+            print(f"\n  findings ({len(fs)}):")
+            for code, where, what in fs:
+                print(f"     [{code}] {where}: {what}")
     reasoner = run_m0_reasoner() if args.reasoner else None
     ok &= compare_reasoner(reasoner, golden)
 
