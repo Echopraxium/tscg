@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-TSCG M0 Instance Checker — v1.8.0 (scores retired: C10/C11 removed, C16 added)
+TSCG M0 Instance Checker — v1.8.1 (C03: an acronym name gives an all-lowercase alias)
 Author: Echopraxium with the collaboration of Claude AI
 Date: 2026-06-26
 
@@ -10,7 +10,11 @@ with the v1.5 conventions (M0_Common namespace, imports, no deprecated terms).
 Checks performed (each reported as PASS / WARN / FAIL):
   C01  @base present and canonical
   C02  m0: resolves to M0_Common.jsonld# (shared)
-  C03  m0.<instance>: local alias present
+  C03  m0.<instance>: local alias present. The alias is the instance name in
+       camelCase; a name written entirely in capitals (an acronym: VCO, RAAS, TPACK,
+       VSM) gives an all-lowercase alias (m0.vco) — naming norm, Michel 2026-11-15:
+       file names keep the acronym in capitals (M0_VCO.jsonld), the ontology alias is
+       in lowercase. Before 1.8.1 C03 expected m0.vCO.
   C04  m1: absolute URL
   C05  m2: absolute URL
   C06  m3: absolute URL
@@ -205,6 +209,8 @@ class InstanceChecker:
 
     def _camel(self):
         import re as _re
+        if len(self.name) > 1 and self.name.isupper():
+            return self.name.lower()          # acronym: VCO -> vco (1.8.1)
         parts = _re.split(r'[_\-]', self.name)
         if len(parts) > 1:
             return parts[0].lower() + "".join(p.capitalize() for p in parts[1:])
@@ -550,7 +556,7 @@ def write_json_report(reports, path):
 # ============================================================================
 
 def main():
-    parser = argparse.ArgumentParser(description="TSCG M0 Instance Checker v1.8.0")
+    parser = argparse.ArgumentParser(description="TSCG M0 Instance Checker v1.8.1")
     parser.add_argument("--instance",    metavar="NAME")
     parser.add_argument("--verbose",     action="store_true")
     parser.add_argument("--fails",       action="store_true")
@@ -563,7 +569,7 @@ def main():
     run_shacl    = not args.no_shacl
 
     print("=" * 70)
-    print("TSCG M0 INSTANCE CHECKER — v1.8.0")
+    print("TSCG M0 INSTANCE CHECKER — v1.8.1")
     print("=" * 70)
 
     deprecated = load_deprecated_terms()   # C16: read from M0_Common, never hardcoded

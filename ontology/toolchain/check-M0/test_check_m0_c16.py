@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-test_check_m0_c16.py — negative tests for check_m0 C16 (no use of a deprecated M0 term).
+test_check_m0_c16.py — negative tests for check_m0 C16 (no use of a deprecated M0 term)
+and for the C03 alias rule (1.8.1).
 
 Author : Echopraxium with the collaboration of Claude AI
 Version: 0.1.0 (2026-11-15)
@@ -62,6 +63,18 @@ def main() -> int:
           mutated(lambda d: d["@graph"][0].__setitem__("z", {"@id": "m0:spectralClass.Coherent"})) == 1)
     check("bare string value caught",
           mutated(lambda d: d["@graph"][0].__setitem__("z", ["m0:scoringStatus.Complete"])) == 1)
+
+    # C03 alias rule (1.8.1): an acronym name gives an all-lowercase alias
+    from check_m0_instances import InstanceChecker
+    def alias(n):
+        return InstanceChecker(Path("."), n, "")._camel()
+    check("C03 alias of VCO is vco", alias("VCO") == "vco", alias("VCO"))
+    check("C03 alias of RAAS is raas", alias("RAAS") == "raas", alias("RAAS"))
+    check("C03 alias of Vco is vco", alias("Vco") == "vco", alias("Vco"))
+    check("C03 alias of QRCodeToPocketCity unchanged",
+          alias("QRCodeToPocketCity") == "qRCodeToPocketCity", alias("QRCodeToPocketCity"))
+    check("C03 alias of Fire_Triangle is fireTriangle", alias("Fire_Triangle") == "fireTriangle",
+          alias("Fire_Triangle"))
 
     print(f"\n{'PASS' if not FAILURES else 'FAIL'}: {len(FAILURES)} failure(s)")
     return 1 if FAILURES else 0
