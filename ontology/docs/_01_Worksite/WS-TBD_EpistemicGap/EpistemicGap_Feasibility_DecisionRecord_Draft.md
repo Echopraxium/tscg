@@ -1,7 +1,7 @@
 # Epistemic gap δ₁ — Feasibility note / Decision Record draft
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.2.0 (draft) · **Date**: 2026-11-15
+**Version**: 0.3.0 (draft) · **Date**: 2026-11-15
 **Kind**: feasibility study (pipeline Phase 0 + Phase 1). **No ontology file is changed.**
 **Worksite id**: not registered. The folder name `WS-TBD_EpistemicGap/` is a
 placeholder; rename it with `git mv` once Michel picks the id (decision D1).
@@ -28,6 +28,14 @@ verifiable at HEAD and are recorded here as said.
    derived from it.
 4. **Intuition, to be designed**: replace the gap with **validation heuristics** inside
    a **human/machine cybernetic loop**, which has yet to be invented.
+
+Added later the same day (after reading the Ashby reading of Odin's Wisdom):
+
+5. **Gs is not a feedback loop.** Odin's Wisdom stays an algebra (operator `|`, its
+   alphabet and poles). A cybernetic reading, if any, does not go into Gs.
+6. **The epistemic gap ticks several boxes of the epistemological traps** named in
+   `docs/CoreHypotheses/` (mapping in §2b, as a proposal).
+7. **Intersubjective scoring must also be removed** (inventory in §2c).
 
 What this changes below: §2 (the "concept" column now means Korzybski only), §4
 (option (a) removes concept and measure; option (c) becomes the heuristics loop),
@@ -235,6 +243,70 @@ keep it, stated without a gap). Q2-4 and Q2-11 still say "Φ is never a perfect
 isomorphism" / "the imperfection of Φ": that is Korzybski in categorical words, not a
 gap, but Michel should confirm it does not smuggle the gap back (D4).
 
+### 2b. The gap against the CoreHypotheses traps (proposal, for position 6)
+
+| trap (document) | how δ₁ ticks it |
+|---|---|
+| **Narcissus** — circular self-validation (`_01_Narcissus_and_Icarus_as_Safeguards.md` §2) | both means come from the same rater; the gap can only reflect the rater back, never "a different reflection" |
+| **Icarus** — claims beyond the evidence (same file, §3) | "δ₁ = degree of proof" (Curry–Howard), a declared range [0, 1] that is never reached above 0.707, four classes with two-decimal thresholds: the look of a measurement without one |
+| **Undeclared criteria** — "judgment that hides the criteria it uses" (`ContextSwitching.md` §3.5, §11) | the normalisation and the thresholds are posited; no file says by which criteria |
+| **A switch that manufactures a correspondence** (`ContextSwitching.md` §11, the synesthetic corner of `The_Epistemic_Residue.md`) | it projects a metric (a distance) onto the Map/Territory relation, which Korzybski states without any |
+| **Recitation over rediscovery**, *nullius in verba* (`ContextSwitching.md` §8) | values are copied from file to file and cannot be rediscovered from the data: 5 stored values ≠ recomputed, 3 classes ≠ thresholds (§1.5) |
+
+`The_Epistemic_Residue.md` uses δ₁ as its discriminator ("δ₁-true versus δ₁-perceived");
+it is a dependent document, not a trap, and goes to the narrative lot.
+
+### 2c. Intersubjective scoring — inventory at HEAD (for position 7)
+
+Ontology (M3, `M3_GrammarFoundation`):
+- `m3:grammar_foundation:intersubjectiveBenchmark` — declared `owl:ObjectProperty` with
+  `rdfs:range xsd:string` (a typing inconsistency of its own); its `structure` holds
+  `epistemicScore` (δ₁, Q2-7), `objectivityLevel`, `benchmarkRefs`, `expertConsensus`
+  (ICC / Cohen κ), plus a `resolutionOrder`;
+- `m3:grammar_foundation:defeasibilityStatus` — `owl:DatatypeProperty`, "a benchmark or
+  canonical reference is provisional" (D17);
+- mentions: the apex header `dcterms:description` ("the intersubjective benchmark
+  properties"), and **`m3:grammar_foundation:MonoidalType_base` / `skos:definition`**:
+  a primitive's second role is an "evaluation functor at M0 level via norm-referenced
+  scoring against intersubjective benchmarks" — an M3 definition that leans on it;
+- `M3_GenesisGrammar` `see_also` points to it.
+
+Use: **none**. No M0 instance, UserGuide sample, `M0_Common`, M2, M1, toolchain script
+or SHACL file uses `intersubjectiveBenchmark`, `defeasibilityStatus`, `objectivityLevel`
+or `scoringHistory`:
+
+```bash
+for k in intersubjectiveBenchmark defeasibilityStatus objectivityLevel scoringHistory; do
+  git grep -l -I "$k" -- 'instances/**/*.jsonld' '_00_UserGuide/**/*.jsonld' ontology/M0_Common.jsonld \
+    ontology/M2_GenericConcepts.jsonld 'ontology/M1_*' 'ontology/M1_extensions/**' \
+    'ontology/toolchain/**/*.py' 'ontology/toolchain/**/*.ttl' 'src/**' 'kit/**' | wc -l
+done   # 0 0 0 0
+```
+
+Narrative (`git grep -c -i -E 'intersubjective|multisubjective|defeasib|scoringHistory|objectivityLevel'`):
+`ontology/StructuralGrammar/TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md`
+(37), `MultisubjectiveScoreEvaluationProtocol.md` (27), `CredibilityAccretion_Process.md`
+(25), `_01_Narcissus_and_Icarus_as_Safeguards.md` (6), then `ModelSupersession`,
+`LegoTechnic_Modularity`, `Archetypes_as_CrossCultural_Artifacts`, `ScoringSystem`,
+`ContextSwitching`, `SystemicEsperanto`, the CoreHypotheses README, and the root
+`README.md` (l. 394: "every score is an intersubjective judgment").
+
+Two consequences to weigh (facts, then a proposal):
+- **The Narcissus response loses four of its five items.** §2 of the Narcissus document
+  lists `objectivityLevel`, `scoringHistory`, `defeasibilityStatus` and the canonical
+  benchmark as TSCG's architectural response to circular self-validation; only "SHACL
+  grammar: formal rejection mechanism independent of the scorer" survives. Removing the
+  apparatus without a replacement reopens the Narcissus risk on paper. *Proposal*: the
+  validation-heuristics loop (option c) is the natural successor — checks that can fail
+  are "mirrors that can show a different reflection" — and the Narcissus document should
+  say so rather than stay silent.
+- **The 10 scores lose their stated justification.** `MultisubjectiveScoreEvaluationProtocol.md`
+  §3 ("Why scalar scores are legitimate at M0") rests on Curry–Howard with "δ₁ ↔ degree
+  of proof completeness" and on norm-referenced scoring against benchmarks. With δ₁ and
+  the benchmarks gone, nothing on HEAD justifies the scalar ASFID/REVOI scores, nor
+  their means — and `m0:asfidMean` / `m0:revoiMean` have no other use than δ₁ and
+  `focalBias` (D16).
+
 ---
 
 ## 3. Q3 — Consumers and their liveness
@@ -357,12 +429,12 @@ M0), and a written reason for every counter move.
 | lot | content | expected counter moves | reasoner |
 |---|---|---|---|
 | **L0** | register the worksite; build the instrument (P5) with negative tests; freeze it | the new counter goes **up** (revealed debt) | none (tooling only) |
-| **L1** | M3 doctrine per Q2-1…Q2-9 (5 files, changelog each) | D1 −4 or more (the inner keys of the deleted blocks go too), G8 −2, G6 −1 (deletions); instrument down | 5 files |
+| **L1** | M3 doctrine per Q2-1…Q2-9 (5 files, changelog each); remove `intersubjectiveBenchmark` (and `defeasibilityStatus` per D17); reword the apex header and `MonoidalType_base` | D1 −4 or more (the inner keys of the deleted blocks go too), G8 −2, G6 −1 (deletions); instrument down | 5 files |
 | **L2** | M2: delete `m2:epistemicGapFormula`; delete or deprecate `m2:hasEpistemicGap` (D8); reword Modelisation and header; `M1_Optics` `m1:epistemicGap`; SHAPE 11 decision | G8 −1 at least | M2, M1_Optics |
 | **L3** | M0 vocabulary: `owl:deprecated` on `m0:epistemicGap`, `m0:spectralClass`, `m0:SpectralClass` + 4 individuals (+ focal family if D3); M0 SHACL messages; check_m0 C16 | C16 appears (FAIL or WARN, D7) | `M0_Common` + sweep |
 | **L4** | M0 instances: delete the values (incl. the 9 objects, typed literals, local twins), riding the WS-10 batches (P3); regenerate the gallery | C16 → 0; C10/C11/D1/G8 fall by deletion | sweep |
 | **L5** | producers: skills, sim template, PocletMiner prompt, PocletGenerator, `modernize_m0.py` | none (outside the gate) | none |
-| **L6** | narrative: CoreHypotheses, Debt Overview, instance READMEs, UserGuide samples | none | none |
+| **L6** | narrative: CoreHypotheses (incl. Narcissus §2, Multisubjective protocol, Credibility Accretion, Epistemic Residue), the IntersubjectiveBenchmark README, Debt Overview, root README, instance READMEs, UserGuide samples | none | none |
 | **L7** | option (c): open a separate design worksite for the validation-heuristics loop; not a prerequisite of L1–L6 unless D13 says so | per design | per design |
 | **L8** | remove the deprecated terms from `M0_Common` once the counter is 0 | instrument retired | `M0_Common` + sweep |
 
@@ -402,9 +474,19 @@ authority (root `CLAUDE.md`) and is left as written unless Michel decides otherw
   replaced in the same move?
 - **D14** — Odin's Wisdom / Stereopsis: what grounds the metaphor once "depth from
   disparity" is withdrawn (Q2-12)? The Gs algebra does not need it; the naming rationale
-  in the Debt Overview and in `docs/CoreHypotheses/` does.
+  in the Debt Overview and in `docs/CoreHypotheses/` does. *Narrowed 2026-11-15*: not a
+  feedback loop (position 5) — the Ashby / Conant–Ashby reading stays out of Gs (the
+  existing cybernetic definition of the primitive L is not touched by this worksite).
 - **D15** — RequisiteVarietyDuo and (c): kept apart, or used as the test bench of the
   loop, knowing the reflexive trap?
+
+- **D16** — Scope of the scores: with δ₁ and intersubjective scoring gone, do the ten
+  ASFID/REVOI scores (`m0:scoreA` … `m0:scoreIm`) and the two means stay, and on what
+  justification? The means feed only δ₁ and `focalBias`.
+- **D17** — `defeasibilityStatus`: removed with the benchmark, or kept as a general
+  statement that every TSCG model is provisional?
+- **D18** — Narcissus document: rewrite §2 now (naming the heuristics loop as the
+  intended successor), or after (c) is designed?
 
 ## 8. Go / no-go (recommendation)
 
@@ -431,5 +513,6 @@ at M0 first would hide the debt that M3 still asserts.
 
 | version | date | change |
 |---|---|---|
+| 0.3.0 | 2026-11-15 | Positions 5–7 recorded (Gs is not a feedback loop; the gap ticks CoreHypotheses traps; intersubjective scoring removed too). §2b trap mapping (proposal), §2c intersubjective-scoring inventory (0 uses at HEAD) and its two consequences (Narcissus response, justification of the scores). L1, L6 widened; D14 narrowed; D16–D18 added. |
 | 0.2.0 | 2026-11-15 | Michel's positions recorded (scalar and gap meaningless; Korzybski a foundation; validation heuristics in a human/machine cybernetic loop to invent). §2 recast as "Korzybski only"; Q2-5, Q2-12 and verdict revised; §4 (a) removes concept and measure, (b) reduced to a recording format, (c) = heuristics loop with design inputs; L7 re-scoped; D2 answered, D4/D5 narrowed, D13–D15 added. |
 | 0.1.0 | 2026-11-15 | Draft: Phase 0 + Phase 1 feasibility study at `5a26560`. |
