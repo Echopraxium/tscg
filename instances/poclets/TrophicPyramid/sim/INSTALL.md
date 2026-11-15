@@ -30,7 +30,7 @@ npm run sim:trophic
   "name": "tscg-simulations",
   "scripts": {
     "sim:trophic" : "electron instances/poclets/TrophicPyramid/sim",
-    "sim:vco"     : "electron instances/poclets/vco/sim",
+    "sim:vco"     : "electron instances/poclets/Vco/sim",
     "sim:phase"   : "electron instances/poclets/phase-transition/sim"
   },
   "devDependencies": { "electron": "^29.0.0" },

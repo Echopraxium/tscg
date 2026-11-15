@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.21.0
+**Version**: 1.22.0
 **Date**: 2026-11-15
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -901,6 +901,13 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.22.0 (2026-11-15)** — Gate 1.8.0: section PATH_CHECK (`path_check.py`, PC1 naming
+  norm, PC2 disk vs git case, PC3 case collisions, PC4 wrong-case references). First
+  capture 7 (all PC4), then repaired to 0 — among them the GitHub Pages link
+  of the Vco simulation in the TrophicPyramid simulation registry (folder written in
+  lowercase). The M0
+  reasoner sweep now lists its files from git. Same day: 6 instance folders renamed to
+  an initial capital (Kidneys, Raas, Tpack, Yggdrasil, Iching, Vsm).
 - **1.21.0 (2026-11-15)** — §8.0h: scoring family retired, M0 lot (40 `M0_Common` terms
   deprecated, their uses deleted from 42 instances, C10/C11 → C16). Gate: M0 errors −5,
   engine D1 −91, G5 −6, G8 −39 (deletions). Reasoner: Bmc PASSED. §8.1b superseded.

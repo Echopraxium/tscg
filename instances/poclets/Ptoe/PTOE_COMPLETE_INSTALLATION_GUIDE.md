@@ -74,8 +74,8 @@
   - References (11 citations)
 - **Action**: Create new file
 
-#### 5. M0_Ptoe_analysis.md
-- **Destination**: `instances/poclets/Ptoe/M0_Ptoe_analysis.md`
+#### 5. M0_Ptoe_Analysis.md
+- **Destination**: `instances/poclets/Ptoe/M0_Ptoe_Analysis.md`
 - **Size**: ~600 lines
 - **Content**: Step 2 (ANALYSIS) complete output
   - ASFID lens analysis (5 dimensions)
@@ -174,7 +174,7 @@ cp ~/Downloads/M0_Ptoe_v1.0.1.jsonld \
 cp ~/Downloads/M0_Ptoe_README.md \
    instances/poclets/Ptoe/
 
-cp ~/Downloads/M0_Ptoe_analysis.md \
+cp ~/Downloads/M0_Ptoe_Analysis.md \
    instances/poclets/Ptoe/
 
 cp ~/Downloads/Ptoe_M2_M1_Summary.md \

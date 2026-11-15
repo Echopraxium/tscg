@@ -55,7 +55,7 @@ const POCLETS_REGISTRY = [
     asfid:    { A:0.90, S:0.80, F:0.95, I:0.85, D:0.90, mean:0.88 },
     revoi:    { R:0.90, E:0.80, V:0.95, O:0.90, I:0.85, mean:0.88 },
     delta:    0.00,
-    path:     'instances/poclets/vco/sim',
+    path:     'instances/poclets/Vco/sim',
     version:  '1.0.0',
     status:   'WIP',
     desc:     'VCO oscilloscope simulation. Frequency modulated by control voltage. Validates Oscillator TransDisclet candidate.'
