@@ -1,7 +1,7 @@
-# Epistemic gap δ₁ — Feasibility note / Decision Record draft
+# Epistemic gap δ₁ and the scoring family — Feasibility note / Decision Record draft
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.3.0 (draft) · **Date**: 2026-11-15
+**Version**: 0.4.0 (draft) · **Date**: 2026-11-15
 **Kind**: feasibility study (pipeline Phase 0 + Phase 1). **No ontology file is changed.**
 **Worksite id**: not registered. The folder name `WS-TBD_EpistemicGap/` is a
 placeholder; rename it with `git mv` once Michel picks the id (decision D1).
@@ -36,6 +36,16 @@ Added later the same day (after reading the Ashby reading of Odin's Wisdom):
 6. **The epistemic gap ticks several boxes of the epistemological traps** named in
    `docs/CoreHypotheses/` (mapping in §2b, as a proposal).
 7. **Intersubjective scoring must also be removed** (inventory in §2c).
+8. **The three monoids and the Layer Cake are not a model of reality.** They are an
+   architecture proposed "until further notice" for the internal coherence of TSCG,
+   whose goal is to build *model mock-ups*. M2 concepts are **proxies** of real
+   concepts, as a gear in a Lego box is a very simplified object next to an industrial
+   gear. (Already on HEAD: Bootstrap "How it is judged", CH4
+   `LayerCake_Models_The_Kit.md` — "M3–M1 describe the kit, not the world".)
+9. **No scores at all.** Evaluation is the responsibility of the user and of the
+   observers of the mock-up — full stop. This retires the whole scoring family, not
+   only δ₁ (§2d): the ten scores, the two means, the gap and its classes, the focal
+   family, the scoring status, the score justifications.
 
 What this changes below: §2 (the "concept" column now means Korzybski only), §4
 (option (a) removes concept and measure; option (c) becomes the heuristics loop),
@@ -247,6 +257,7 @@ gap, but Michel should confirm it does not smuggle the gap back (D4).
 
 | trap (document) | how δ₁ ticks it |
 |---|---|
+| **Category error: the kit taken for the world** (CH4 `LayerCake_Models_The_Kit.md`; Bootstrap "How it is judged"; position 8) | δ₁, the spectral classes and the benchmarks treat the Lego box as a measuring instrument of reality — measuring the industrial gear with the Lego gear. This row heads the table: the others follow from it |
 | **Narcissus** — circular self-validation (`_01_Narcissus_and_Icarus_as_Safeguards.md` §2) | both means come from the same rater; the gap can only reflect the rater back, never "a different reflection" |
 | **Icarus** — claims beyond the evidence (same file, §3) | "δ₁ = degree of proof" (Curry–Howard), a declared range [0, 1] that is never reached above 0.707, four classes with two-decimal thresholds: the look of a measurement without one |
 | **Undeclared criteria** — "judgment that hides the criteria it uses" (`ContextSwitching.md` §3.5, §11) | the normalisation and the thresholds are posited; no file says by which criteria |
@@ -306,6 +317,46 @@ Two consequences to weigh (facts, then a proposal):
   the benchmarks gone, nothing on HEAD justifies the scalar ASFID/REVOI scores, nor
   their means — and `m0:asfidMean` / `m0:revoiMean` have no other use than δ₁ and
   `focalBias` (D16).
+
+### 2d. No scores at all — scope at HEAD (for position 9)
+
+Section F of `delta1_inventory.py` (command output in `delta1_inventory_5a26560.md`):
+
+- **`M0_Common`: 40 of its 43 nodes belong to the scoring family** — `m0:ScoringProperty`,
+  the ten `m0:score…`, the two means, `m0:epistemicGap`, `m0:scoreJustification`, the
+  focal family (`m0:FocalProperty`, `stereopsicDepth`, `stereopsicDepthProfile`,
+  `focalBias`, `focalScore`, `FocalClass` + 6 individuals, `focalClass`,
+  `focalApplicable`), the spectral classes, `m0:ScoringStatus` + 3 individuals and
+  `m0:scoringStatus`. What remains: the ontology header, `m0:InstanceProperty` (an
+  abstract superclass that would have no subproperty left) and `m0:contextBlock`.
+- **42 of the 43 M0 instances** carry at least one key of the family.
+- **M3 — an architectural point, not only wording.** A primitive type has two roles in
+  M3: (1) generator of type expressions at M2, (2) **evaluation at M0** — "evaluation
+  functor at M0 level via norm-referenced scoring" (`MonoidalType_base` /
+  `skos:definition`), "F_x : System → Score" (`m3:grammar_foundation:Fm2`), "quantitative
+  scoring belongs to the M0 ValueSpace" (`m3:MonoidalType`, `MonoidalType_base`),
+  "any magnitude … is an M0 instance score" (`m3:F_ArchitecturalAmendments`
+  amendment 3), and the Eagle / Sphinx headers: "At M0, each primitive type receives a
+  score in [0,1]". Retiring the scores removes role (2) from the definition of the
+  primitives. It is a simplification (it removes, adds nothing), but it touches the
+  definition of the M3 type, so it is reviewed as pipeline Scenario 2 (D20).
+- Unaffected wording: "ASFID/REVOI scoring terminology is unaffected" (notation
+  conventions in `M3_GrammarFoundation`, `M3_OdinsWisdom`) — a sentence about notation;
+  it goes stale, not wrong (narrative lot).
+- **Gate**: check_m0 C10 ("Score bare numerics"), C11 (enumerations: spectral, focal,
+  scoring status), `SCORE_PROPS` / `ENUM_PROPS`, the score shapes of the M0 SHACL
+  schema, and the `xsd:float` score coercions added in the reasoner campaign all
+  retire with the family. The M0 reasoner causes recorded in the pipeline skill
+  (scores as `xsd:double`) become history.
+- **Consumers**: the gallery also draws ASFID/REVOI radars (`asfid`, `revoi` are
+  `null`-safe, like `gap`); every simulation built from the template shows a score panel;
+  the instance-pipeline skill has a scoring step; the Kit uses none of it.
+- **Consequences for earlier sections.** The Narcissus circularity on scores disappears
+  at its root (nothing left to self-validate); the Narcissus risk remains only on the
+  grammar built from the corpus, where SHACL already answers (D18 simplifies). WS-10
+  item NS-4 ("scores as `m0:scoreA`") becomes void, and the case for a shared `m0:`
+  namespace has to be restated without scores (D19). Option (c) is reframed by position
+  9: TSCG computes and records no evaluation (D21).
 
 ---
 
@@ -431,8 +482,8 @@ M0), and a written reason for every counter move.
 | **L0** | register the worksite; build the instrument (P5) with negative tests; freeze it | the new counter goes **up** (revealed debt) | none (tooling only) |
 | **L1** | M3 doctrine per Q2-1…Q2-9 (5 files, changelog each); remove `intersubjectiveBenchmark` (and `defeasibilityStatus` per D17); reword the apex header and `MonoidalType_base` | D1 −4 or more (the inner keys of the deleted blocks go too), G8 −2, G6 −1 (deletions); instrument down | 5 files |
 | **L2** | M2: delete `m2:epistemicGapFormula`; delete or deprecate `m2:hasEpistemicGap` (D8); reword Modelisation and header; `M1_Optics` `m1:epistemicGap`; SHAPE 11 decision | G8 −1 at least | M2, M1_Optics |
-| **L3** | M0 vocabulary: `owl:deprecated` on `m0:epistemicGap`, `m0:spectralClass`, `m0:SpectralClass` + 4 individuals (+ focal family if D3); M0 SHACL messages; check_m0 C16 | C16 appears (FAIL or WARN, D7) | `M0_Common` + sweep |
-| **L4** | M0 instances: delete the values (incl. the 9 objects, typed literals, local twins), riding the WS-10 batches (P3); regenerate the gallery | C16 → 0; C10/C11/D1/G8 fall by deletion | sweep |
+| **L3** | M0 vocabulary: `owl:deprecated` on the 40 scoring-family nodes of `M0_Common` (§2d); retire the score shapes of the M0 SHACL schema; check_m0 C16 (and C10/C11 retired) | C16 appears (FAIL or WARN, D7) | `M0_Common` + sweep |
+| **L4** | M0 instances: delete every scoring-family key in the 42 instances concerned (incl. the 9 gap objects, typed literals, local twins, score `@context` coercions), riding the WS-10 batches (P3); regenerate the gallery | C16 → 0; C10/C11/D1/G8 fall by deletion | sweep |
 | **L5** | producers: skills, sim template, PocletMiner prompt, PocletGenerator, `modernize_m0.py` | none (outside the gate) | none |
 | **L6** | narrative: CoreHypotheses (incl. Narcissus §2, Multisubjective protocol, Credibility Accretion, Epistemic Residue), the IntersubjectiveBenchmark README, Debt Overview, root README, instance READMEs, UserGuide samples | none | none |
 | **L7** | option (c): open a separate design worksite for the validation-heuristics loop; not a prerequisite of L1–L6 unless D13 says so | per design | per design |
@@ -480,9 +531,16 @@ authority (root `CLAUDE.md`) and is left as written unless Michel decides otherw
 - **D15** — RequisiteVarietyDuo and (c): kept apart, or used as the test bench of the
   loop, knowing the reflexive trap?
 
-- **D16** — Scope of the scores: with δ₁ and intersubjective scoring gone, do the ten
-  ASFID/REVOI scores (`m0:scoreA` … `m0:scoreIm`) and the two means stay, and on what
-  justification? The means feed only δ₁ and `focalBias`.
+- **D3** — *Answered 2026-11-15* by position 9: the focal family goes with the scores.
+- **D16** — *Answered 2026-11-15*: no scores at all (position 9).
+- **D19** — `M0_Common` after L3 keeps 3 nodes: keep it as the shared `m0:` namespace hub
+  (WS-10 restated without scores), or fold it?
+- **D20** — Wording of the M3 primitive definition once role (2) "evaluation at M0" is
+  removed (`MonoidalType_base`, `m3:MonoidalType`, `Fm2` comment, amendment 3, Eagle /
+  Sphinx headers).
+- **D21** — Option (c) under position 9: TSCG offers validation heuristics *to* the user
+  and observers (method, UserGuide) and records no outcome, or (c) is dropped? EARL /
+  PROV-O (option b) then has no use inside TSCG.
 - **D17** — `defeasibilityStatus`: removed with the benchmark, or kept as a general
   statement that every TSCG model is provisional?
 - **D18** — Narcissus document: rewrite §2 now (naming the heuristics loop as the
@@ -498,7 +556,10 @@ cleanly or is a producer that can be edited (§3); and the measure is already
 inconsistent at HEAD (six formulas, unreachable range, M3 contradicting its own
 formula, stored classes and values that the thresholds and means do not give).
 Keeping δ₁ is itself debt. (0.2.0: with the concept withdrawn too, the case for
-removal is stronger; the condition on M3 now reads "no M3 edit before D4 and D14".) What can go wrong is mostly the order of work: deprecating
+removal is stronger; the condition on M3 now reads "no M3 edit before D4 and D14".)
+(0.4.0: the scope is now the whole scoring family (§2d). Still GO; the M3 condition
+becomes "no M3 edit before D4, D14 and D20", and L4 is the largest lot — 42 instances,
+which is why riding the WS-10 batches (D9) matters.) What can go wrong is mostly the order of work: deprecating
 at M0 first would hide the debt that M3 still asserts.
 
 ---
@@ -513,6 +574,7 @@ at M0 first would hide the debt that M3 still asserts.
 
 | version | date | change |
 |---|---|---|
+| 0.4.0 | 2026-11-15 | Positions 8 (the monoids and the Layer Cake are not a model of reality; M2 concepts are proxies) and 9 (no scores; evaluation belongs to the user and observers). §2b headed by the category error; §2d scope of the whole scoring family (40/43 `M0_Common` nodes, 42/43 instances, M3 role (2) of the primitives); L3/L4 widened; D3/D16 answered; D19–D21 added. Inventory script: section F. |
 | 0.3.0 | 2026-11-15 | Positions 5–7 recorded (Gs is not a feedback loop; the gap ticks CoreHypotheses traps; intersubjective scoring removed too). §2b trap mapping (proposal), §2c intersubjective-scoring inventory (0 uses at HEAD) and its two consequences (Narcissus response, justification of the scores). L1, L6 widened; D14 narrowed; D16–D18 added. |
 | 0.2.0 | 2026-11-15 | Michel's positions recorded (scalar and gap meaningless; Korzybski a foundation; validation heuristics in a human/machine cybernetic loop to invent). §2 recast as "Korzybski only"; Q2-5, Q2-12 and verdict revised; §4 (a) removes concept and measure, (b) reduced to a recording format, (c) = heuristics loop with design inputs; L7 re-scoped; D2 answered, D4/D5 narrowed, D13–D15 added. |
 | 0.1.0 | 2026-11-15 | Draft: Phase 0 + Phase 1 feasibility study at `5a26560`. |

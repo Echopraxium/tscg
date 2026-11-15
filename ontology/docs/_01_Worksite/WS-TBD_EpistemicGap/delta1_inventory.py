@@ -16,6 +16,7 @@ Sections printed (Markdown):
      thresholds give, and |asfidMean - revoiMean| / sqrt(2) recomputed
   D. the formulas found for the gap (string census)
   E. the check_m0 PASS instances carrying the family (impact of a FAIL vs WARN check)
+  F. the whole scoring family (scope of 'no scores', 2026-11-15)
 """
 import json, math, re, subprocess, sys, collections
 from pathlib import Path
@@ -252,6 +253,68 @@ def section_e():
     print()
 
 
+SCORES = re.compile(r"\bscore(A|S|St|F|I|It|D|R|E|V|O|Im)\b|asfidScores|revoiScores|asfidMean|revoiMean"
+                    r"|scoreJustification|scoringStatus|ScoringStatus|focalScore|focalBias|focalClass"
+                    r"|FocalClass|stereopsicDepth|focalApplicable|FocalProperty|ScoringProperty|epistemicGap|spectralClass"
+                    r"|SpectralClass")
+
+
+def section_f():
+    """Scope of 'no scores at all' (Michel, 2026-11-15): the whole scoring family."""
+    print("## F. The scoring family (scores, means, gap, classes, focal family, status)\n")
+    d = json.loads((ROOT / "ontology/M0_Common.jsonld").read_text(encoding="utf-8"))
+    declared = [n.get("@id") for n in d.get("@graph", []) if SCORES.search(n.get("@id", ""))]
+    print(f"M0_Common nodes of the family: {len(declared)} of {len(d.get('@graph', []))}\n")
+    print(", ".join(f"`{x}`" for x in declared) + "\n")
+    sys.path.insert(0, str(ROOT / "ontology/toolchain"))
+    sys.path.insert(0, str(ROOT / "ontology/toolchain/check-M0"))
+    from check_m0_instances import discover_instances
+    with_keys, total = 0, 0
+    for path, name, _ in discover_instances():
+        total += 1
+        doc = json.loads(Path(path).read_text(encoding="utf-8"))
+        out = []
+        walk_keys(doc.get("@graph", [doc]), out)
+        if out:
+            with_keys += 1
+    print(f"M0 instances with at least one key of the family in @graph: {with_keys} of {total}\n")
+    print("M3 / M2 string values mentioning a score (word 'score'):\n")
+    for f in sorted(ROOT.glob("ontology/M3_*.jsonld")) + sorted(ROOT.glob("ontology/M2_*.jsonld")):
+        doc = json.loads(f.read_text(encoding="utf-8"))
+        hits = []
+        for node in doc.get("@graph", [doc]):
+            o = []
+            walk_strings(node, "", o)
+            hits += [(node.get("@id"), p, v) for p, v in o if re.search(r"\bscor(e|es|ed|ing)\b", v, re.I)
+                     and "changelog" not in p]
+        for nid, p, v in hits:
+            m = re.search(r".{0,60}\bscor\w*.{0,60}", v, re.I)
+            print(f"- {f.name} `{nid}` `{p}`: …{m.group(0).replace('|', '¦')}…")
+    print()
+
+
+def walk_keys(o, out):
+    if isinstance(o, dict):
+        for k, v in o.items():
+            if SCORES.search(k):
+                out.append(k)
+            walk_keys(v, out)
+    elif isinstance(o, list):
+        for v in o:
+            walk_keys(v, out)
+
+
+def walk_strings(o, path, out):
+    if isinstance(o, dict):
+        for k, v in o.items():
+            walk_strings(v, f"{path}/{k}", out)
+    elif isinstance(o, list):
+        for i, v in enumerate(o):
+            walk_strings(v, f"{path}[{i}]", out)
+    elif isinstance(o, str):
+        out.append((path, o))
+
+
 if __name__ == "__main__":
     head = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, text=True).strip()
     print(f"# delta_1 inventory at {head}\n")
@@ -261,3 +324,4 @@ if __name__ == "__main__":
     section_c()
     section_d()
     section_e()
+    section_f()
