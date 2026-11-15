@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1730 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1735 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -128,6 +128,8 @@
     - RebootKit_Cleanup_Triage.xlsx
   - **2026_11_07/**
     - TSCG_Session_Handover_2026-11-07_Kit_Frictions.md
+  - **2026_11_09/**
+    - TSCG_HandOver_2026-11-09.md
 - **_03_SerendipCrates/**
   - **EpistemologyMaquette/**
     - CRATE.md
@@ -1641,6 +1643,16 @@
       - **WS-13/**
         - WS-13_Phase0_Addendum_A_Interface.md
         - WS-13_Phase0_Structural_Core.md
+      - **WS-15/**
+        - **Next_Conversation_2026-11-15/**
+          - TSCG_HandOver_EpistemicGap_2026-11-15.md
+          - TSCG_HandOver_EpistemicGap_Feasibility_2026-11-15_start.md
+        - delta1_inventory.py
+        - delta1_inventory_5a26560.md
+        - EpistemicGap_Feasibility_DecisionRecord_Draft.md
+        - worksite.yaml
+      - **WS-16/**
+        - worksite.yaml
       - **WS-3/**
         - M2_Formulas_Review_with_Gs_README.md
       - **WS-5/**
@@ -1685,10 +1697,6 @@
         - Until_Further_Notice_WorksiteEntry.md
       - **WS-9/**
         - worksite.yaml
-      - **WS-TBD_EpistemicGap/**
-        - delta1_inventory.py
-        - delta1_inventory_5a26560.md
-        - EpistemicGap_Feasibility_DecisionRecord_Draft.md
       - _00_open_cmd_window.bat
       - _open_cmd_window.bat
       - TSCG_Debt_Overview.md
