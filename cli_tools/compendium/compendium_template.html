@@ -582,10 +582,20 @@ function renderWorksiteGraph(){
     <a href="${yml}">worksite.yaml</a> (and <code>WS-*/worksite.yaml</code>); the graph follows at the next build.</p>
     <div class="health-frame"><object type="image/svg+xml" data="${esc(G.svg)}" style="aspect-ratio:${G.width}/${G.height}"
       aria-label="Worksites dependency graph">Worksites dependency graph (SVG)</object></div>
-    <p class="health-intro">Generator: <a href="${gen}">worksite_graph.py</a> · open the graph alone:
+    <p class="health-intro">${sectionsForAudience().includes(HEALTH)?`<a href="#" class="xlink" data-xgo="health">→ LayerCake Health Map</a> (what the worksites repair) · `:""}Generator: <a href="${gen}">worksite_graph.py</a> · open the graph alone:
       <a href="${esc(G.svg)}" target="_blank" rel="noopener">${esc(G.svg)}</a></p></details></section>`;
 }
 let WSG_OPEN=true;
+/* cross-links between the two diagrams (Michel, 2026-11-15): switch tab, open the graph, scroll to it */
+document.addEventListener("click",e=>{
+  const a=e.target.closest&&e.target.closest("a.xlink[data-xgo]"); if(!a) return;
+  e.preventDefault();
+  if(a.dataset.xgo==="health") go(HEALTH,true);
+  else { WSG_OPEN=true; go("Project management",true); }
+  const id=a.dataset.xgo==="health"?null:"wsgFold";
+  requestAnimationFrame(()=>{const t=id?document.getElementById(id):document.querySelector("#view .health-frame");
+    if(t) t.scrollIntoView({behavior:"smooth",block:"start"});});
+});
 document.addEventListener("toggle",e=>{ if(e.target&&e.target.id==="wsgFold") WSG_OPEN=e.target.open; },true);
 
 function renderHealth(){
@@ -606,7 +616,8 @@ function renderHealth(){
       <span class="hl-m">other technical debt (measured, frozen)</span><span class="hl-r">invisible / misread by the tools</span><span class="hl-x">not measured</span></div>
     <div class="health-frame"><object type="image/svg+xml" data="${esc(H.svg)}" style="aspect-ratio:${H.width}/${H.height}"
       aria-label="LayerCake Health Map">LayerCake Health Map (SVG)</object></div>
-    <p class="health-intro">How to read it, debt by owner and the reduction path: <a href="${doc}">TSCG_Debt_Overview.md</a> ·
+    <p class="health-intro"><a href="#" class="xlink" data-xgo="wsgraph">→ Worksites dependency graph</a> (who repairs it, in which order) ·
+      How to read it, debt by owner and the reduction path: <a href="${doc}">TSCG_Debt_Overview.md</a> ·
       dated snapshots (progress record): <a href="${snaps}">LayerCakeHealthMap/</a> · generator: <a href="${gen}">tscg_layercake_health_map.py</a> ·
       open the map alone: <a href="${esc(H.svg)}" target="_blank" rel="noopener">${esc(H.svg)}</a></p></section>`;
 }
