@@ -14,7 +14,7 @@ This document presents the **first electronic validation of the Processor Generi
 
 - **Dual-mode operation**: Linear amplification (analog) + digital switching (binary)
 - **Triple N-ary inputs** (base current, collector voltage, emitter reference) → **single output** (collector current)
-- **Bicephalous ternary hybrid formulas** for Territory (Transformation⊗Flow⊗Resource) and Map (Transformation⊗Representation⊗Interoperability)
+- **Stereopsic ternary hybrid formulas** for Territory (Transformation⊗Flow⊗Resource) and Map (Transformation⊗Representation⊗Interoperability)
 - **Sharp threshold behavior** enabling digital logic despite continuous physics
 - **Exceptional scores**: ASFID 0.85, REVOI 0.86, epistemic gap 0.01
 

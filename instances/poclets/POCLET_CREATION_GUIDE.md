@@ -49,7 +49,7 @@ Pre-validated, well-structured templates that:
 **Purpose:** Complete poclet ontology structure
 
 **Includes:**
-- Bicephalous @context with It/Im nomenclature
+- Stereopsic @context with It/Im nomenclature
 - All required metadata fields
 - ASFID/REVOI score structures
 - Component/interaction modeling

@@ -18,10 +18,10 @@ Grammar Gt (Eagle Eye) and Map Grammar Gm (Sphinx Eye).
 ```
 Stereopsis = the depth perception born from binocular fusion
            = what the two TSCG eyes create together
-           = formally: the bicephalous monoid (Gs, |, EmptyStereopsis)
+           = formally: the Gs monoid (Gs, |, EmptyStereopsis)
 ```
 
-**Key insight:** The bicephalous architecture (Eagle Eye + Sphinx Eye) remains
+**Key insight:** The stereopsic architecture (Eagle Eye + Sphinx Eye) remains
 the foundational metaphor — two eyes, two perspectives. Stereopsis is the
 **synergy** that emerges from their fusion. Gs **reifies** that synergy as a
 first-class algebraic structure with its own operator (|), neutral element
@@ -32,13 +32,13 @@ first-class algebraic structure with its own operator (|), neutral element
 
 ## 📐 Stereopsis Grammar Gs — Base16
 
-**Bicephalous monoidal operator | :**
+**Gs monoidal operator | :**
 ```
 |  :  (Gt ∪ Gm ∪ Gs)_expr × (Gt ∪ Gm ∪ Gs)_expr  →  Gs_expr
 ```
 
 | operates universally across all three grammars, always producing
-a bicephalous (Gs) type expression.
+a stereopsic (Gs) type expression.
 
 **𝕋₀(|) = {T, _^, _$, K, Ss, L} — 6 primitives (Base16)**
 
@@ -56,7 +56,7 @@ are polarity modifiers and not included in the acronym.
 
 **Example formulas (with St/It/O indexation):**
 ```
-A × St × It | R + O | _^  =  Coherence      (bicephalous + positive pole)
+A × St × It | R + O | _^  =  Coherence      (Gs + positive pole)
 F × T                      =  Gradient        (Territory × Gs primitive T)
 It | V + O + R + Im       =  ValueSpace      (Territory | Map)
 St × It | L                =  Node/Component  (structure+info, converging)
@@ -286,7 +286,7 @@ Analogously in TSCG:
 
 1. **Reification of stereopsis** — not a third head, but the formal algebraic
    structure of what two heads produce together
-2. **Bicephalous monoid** (Gs, |, EmptyStereopsis) — closes the structural gap
+2. **Gs monoid** (Gs, |, EmptyStereopsis) — closes the structural gap
 3. **Base16 alphabet** — 𝕋₀(|) = {T, _^, _$, K, Ss, L} — **6 primitives**
 4. **TKSL acronym** — 4 nominal Gs primitives (T, K, Ss, L), each answering
    a transcendental question

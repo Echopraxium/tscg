@@ -254,7 +254,7 @@ Michel has already started prototyping a **3D Nautilus spiral** representation i
 
 **TSCG Instance**: Ptoe (Periodic Table of Elements)
 
-**Bicephalous Scores**:
+**Stereopsic Scores**:
 - **ASFID (Territory / Eagle Eye)**: 0.81 (OnCriticalLine)
   - A=0.85, S=0.90, F=0.70, I=0.95, D=0.65
 - **REVOI (Map / Sphinx Eye)**: 0.89 (Exceptional map quality)

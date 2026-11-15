@@ -33,7 +33,7 @@ The **Nuclear Reactor Typology** poclet is TSCG's first industrial energy system
 
 ✅ **Processor GenericConcept** - First validation in complex engineering domain  
 ✅ **N=9 Polarity** - Second validation after Yggdrasil (mythological → industrial)  
-✅ **Dual bicephalous architecture** - Territory (empirical fission dynamics) + Map (safety models, standards)  
+✅ **Dual stereopsic architecture** - Territory (empirical fission dynamics) + Map (safety models, standards)  
 ✅ **6 M1 Core Concepts** - Transdisciplinary patterns (CriticalityRegime, SelfSustainingReaction, etc.)  
 ✅ **M1_EnergyGenerators** - New domain extension for all power generation technologies  
 ✅ **Complete ASFID coverage** - All 5 dimensions present (A_score=0.95, S=0.90, F=0.90, I=0.85, D=0.90)  
@@ -495,7 +495,7 @@ This is expected for **mature industrial technology** with:
 
 The **Processor** GenericConcept (M2, v15.0.0) is defined as:
 
-> "Generic system with inputs and outputs that transforms/processes incoming resources, signals, or matter into outputs. **Dual bicephalous architecture**: Territory (Transformation ⊗ Flow ⊗ Resource) + Map (Transformation ⊗ Representation ⊗ Interoperability)."
+> "Generic system with inputs and outputs that transforms/processes incoming resources, signals, or matter into outputs. **Dual stereopsic architecture**: Territory (Transformation ⊗ Flow ⊗ Resource) + Map (Transformation ⊗ Representation ⊗ Interoperability)."
 
 ### Nuclear Reactor as Processor Instance
 
@@ -566,7 +566,7 @@ Applied to reactors:
 | **MSR** | Liquid UF₄/ThF₄ salt | Thermal + waste transmutation | ✅ Perfect |
 | **AGR** | Enriched U, CO₂ | High efficiency (42%) steam | ✅ Perfect |
 
-**Conclusion**: All 9 reactor types are **faithful instantiations of Processor**. The dual bicephalous architecture is essential:
+**Conclusion**: All 9 reactor types are **faithful instantiations of Processor**. The dual stereopsic architecture is essential:
 - **Territory** (empirical): Fission dynamics, neutron physics, thermal-hydraulics
 - **Map** (conceptual): Safety models, regulatory compliance, international standards
 
@@ -827,7 +827,7 @@ Applied to reactors:
 
 The Nuclear Reactor Typology poclet **validates 10 M2 GenericConcepts**:
 
-### 1. Processor (Dual Bicephalous Architecture) ⭐
+### 1. Processor (Dual Stereopsic Architecture) ⭐
 
 **Formula**:
 ```
@@ -1849,13 +1849,13 @@ The Nuclear Reactor Typology poclet makes **5 major contributions** to TSCG:
 
 #### 2. Processor Validation ⭐⭐
 
-**Processor** (M2, v15.0.0) is **newest GenericConcept** with dual bicephalous architecture.
+**Processor** (M2, v15.0.0) is **newest GenericConcept** with dual stereopsic architecture.
 
 **Previous validations**: Biology (digestive, kidneys, liver), electronics (transistor, op-amp)
 
 **Nuclear Reactor Validation**: **First complex engineering system**
 
-**Why Bicephalous Architecture is Essential**:
+**Why Stereopsic Architecture is Essential**:
 - **Territory** (ASFID): Neutron physics is **empirical reality** (flux measurements, criticality)
 - **Map** (REVOI): Safety analysis is **conceptual model** (LOCA scenarios, severe accidents)
 
@@ -1966,7 +1966,7 @@ The **9 reactor types** are not arbitrary classifications. They represent:
 
 ---
 
-#### Insight 2: Processor Requires Bicephalous Architecture
+#### Insight 2: Processor Requires Stereopsic Architecture
 
 **Observation**: Simple processors (transistor, filter) can be modeled with **Territory only** (ASFID).
 
@@ -1974,7 +1974,7 @@ The **9 reactor types** are not arbitrary classifications. They represent:
 - **Eagle Eye** (Territory/ASFID): Empirical behavior (measurements, observations)
 - **Sphinx Eye** (Map/REVOI): Conceptual models (safety analysis, regulatory compliance)
 
-**Criterion for Bicephalous Processor**:
+**Criterion for Stereopsic Processor**:
 ```
 IF (safety_critical OR regulatory_compliance OR epistemic_gap < 0.1)
 THEN dual_bicephalous_required = TRUE
@@ -2212,7 +2212,7 @@ The **Nuclear Reactor Typology** poclet is a **landmark achievement** for TSCG:
 **Key Insights**:
 
 1. **Enneagram emerges** when design space has 3-4 competing objectives and irreducible diversity
-2. **Processor bicephalous architecture** essential for safety-critical systems (Territory measurement + Map compliance)
+2. **Processor stereopsic architecture** essential for safety-critical systems (Territory measurement + Map compliance)
 3. **CriticalityRegime** is universal threshold phenomenon (nuclear, biology, social, percolation)
 4. **Trade-offs are fundamental** (no reactor dominates on all dimensions)
 
@@ -2220,7 +2220,7 @@ The **Nuclear Reactor Typology** poclet is a **landmark achievement** for TSCG:
 
 - **Framework**: TSCG validated for industrial technological systems
 - **Methodology**: Enneagram as design space navigator
-- **Theory**: Bicephalous Processor for complex safety-critical systems
+- **Theory**: Stereopsic Processor for complex safety-critical systems
 - **Practice**: Foundation for energy policy analysis tools
 
 **Future Directions**:

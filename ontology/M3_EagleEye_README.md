@@ -12,7 +12,7 @@
 ## 🎯 Role
 
 **M3_EagleEye** defines the **Territory Grammar (Gt)** — the ontological/empirical
-perspective of TSCG's bicephalous architecture. It formalizes the **ASFID** basis:
+perspective of TSCG's stereopsic architecture. It formalizes the **ASFID** basis:
 
 ```
 𝕋₀(×) = {A, St, F, It, D}
@@ -41,7 +41,7 @@ systems **as they are** in the Territory.
 D × It × F =  Process        (temporal sequence with flow)
 A × St × F =  Homeostasis    (stable regulation)
 St × It × A =  Composition    (structural assembly)
-F × T      =  Gradient       (× with bicephalous primitive T)
+F × T      =  Gradient       (× with Gs primitive T)
 ```
 
 **Axioms:**
@@ -70,7 +70,7 @@ M3_GenesisGrammar
 
 **Complete architecture:**
 ```
-TSCG Bicephalous Architecture  =  Gt (Territory) + Gm (Map)
+TSCG Stereopsic Architecture  =  Gt (Territory) + Gm (Map)
 Gs (Stereopsis) = reification of their stereopsic synergy
 ```
 

@@ -226,7 +226,7 @@ Processor  | m2:Ontological  | dual     | 0.15         | 2026-02-07
 
 ---
 
-### Exemple 3 : GenericConcepts Dual (Bicephalous)
+### Exemple 3 : GenericConcepts Dual (Stereopsic)
 
 ```sparql
 PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>

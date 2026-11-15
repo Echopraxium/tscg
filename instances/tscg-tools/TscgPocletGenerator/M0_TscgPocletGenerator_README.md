@@ -63,7 +63,7 @@ tool, producing a `m3:TscgTool` ontology that describes the tool that generates 
 
 ---
 
-## TSCG Bicephalous Analysis
+## TSCG Stereopsic Analysis
 
 ### Eagle Eye — Territory Space (ASFID)
 

@@ -331,7 +331,7 @@ between functors:
 ```
 
 This is legitimate category theory — well-established, metric-free, and
-perfectly suited to the TSCG bicephalous architecture.
+perfectly suited to the TSCG stereopsic architecture.
 
 ---
 
@@ -377,7 +377,7 @@ is a valid Euclidean distance within it.
 
 This duality — qualitative grammar at M2, quantitative evaluation at M0 — is
 not a weakness but a **structural virtue** that mirrors the Eagle/Sphinx
-bicephalous architecture itself.
+stereopsic architecture itself.
 
 ### Terminology Update
 
@@ -483,7 +483,7 @@ just as Korzybski argued that no map ever perfectly captures its territory.
 
 **Unchanged:** All REVOI dimension definitions, Sphinx Eye identity, Map role.
 
-### M3_GenesisGrammar.jsonld → Bicephalous Bicategory
+### M3_GenesisGrammar.jsonld → Stereopsic Bicategory
 
 **Removed:** SVD/coupling matrix `Σ`, `αᵢⱼ` coefficients, Hilbert space ℂ²⁵,
 ket notation, `Domain`/`KnowledgeField` Hilbert content.
@@ -630,14 +630,14 @@ all remaining ambiguity:
 (new)   |   Stereopsic fusion              (inter-grammar, always produces Gs)
 ```
 
-This reform makes the bicephalous architecture **explicit in the notation itself**.
+This reform makes the stereopsic architecture **explicit in the notation itself**.
 
 ### Three Primitive Alphabets
 
 ```
 𝕋₀(×) = {A, S, F, I, D}      Territory primitives — Eagle Eye (Gt)
 𝕋₀(+) = {R, E, V, O, Im}     Map primitives       — Sphinx Eye (Gm)
-𝕋₀(|) = {T}                   Bicephalous primitives — Bicephalous Perspective (Gs)
+𝕋₀(|) = {T}                   Gs primitives — Stereopsis (Gs)
 
 𝕋₀  =  𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  =  11 primitives
 ```
@@ -649,22 +649,22 @@ A third M3 file is added alongside EagleEye and SphinxEye:
 ```
 M3_EagleEye.jsonld              →  Gt, ASFID, ×   (metaphor: Eagle Eye)
 M3_SphinxEye.jsonld             →  Gm, REVOI, +   (metaphor: Sphinx Eye)
-M3_OdinsWisdom.jsonld →  Gs, {T}, |    (metaphor: Bicephalous Perspective)
+M3_OdinsWisdom.jsonld →  Gs, {T}, |    (metaphor: Odin's Wisdom)
 ```
 
 **Naming convention:** File names use *metaphorical* terminology
-(EagleEye, SphinxEye, Bicephalous). Internal content uses *formalism* terminology
+(EagleEye, SphinxEye, OdinsWisdom). Internal content uses *formalism* terminology
 (Gt, Gm, Gs, ×, +, |, StereopsisEmptySet, T).
 
 **Gs is not a third head** — it is the **reification** of the stereopsic synergy
-between Eagle Eye and Sphinx Eye. The architecture remains bicephalous.
+between Eagle Eye and Sphinx Eye. The architecture remains stereopsic.
 
 ### T — First Primitive of 𝕋₀(|)
 
 **T (Time)** is the first irreducible primitive of Gs:
 
 ```
-T  :=  irreducible bicephalous type
+T  :=  irreducible Gs type
        manifests as F | Im  or  D | Im in context
        used in:  m2:Gradient = F × T  or  I × T
 ```
@@ -677,7 +677,7 @@ T is primitive — not derived from other types. `F | Im` and `D | Im` are
 ```
 ×  :  intra-grammar  —  Gt × Gt → Gt   (closed — stays in Territory)
 +  :  intra-grammar  —  Gm × Gm → Gm   (closed — stays in Map)
-|  :  inter-grammar  —  * × * → Gs      (open — always produces Bicephalous)
+|  :  inter-grammar  —  * × * → Gs      (open — always produces Gs)
 ```
 
 **Key clarification:** | has "extended rights" not as a privilege but as its

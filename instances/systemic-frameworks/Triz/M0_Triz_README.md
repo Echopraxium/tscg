@@ -13,7 +13,7 @@
 
 TRIZ (Teoriya Resheniya Izobretatelskikh Zadatch — "Theory of Inventive Problem Solving") is a systematic innovation methodology developed by Soviet inventor Genrich Altshuller through analysis of over 200,000 patents across all engineering domains. TRIZ identifies **40 universal inventive principles** and a **39×39 contradiction matrix** to guide technical problem-solving.
 
-### Bicephalous Nature (AnzÛ Principle)
+### Stereopsic Nature (AnzÛ Principle)
 
 - **🦅 Eagle Eye (Territory):** Technical systems being analyzed and improved
 - **🦉 Sphinx Eye (Map):** TRIZ methodology itself as prescriptive framework
@@ -265,7 +265,7 @@ instances/systemic-frameworks/Triz/
 
 ## 🔗 Related TSCG Components
 
-- **M3 Genesis Space:** Bicephalous foundation (ASFID/REVOI)
+- **M3 Genesis Space:** Stereopsic foundation (ASFID/REVOI)
 - **M2 GenericConcepts:** 16 atomic patterns mobilized
 - **M1 Core Concepts:** 3 GenericConceptCombos defined
 - **M1 Systemic Modeling:** 6 framework-specific concepts
@@ -305,4 +305,4 @@ instances/systemic-frameworks/Triz/
 
 **TSCG Architecture:** M3 (Genesis) → M2 (GenericConcepts) → M1 (Domains/Combos) → M0 (TRIZ Instance)
 
-**Epistemic Status:** OnCriticalLine (δ₁=0.057) — Coherent bicephalous alignment between Map and Territory
+**Epistemic Status:** OnCriticalLine (δ₁=0.057) — Coherent stereopsic alignment between Map and Territory

@@ -240,7 +240,7 @@ EnergyGenerator (abstract, subclass of m2:Processor)
 
 #### NuclearReactor
 
-**M2 Instantiation**: `m2:Processor` (dual bicephalous architecture)
+**M2 Instantiation**: `m2:Processor` (dual stereopsic architecture)
 
 **M1 Core Concepts Used**:
 - CriticalityRegime (k<1, k=1, k>1)

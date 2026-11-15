@@ -362,7 +362,7 @@ M0 (Poclet Instance)
 1. **Framework Validation** (Proof-of-Concept)
    - Demonstrates ASFID completeness
    - Validates REVOI scoring methodology
-   - Confirms bicephalous Territory-Map distinction
+   - Confirms stereopsic Territory-Map distinction
 
 2. **GenericConcept Discovery** (M2 Population)
    - Helped identify **Balance** GenericConcept

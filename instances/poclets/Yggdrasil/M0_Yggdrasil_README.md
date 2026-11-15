@@ -59,7 +59,7 @@ The **Yggdrasil poclet** is a comprehensive TSCG analysis of Norse cosmology, ce
 ```
 ┌─────────────────────────────────────────────────────┐
 │  M3: Genesis Space (ASFID ⊗ REVOI)                 │
-│  Bicephalous architecture: Territory ⊗ Map          │
+│  Stereopsic architecture: Territory ⊗ Map          │
 └─────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────┐

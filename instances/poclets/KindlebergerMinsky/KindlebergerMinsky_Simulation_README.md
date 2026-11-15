@@ -28,7 +28,7 @@
 
 ## Overview
 
-This simulation is a **TSCG M0 Poclet visualization** of the Kindleberger-Minsky model of financial crises. It renders 7 historical speculative bubbles as interactive animated sequences, mapping each phase of the cycle onto the TSCG bicephalous ontology (ASFID Territory + REVOI Map).
+This simulation is a **TSCG M0 Poclet visualization** of the Kindleberger-Minsky model of financial crises. It renders 7 historical speculative bubbles as interactive animated sequences, mapping each phase of the cycle onto the TSCG stereopsic ontology (ASFID Territory + REVOI Map).
 
 The simulation demonstrates how a single abstract pattern — the five-phase speculative cycle — recurs with structural isomorphism across 3 centuries, 5 asset classes, and 4 continents.
 
@@ -62,7 +62,7 @@ In TSCG terms, the Kindleberger-Minsky cycle is a **temporal Attractor** (A) who
 - **Bifurcation** (I ⊗ D → threshold crossing) — Minsky Moment, R₀ > 1
 - **Cascade dissipation** (F ⊗ D) — debt deflation, institutional collapse
 
-The M3 bicephalous perspective reveals an important asymmetry: Territory (ASFID) scores are consistently high (measurable physical flows of capital), while Map (REVOI) scores degrade at peak Euphoria — the moment when the narrative most completely displaces empirical reality.
+The M3 stereopsic perspective reveals an important asymmetry: Territory (ASFID) scores are consistently high (measurable physical flows of capital), while Map (REVOI) scores degrade at peak Euphoria — the moment when the narrative most completely displaces empirical reality.
 
 ---
 

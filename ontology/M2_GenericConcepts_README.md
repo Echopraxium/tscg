@@ -139,7 +139,7 @@ O + R + Im + E  =  Context
 V + E           =  Invariant (Map perspective)
 ```
 
-### | — Stereopsic fusion (bicephalous)
+### | — Stereopsic fusion
 
 ```
 A × St × It | R + O   =  Coherence
@@ -151,7 +151,7 @@ Ss × F | K             =  Language      (Gs primitives Ss + K)
 A × S × F | _0         =  Balance       (DerivedGsElement _0)      ← v16.14.0
 A × F × D | _0         =  TriadicBalance (DerivedGsElement _0)     ← v16.14.0
 D × F × It | R + V + E =  Modelisation  (functionally stereopsic)  ← v16.14.0
-St × A × D | O + V     =  Constraint    (bicephalous)               ← v16.16.0
+St × A × D | O + V     =  Constraint    (Gs)                        ← v16.16.0
 ```
 
 **39 GenericConcepts** currently use `|` or a Gs primitive — including
@@ -363,7 +363,7 @@ Both ASFID and REVOI have an "I" type — M2 distinguishes them explicitly:
 | Total atomic GenericConcepts | 82 |
 | GenericConcept combos | 4 |
 | GenericConcept families | 9 |
-| Bicephalous formulas (`\|`) | 39 |
+| Gs formulas (`\|`) | 39 |
 | Gs primitives used | 6 + _0 (derived) |
 | `isStereopsic=true` | 39 GenericConcepts |
 | Dual-polarity pairs (`[f\|_^, f\|_$]`) | 11 |
@@ -472,7 +472,7 @@ via M3_GenesisGrammar — no direct import of M3_OdinsWisdom needed.
 12. **Atoms carry monoidal formulas; combos carry function signatures** — never both (v16.17.0)
 13. **Fm2 / Fm1m2 are functions, not functors** — emergence is non-compositional, so a combo has **no** monoidal expansion (v16.17.0)
 14. **`DomainConceptCombo`** (ex-`DomainConceptCombo`) = defined by its `Fm1m2` formula: **≥1 Domain + ≥1 GenericConcept** (v16.17.0)
-15. **Constraint revised** (v16.16.0) — `St × A × D | O + V` (bicephalous, 6 domains validated)
+15. **Constraint revised** (v16.16.0) — `St × A × D | O + V` (Gs, 6 domains validated)
 
 **M2 is where TSCG's transdisciplinary power becomes explicit.** 🌟
 
@@ -487,7 +487,7 @@ via M3_GenesisGrammar — no direct import of M3_OdinsWisdom needed.
 ```
 Formula (old): St | L
 Formula (new): St × A × D | O + V
-perspective:   territory → bicephalous
+perspective:   territory → stereopsic
 isStereopsic:  true (unchanged)
 eagleView:     status IMMUTABLE  (its `formula` key removed in v16.18.0)
 sphinxView:    O + V (VALIDATED)

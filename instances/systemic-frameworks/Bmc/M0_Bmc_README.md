@@ -12,7 +12,7 @@
 
 The Business Model Canvas (Osterwalder & Pigneur, 2010) is a strategic management framework that describes how an organization **creates, delivers, and captures value** through 9 interconnected building blocks. It is the most widely adopted business modeling tool in the world, with 5M+ registered canvases on Strategyzer and adoption across 45+ languages.
 
-As a TSCG SystemicFramework, the BMC is analyzed through the **bicephalous lens**:
+As a TSCG SystemicFramework, the BMC is analyzed through the **stereopsic lens**:
 - **Eagle Eye (ASFID / Territory):** captures the operational dynamics of real business systems
 - **Sphinx Eye (REVOI / Map):** evaluates the BMC canvas itself as a representational and analytical tool
 

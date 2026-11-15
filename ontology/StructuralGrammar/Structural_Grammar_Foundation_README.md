@@ -46,7 +46,7 @@ rather than Hilbert spaces or tensor algebra.
 ```
 Gt  (Eagle Eye)              ×   𝕋₀(×) = {A, S, F, I, D}
 Gm  (Sphinx Eye)             +   𝕋₀(+) = {R, E, V, O, Im}
-Gs  (Bicephalous Perspective) |   𝕋₀(|) = {T, _^, _$}
+Gs  (Stereopsis)            |   𝕋₀(|) = {T, _^, _$}
 
 𝕋₀ = 13 primitives total
 ```
@@ -112,9 +112,9 @@ Both are **Structural Grammars**. Neither requires a Hilbert space.
 | `M3_EagleEye.jsonld` | Territory Grammar Gt — ASFID, × |
 | `M3_SphinxEye.jsonld` | Map Grammar Gm — REVOI, + |
 | `M3_OdinsWisdom.jsonld` | Stereopsis Grammar Gs — {T}, \| |
-| `M3_GenesisGrammar.jsonld` | Bicephalous aggregation — imports all three |
+| `M3_GenesisGrammar.jsonld` | Stereopsic aggregation — imports all three |
 | `StructuralGrammar_MonoidalOperators_README.md` | Operator reference + intra/inter clarification |
-| `PotentialRefinements_MonoidalOperators.md` | Open questions (T, ∩, abs(), Bicephalous Alphabet) |
+| `PotentialRefinements_MonoidalOperators.md` | Open questions (T, ∩, abs(), Gs Alphabet) |
 
 ---
 
@@ -159,6 +159,6 @@ Reverse osmosis →  Ψ : Gm → Gt   (imposed flow, interpretation)
 ```
 
 This would be the first poclet directly modelling the Φ/Ψ dynamics —
-the bicephalous architecture put in abyme within a single poclet.
+the stereopsic architecture put in abyme within a single poclet.
 
 See `PotentialRefinements_MonoidalOperators.md` — Refinement 7 for full analysis.

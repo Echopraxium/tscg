@@ -265,7 +265,7 @@ Interpretation: This is a **well-characterized biological system** with decades 
 - ✅ TSCG Framework v14.1.0
 - ✅ M2 GenericConcepts v14.1.0 (Pole, Mediator, Trigger)
 - ✅ M1:biology domain extension
-- ✅ Bicephalous architecture (Eagle Eye ASFID perspective)
+- ✅ Stereopsic architecture (Eagle Eye ASFID perspective)
 
 ### 9.3 Future Extensions
 

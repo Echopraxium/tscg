@@ -82,7 +82,7 @@ A fourth constraint governs the anthropogenic dimension:
 
 ---
 
-## 3. TSCG Bicephalous Analysis
+## 3. TSCG Stereopsic Analysis
 
 ### 3.1 Eagle Eye (ASFID — Territory Space)
 

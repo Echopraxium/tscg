@@ -2,7 +2,7 @@
 
 **Version:** 4.5.0  
 **Layer:** M3  
-**Type:** Bicephalous Grammar (Gt + Gm) with Stereopsis reification (Gs)  
+**Type:** Stereopsic Grammar (Gt + Gm) with Stereopsis reification (Gs)  
 **Former name:** M3_GenesisSpace.jsonld  
 **Created:** 2026-01-21  
 **Last Modified:** 2026-07-23
@@ -12,7 +12,7 @@
 
 ## 🎯 Role
 
-**M3_GenesisGrammar** is the **bicephalous aggregation** of Territory and Map
+**M3_GenesisGrammar** is the **stereopsic aggregation** of Territory and Map
 grammars — the complete M3 layer foundation combining ASFID (Eagle Eye) and
 REVOI (Sphinx Eye) perspectives, with Gs (Stereopsis) as the reification of
 their synergy.
@@ -29,7 +29,7 @@ produces a third ontological level — Gs — which Genesis formalizes.
 
 ---
 
-## 📐 Bicephalous Architecture
+## 📐 Stereopsic Architecture
 
 ```
         🦅 Eagle Eye          🦁 Sphinx Eye
@@ -52,7 +52,7 @@ produces a third ontological level — Gs — which Genesis formalizes.
 Ψ : Gm → Gt   (interpretation: Map predictions guide Territory)
 ```
 
-The architecture is **bicephalous** — two heads, two perspectives.
+The architecture is **stereopsic** — two heads, two perspectives.
 Gs is not a third head but the **reification** of what the two heads
 produce together through stereopsis.
 
@@ -106,7 +106,7 @@ SpectralClass:
 
 ---
 
-## 🦅🦁 Bicephalous Metaphor
+## 🦅🦁 The Metaphor: Eagle Eye, Sphinx Eye, Odin's Wisdom
 
 Imagine a **giant human body** with:
 - **Two heads:** Eagle (left) and Sphinx (right)
@@ -121,7 +121,7 @@ Imagine a **giant human body** with:
 
 ## 📚 Key Takeaways
 
-1. **Bicephalous aggregation** — Gt (Territory) + Gm (Map)
+1. **Stereopsic aggregation** — Gt (Territory) + Gm (Map)
 2. **Gs reification** — Stereopsis Grammar formalizes the Φ/Ψ synergy
 3. **Natural transformations** — Φ/Ψ coupling (never a perfect isomorphism)
 4. **Korzybski formalized** — epistemic gap δ₁, SpectralClass

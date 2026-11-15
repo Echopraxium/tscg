@@ -41,7 +41,7 @@ This reform introduces:
 
 ## Guiding Principle: Metaphor First, Formalism Second
 
-TSCG is built on a **bicephalous architecture**:
+TSCG is built on a **stereopsic architecture**:
 
 | Eye | Acronym | Perspective | Metaphor |
 |---|---|---|---|
@@ -107,7 +107,7 @@ absence of any epistemic property.
 |---|---|---|---|
 | `×` | intra-ASFID | Structural product of colors | `⊗` (Territory) |
 | `+` | intra-REVOI | Structural sum of sectors | `⊗` (Map) |
-| `\|` | ASFID → REVOI | Stereopsic fusion (bicephalous) | *(new)* |
+| `\|` | ASFID → REVOI | Stereopsic fusion | *(new)* |
 
 ### `×` — Structural Product (Territory)
 
@@ -129,7 +129,7 @@ R + E        →  Sectors 1 and 2 active (Representability + Evolvability)
 V + O + I   →  Sectors 3, 4, 5 active
 ```
 
-### `|` — Stereopsic Fusion (Bicephalous)
+### `|` — Stereopsic Fusion
 
 Bridges Territory and Map. Interpreted as **union**: each side contributes
 its own properties. This is the mathematical expression of stereopsis —
@@ -138,7 +138,7 @@ the fusion of Eagle Eye and Sphinx Eye into systemic depth perception.
 ```
 A × S | R         →  Attractor+Structure (Territory) fused with Representability (Map)
 F | V + O         →  Flow (Territory) fused with Verifiability+Observability (Map)
-A × S × F | R + E →  complex bicephalous expression
+A × S × F | R + E →  complex Gs expression
 ```
 
 ---
@@ -151,7 +151,7 @@ neutral element. **This is the extent of the algebraic claim.**
 ```
 (ASFID,        ×,  m3:EmptyTerritory)   →  Territory Monoid
 (REVOI,        +,  m3:EmptyMap)          →  Map Monoid
-(ASFID×REVOI,  |,  m3:StereopsisEmptySet) →  Bicephalous Monoid
+(ASFID×REVOI,  |,  m3:StereopsisEmptySet) →  Gs Monoid
 ```
 
 ### Neutral elements verification
@@ -231,7 +231,7 @@ Each face encodes both alphabets simultaneously:
 - **White pentagon sectors** → active REVOI dimensions (Sphinx Eye)
 
 > The face is literally an **eye**: iris (ASFID color) + pupil (black) +
-> retina (REVOI pentagon). Bicephaly made anatomically visible.
+> retina (REVOI pentagon). Stereopsis made anatomically visible.
 
 ### The Square-Base Pyramid
 
@@ -282,7 +282,7 @@ R + E          →  Representability + Evolvability
 V + O + I      →  Verifiability + Observability + Interoperability
 ```
 
-### Bicephalous (hybrid) expressions
+### Stereopsic (hybrid) expressions
 ```
 A × S | R            →  Territory(A,S) fused with Map(R)
 F | V + O            →  Territory(F) fused with Map(V,O)
@@ -323,7 +323,7 @@ This migration applies to:
 |---|---|
 | Territory alphabet | 6 types: EmptyTerritory + {A, S, F, I, D} |
 | Map alphabet | 6 types: EmptyMap + {R, E, V, O, I} |
-| Operators | `×` (Territory), `+` (Map), `\|` (Bicephalous) |
+| Operators | `×` (Territory), `+` (Map), `\|` (Gs) |
 | Algebraic claim | Three monoids — nothing more |
 | Neutral of `×` | `m3:EmptyTerritory` (Black) |
 | Neutral of `+` | `m3:EmptyMap` (Empty pentagon) |
@@ -334,11 +334,11 @@ This migration applies to:
 
 ---
 
-## Update v1.1.0 — Bicephalous Alphabet (2026-05-18)
+## Update v1.1.0 — Gs Alphabet (2026-05-18)
 
 ### Decision
 
-A **third primitive alphabet** is formally declared — the Bicephalous Alphabet —
+A **third primitive alphabet** is formally declared — the Gs Alphabet —
 alongside the Territory and Map alphabets.
 
 ### The three alphabets
@@ -349,9 +349,9 @@ Alphabet +  =  {R, E, V, O, Im}     6 types (5 primitives + EmptyMap)
 Alphabet |  =  {T, _^, _$}                   2 types (1 primitive + EmptyStereopsis)
 ```
 
-### T — Temporality (first bicephalous primitive)
+### T — Temporality (first Gs primitive)
 
-T is the first member of the Bicephalous Alphabet, defined by stereopsic
+T is the first member of the Gs Alphabet, defined by stereopsic
 equivalence:
 
 ```
@@ -372,13 +372,13 @@ m2:Gradient  =  F × T   or   I × T   (preferred)
 ### Why this matters
 
 Without its own alphabet, | would be merely a cartesian product operator
-(juxtaposing pairs), not a genuine third monoid. The Bicephalous Alphabet
+(juxtaposing pairs), not a genuine third monoid. The Gs Alphabet
 gives | proper monoid status: stereopsis genuinely creates new types that
 exist in neither Territory nor Map alone.
 
 ### Open members
 
-Further bicephalous primitives will emerge from poclet corpus analysis —
+Further Gs primitives will emerge from poclet corpus analysis —
 not from systematic search. The corpus drives discovery, as it did for
 ASFID and REVOI.
 
@@ -418,7 +418,7 @@ algebra, no algebraic structure beyond monoids is needed or assumed.
 
 The | operator is simply a monoidal product whose domain spans multiple
 grammars — exactly as the stereopsic fusion of Eagle Eye and Sphinx Eye
-spans both Territory and Map to produce the Bicephalous Perspective.
+spans both Territory and Map to produce the Stereopsic Perspective.
 
 ### Constraint that preserves coherence
 
@@ -476,7 +476,7 @@ Osmosis          →  Φ : Gt → Gm   (natural flow, Territory → Map)
 Reverse osmosis  →  Ψ : Gm → Gt   (imposed flow, Map → Territory)
 ```
 
-This would be the first poclet directly modelling the Φ/Ψ bicephalous dynamics.
+This would be the first poclet directly modelling the Φ/Ψ stereopsic dynamics.
 
 ---
 

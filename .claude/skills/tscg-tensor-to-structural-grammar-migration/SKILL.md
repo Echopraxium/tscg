@@ -55,7 +55,7 @@ Phase 1 — M3 SURGERY       (manual, ~2h)
   ├── M3_GrammarFoundation.jsonld  → NEW apex ontology (no imports)
   ├── M3_EagleEye.jsonld           → Territory Grammar Gt
   ├── M3_SphinxEye.jsonld          → Map Grammar Gm
-  └── M3_GenesisGrammar.jsonld     → Bicephalous hub (ex-GenesisSpace)
+  └── M3_GenesisGrammar.jsonld     → Stereopsic hub (ex-GenesisSpace)
 
 Phase 2 — M2 RENAME         (script + manual cleanup, ~1h)
   ├── Run cli_tools/migrate_properties/migrate_properties.py
@@ -155,7 +155,7 @@ Same pattern as EagleEye with Map Grammar specifics:
 ```json
 "grammar_foundation": {
   "formalism":    "Lambek Calculus / Free Commutative Monoidal Categories",
-  "architecture": "Bicephalous Structural Grammar: Gt (Territory) + Gm (Map)",
+  "architecture": "Stereopsic Structural Grammar: Gt (Territory) + Gm (Map)",
   "connection": {
     "Phi": "Φ : Gt → Gm  (natural transformation — observation)",
     "Psi": "Ψ : Gm → Gt  (natural transformation — interpretation)",

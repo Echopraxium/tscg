@@ -972,7 +972,7 @@ See [docs/API_REFERENCE.md](docs/API_REFERENCE.md) for complete API documentatio
 - **Poclet**: Proof-of-concept system instance (minimal complete system)
 - **Metaconcept**: Transdisciplinary pattern validated across domains
 - **ValueSpace**: Attribute enrichment for metaconcepts
-- **Bicephalous**: Dual perspective architecture (EagleEye + SphinxEye)
+- **Stereopsic**: Dual perspective architecture (EagleEye + SphinxEye)
 
 ### E. Version History
 

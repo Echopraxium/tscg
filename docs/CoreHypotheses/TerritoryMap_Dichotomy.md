@@ -13,7 +13,7 @@
 
 1. [The Hypothesis](#1-the-hypothesis)
 2. [Korzybski's Principle and TSCG's Extension](#2-korzybskis-principle-and-tscgs-extension)
-3. [The Bicephalous Architecture](#3-the-bicephalous-architecture)
+3. [The Stereopsic Architecture](#3-the-stereopsic-architecture)
 4. [The Φ/Ψ Enrichment Loop](#4-the-φψ-enrichment-loop)
 5. [The Epistemic Gap δ₁](#5-the-epistemic-gap-δ₁)
 6. [The Bat Metaphor](#6-the-bat-metaphor)
@@ -33,7 +33,7 @@
 > between them is not a failure — it is the primary instrument of
 > learning, refinement, and discovery.**
 
-This is the foundational hypothesis of TSCG's bicephalous architecture.
+This is the foundational hypothesis of TSCG's stereopsic architecture.
 It determines the entire M3 layer structure, the ASFID/REVOI split, and
 the δ₁ epistemic gap metric.
 
@@ -74,9 +74,9 @@ reflexive loop.
 
 ---
 
-## 3. The Bicephalous Architecture
+## 3. The Stereopsic Architecture
 
-TSCG formalises the Map-Territory duality through a **bicephalous
+TSCG formalises the Map-Territory duality through a **stereopsic
 architecture** — two heads, two perspectives, one integrated framework.
 
 ```
@@ -277,7 +277,7 @@ most common epistemological error in systems modelling.
 
 A poclet validated by ASFID alone would only describe behaviour. A poclet
 validated by REVOI alone would only describe representation quality. The
-bicephalous validation — both eyes, one gap — produces a richer and more
+stereopsic validation — both eyes, one gap — produces a richer and more
 honest assessment.
 
 ### For Transdisciplinarity

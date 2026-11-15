@@ -1810,7 +1810,7 @@
     - CountOntologiesByCategory.sparql
     - FindAllM3Ontologies.sparql
     - FindAllPoclets.sparql
-    - FindBicephalousComponents.sparql
+    - FindStereopsicComponents.sparql
     - HierarchicalQuery.sparql
     - ListAllExtensions.sparql
     - m2_sparql_analysis.py

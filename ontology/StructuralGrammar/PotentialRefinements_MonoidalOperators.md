@@ -130,7 +130,7 @@ Temporality is already distributed across two ASFID dimensions:
 These are **two distinct temporal roles**, not redundant expressions of the same thing.
 
 A single "Time" dimension would collapse this distinction and lose expressive power.
-The bicephalous architecture captures temporal phenomena through the F/D interplay,
+The stereopsic architecture captures temporal phenomena through the F/D interplay,
 which the Gradient correction (`F × D`) exemplifies.
 
 ### F's unique dual nature (F_morphic amendment, v3.9.0)
@@ -241,12 +241,12 @@ Two conditions for adoption:
 
 ---
 
-## Refinement 5 — T as Emergent Bicephalous Temporal Type
+## Refinement 5 — T as Emergent Stereopsic Temporal Type
 
 ### Origin
 
 Exploring how to extract "pure temporality" from the F/D pair via the
-bicephalous `|` operator rather than via intersection (∩, Refinement 1)
+stereopsic `|` operator rather than via intersection (∩, Refinement 1)
 or arithmetic abs() (Refinement 4).
 
 ### The proposal
@@ -260,7 +260,7 @@ Where:
 - `F` = Flow (ASFID / Territory)
 - `D` = Dynamics (ASFID / Territory)
 - `Im` = Interoperability (REVOI / Map)
-- `T` = Temporality — emergent bicephalous type
+- `T` = Temporality — emergent Gs type
 
 ### Why Im is the right Map lens
 
@@ -323,7 +323,7 @@ temporality with other systems.
 ```
 @id : m3:TemporalType
 label : "Temporal Type T"
-comment : "Emergent bicephalous type — pure temporality. Stereopsic equivalence: F | Im ≡ D | Im ≡ T."
+comment : "Emergent Gs type — pure temporality. Gs equivalence: F | Im ≡ D | Im ≡ T."
 definition : T := F | Im  ≡  D | Im
 status : CANDIDATE — requires validation on poclet corpus
 ```
@@ -345,11 +345,11 @@ status : CANDIDATE — requires validation on poclet corpus
 | Gradient formula | **Resolved** | `⊗₂F → F × D`, `⊗₂I → I × D` | May refine to F×T / I×T |
 | Missing Temporality dimension | **Closed** | No change (F+D sufficient) | None |
 | abs() M0 magnitude extractor | **Open** | None (M0 scope only) | Validate on 2+ poclets |
-| T emergent bicephalous type | **Candidate** | Documented only | Axiom F\|Im ≡ D\|Im + 2 poclets |
+| T emergent Gs type | **Candidate** | Documented only | Axiom F\|Im ≡ D\|Im + 2 poclets |
 
 ---
 
-## Refinement 6 — The Bicephalous Alphabet: A Structural Gap
+## Refinement 6 — The Gs Alphabet: A Structural Gap
 
 ### The lacuna identified
 
@@ -358,14 +358,14 @@ The three monoidal operators have asymmetric alphabets:
 ```
 (ASFID, ×, EmptyTerritory)     → Own alphabet: {A, S, F, I, D}        5 primitives
 (REVOI, +, EmptyMap)            → Own alphabet: {R, E, V, O, Im}        5 primitives
-(Bicephalous, |, EmptyStereopsis) → Own alphabet: { ??? }               0 primitives ← GAP
+(Gs, |, EmptyStereopsis) → Own alphabet: { ??? }               0 primitives ← GAP
 ```
 
 Without its own primitive types, `|` is not a genuine third monoid — it is
 merely a **cartesian product** of the two others. A type `A_expr | R_expr`
 is just a pair, not a new entity.
 
-Yet the bicephalous architecture claims that stereopsis (the fusion of Eagle
+Yet the stereopsic architecture claims that stereopsis (the fusion of Eagle
 Eye + Sphinx Eye) **creates** something genuinely new — depth, coherence,
 epistemic alignment — that exists in neither perspective alone. This creative
 power requires proper primitive types to express it.
@@ -375,13 +375,13 @@ new — it only juxtaposes. This contradicts the foundational claim of TSCG.
 
 ---
 
-### What a bicephalous primitive type must be
+### What a Gs primitive type must be
 
-To qualify as a generator of the bicephalous monoid, a type must:
+To qualify as a generator of the Gs monoid, a type must:
 
 1. **Not reduce** to a Territory type alone (not in ASFID alphabet)
 2. **Not reduce** to a Map type alone (not in REVOI alphabet)
-3. **Be atomic** — not decomposable into simpler bicephalous types
+3. **Be atomic** — not decomposable into simpler Gs types
 4. **Be relational** — describe the Territory/Map correspondence itself
 
 ---
@@ -405,7 +405,7 @@ T := F | Im  ≡  D | Im
 δ₁ = ||ASFID_mean − REVOI_mean|| / √2
 ```
 
-- Intrinsically bicephalous: measures Territory/Map non-isomorphism ✓
+- Intrinsically stereopsic: measures Territory/Map non-isomorphism ✓
 - But: δ₁ is a **scalar metric** [0,1], not a monoidal type ✗
 - It characterizes the | relation but is not a generator of it
 - **Status: M0 metric, not a primitive type**
@@ -416,7 +416,7 @@ T := F | Im  ≡  D | Im
 Φ : Gt → Gm   (natural transformation Territory → Map)
 ```
 
-- Intrinsically bicephalous ✓
+- Intrinsically stereopsic ✓
 - But: Φ is a **functor/morphism between categories**, not a type
 - It operates on types but is not itself a type in the monoidal sense ✗
 - **Status: M3 morphism, not a primitive type**
@@ -435,16 +435,16 @@ T := F | Im  ≡  D | Im
 ### What does qualify: relational types discovered in the corpus
 
 Examining existing M2 GenericConcepts with `perspective: "dual"` or
-`perspective: "hybrid"` reveals types that are already bicephalous in nature:
+`perspective: "hybrid"` reveals types that are already stereopsic in nature:
 
 | GenericConcept | Formula | Observation |
 |---|---|---|
-| Coherence | A × S × I \| R + O | Spans both alphabets — bicephalous by nature |
-| Identity | S × I × A \| V + E | Bicephalous: persistence (Territory) + verifiability (Map) |
-| ValueSpace | It \| V + O + R + Im | Archetypal bicephalous — defined by both perspectives |
-| Amplification | Ft × D × It \| R + O | Bicephalous: measurable (Territory) + representable (Map) |
+| Coherence | A × S × I \| R + O | Spans both alphabets — stereopsic by nature |
+| Identity | S × I × A \| V + E | Stereopsic: persistence (Territory) + verifiability (Map) |
+| ValueSpace | It \| V + O + R + Im | Archetypal stereopsic — defined by both perspectives |
+| Amplification | Ft × D × It \| R + O | Stereopsic: measurable (Territory) + representable (Map) |
 
-These are **derived** bicephalous types (𝕋₁ level). The alphabet would
+These are **derived** Gs types (𝕋₁ level). The alphabet would
 contain their **atomic** precursors — primitives from which these are built.
 
 ---
@@ -454,7 +454,7 @@ contain their **atomic** precursors — primitives from which these are built.
 ```
 𝕋₀(×) = {A, S, F, I, D}           Territory primitives  (Eagle Eye)
 𝕋₀(+) = {R, E, V, O, Im}          Map primitives        (Sphinx Eye)
-𝕋₀(|) = {T, ...}                   Bicephalous primitives (Stereopsis)
+𝕋₀(|) = {T, ...}                   Gs primitives (Stereopsis)
 ```
 
 The full type system becomes:
@@ -463,7 +463,7 @@ The full type system becomes:
 𝕋₁ = monoidal products of 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|) via ×, +, |
 ```
 
-Bicephalous primitives are types that describe the **Territory↔Map
+Gs primitives are types that describe the **Territory↔Map
 correspondence** itself — not what a system is (×), not how a model
 qualifies (+ ), but how territory and map correspond (|).
 
@@ -473,11 +473,11 @@ qualifies (+ ), but how territory and map correspond (|).
 
 Two options:
 
-**Option A — Minimal**: T is the only bicephalous primitive (for now).
+**Option A — Minimal**: T is the only Gs primitive (for now).
 Adopt T, update StructuralGrammar_MonoidalOperators_README.md and M3.
 Other primitives discovered through corpus analysis.
 
-**Option B — Structural**: Formally recognize the bicephalous alphabet as
+**Option B — Structural**: Formally recognize the Gs alphabet as
 a third primitive set. Systematically search the poclet corpus for
 candidates beyond T. Update M3_GrammarFoundation with 𝕋₀(|).
 
@@ -504,8 +504,8 @@ corpus analysis of poclets with hybrid/dual perspectives.
 | Gradient formula | **Resolved** | `⊗₂F → F × D`, `⊗₂I → I × D` | May refine to F×T / I×T |
 | Missing Temporality dimension | **Closed** | No change (F+D sufficient) | None |
 | abs() M0 magnitude extractor | **Open** | None (M0 scope only) | Validate on 2+ poclets |
-| T emergent bicephalous type | **Candidate** | Documented only | Axiom + 2 poclets |
-| Bicephalous alphabet gap | **Decision pending** | Documented only | Option A vs B (Michel) |
+| T emergent Gs type | **Candidate** | Documented only | Axiom + 2 poclets |
+| Gs alphabet gap | **Decision pending** | Documented only | Option A vs B (Michel) |
 
 ---
 
@@ -515,7 +515,7 @@ corpus analysis of poclets with hybrid/dual perspectives.
 
 **Decision: Option B (partial)**
 
-> Formally declare a **third alphabet** — the Bicephalous Alphabet — alongside
+> Formally declare a **third alphabet** — the Gs Alphabet — alongside
 > the ASFID alphabet {A, S, F, I, D} and the REVOI alphabet {R, E, V, O, Im}.
 > **T (Time)** is its first and currently only member.
 > Further members will emerge naturally from corpus analysis, not from
@@ -531,14 +531,14 @@ the structural gap.
 ```
 Alphabet ×  =  {A, S, F, I, D}    Territory primitives   (Eagle Eye)
 Alphabet +  =  {R, E, V, O, Im}   Map primitives         (Sphinx Eye)
-Alphabet |  =  {T, ...}            Bicephalous primitives (Stereopsis)
+Alphabet |  =  {T, ...}            Gs primitives (Stereopsis)
                  ↑
               T = first member (Temporality)
               ... = future members, emerging from corpus
 ```
 
 **Files to update:**
-- `StructuralGrammar_MonoidalOperators_README.md` — add Bicephalous Alphabet section
+- `StructuralGrammar_MonoidalOperators_README.md` — add Gs Alphabet section
 - `M3_GrammarFoundation.jsonld` — add T as m3:TemporalType + third alphabet declaration
 - `PotentialRefinements_MonoidalOperators.md` — move T from Candidate → Decided
 
@@ -587,7 +587,7 @@ Reverse osmosis  →  Ψ : Gm → Gt   (imposed flow — Map predictions guide T
 ```
 
 This suggests that the poclet **"Osmosis / Reverse Osmosis"** would be the
-first poclet that directly models the Φ/Ψ bicephalous dynamics — the
+first poclet that directly models the Φ/Ψ stereopsic dynamics — the
 architecture put in abyme within a poclet.
 
 ### Implications for Gs primitives
@@ -622,8 +622,8 @@ illuminating metaphor that:
 | Gradient formula | **Resolved** | `⊗₂F → F × T / I × T` | — |
 | Missing Temporality dimension | **Closed** | No change (F+D sufficient) | — |
 | abs() M0 magnitude extractor | **Open** | None (M0 scope only) | Validate on 2+ poclets |
-| T emergent bicephalous type | **Decided** | M3_OdinsWisdom.jsonld | Axiom pending |
-| Bicephalous alphabet gap | **Decided** | 𝕋₀(\|)={T} declared | Further primitives from corpus |
+| T emergent Gs type | **Decided** | M3_OdinsWisdom.jsonld | Axiom pending |
+| Gs alphabet gap | **Decided** | 𝕋₀(\|)={T} declared | Further primitives from corpus |
 | Cell membrane analogy for \| | **Documented** | This section | Poclet Osmosis/Reverse Osmosis |
 
 ---
@@ -676,7 +676,7 @@ Documented here for future consideration.
 | Gradient formula | **Resolved** | `F × T / I × T` | — |
 | Missing Temporality dimension | **Closed** | No change | — |
 | abs() M0 magnitude extractor | **Open** | None (M0 scope) | Validate on 2+ poclets |
-| T emergent bicephalous type | **Decided** | M3_OdinsWisdom.jsonld | — |
-| Bicephalous alphabet gap | **Decided** | 𝕋₀(\|)={T,_^,_$} declared | — |
+| T emergent Gs type | **Decided** | M3_OdinsWisdom.jsonld | — |
+| Gs alphabet gap | **Decided** | 𝕋₀(\|)={T,_^,_$} declared | — |
 | Cell membrane analogy for \| | **Documented** | Three READMEs updated | Poclet Osmosis |
 | Emergence operators ×⇒, +⇒ | **Resolved** | Replaced by Fm2 (M2) and Fm1m2 (M1/M2) morphisms | — |

@@ -386,7 +386,7 @@ This poclet was identified during M2 analysis as requiring **two new GenericConc
 - **`m2:Narration`** — the transformation of collective market beliefs across phases is a semantic network morphism irreducible to Signal (1:1), Pattern (static), or Transformation (content-agnostic).
 - **`m2:Duplication`** — identified as missing M2 prerequisite for Propagation.
 
-### Bicephalous Balance
+### Stereopsic Balance
 
 ```
 Eagle Eye (Territory): ASFID = 0.91  ████████████████████  Strong

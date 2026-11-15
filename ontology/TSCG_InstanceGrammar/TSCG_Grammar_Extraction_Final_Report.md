@@ -304,7 +304,7 @@
 
 - Encoding correspondence table (UTF-8 double-encoding fixes)
 - Poclet terminology reference
-- M3 bicephalous architecture documentation
+- M3 stereopsic architecture documentation
 - Formula notation guides
 
 ---

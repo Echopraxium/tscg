@@ -877,7 +877,7 @@ Please open an issue or pull request on the main TSCG repository.
 📚 References
 TSCG Framework (main repo)
 
-M3 Bicephalous Architecture
+M3 Stereopsic Architecture
 
 M2 Formulas Reference
 

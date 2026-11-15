@@ -105,7 +105,7 @@ The near-zero gap confirms that the Ginzburg-Landau formalism provides a genuine
 | Regulation | `A⊗I⊗D` | Dynamic | Difficulty regulation loop (τ_B target) |
 | Signal | `I⊗F` | Informational | Block propagation through P2P gossip |
 | Network | `S⊗I` | Structural | P2P topology with gossip protocol |
-| Coherence | `A⊗S⊗I⊗R⊗O` | Structural/Ontol. | Consensus as bicephalous coherence |
+| Coherence | `A⊗S⊗I⊗R⊗O` | Structural/Ontol. | Consensus as stereopsic coherence |
 
 ### Combos (4) — new M2 candidates from this session
 

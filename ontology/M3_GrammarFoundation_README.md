@@ -80,7 +80,7 @@ TSCG defines **three alphabets** — one per monoidal operator, **16 primitives 
 ```
 𝕋₀(×) = {A, St, F, It, D}           5 Territory primitives   (Eagle Eye  — ASFID)
 𝕋₀(+) = {R, E, V, O, Im}           5 Map primitives         (Sphinx Eye — REVOI)
-𝕋₀(|) = {T, _^, _$, K, Ss, L}       6 Stereopsis primitives  (Bicephalous — TKSL + poles)
+𝕋₀(|) = {T, _^, _$, K, Ss, L}       6 Stereopsis primitives  (Gs — TKSL + poles)
 
 𝕋₀ = 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  =  16 primitives total
 ```
@@ -136,11 +136,11 @@ O + R + Im + E = Context
 
 **Axioms:** same structure as ×, over Map primitives.
 
-### | — Stereopsic fusion (bicephalous, inter-space)
+### | — Stereopsic fusion (inter-space)
 
 ```
-A × S | R + O = Coherence    (bicephalous formula)
-F × T         = Gradient     (Territory × Bicephalous)
+A × S | R + O = Coherence    (Gs formula)
+F × T         = Gradient     (Territory × Gs)
 ```
 
 **Asymmetric:** left side = Territory/Bicephalous expression,
@@ -283,7 +283,7 @@ structure beyond free monoids is needed or assumed.
 
 | is simply a monoidal product whose domain spans multiple grammars —
 exactly as stereopsic fusion spans both Territory (Eagle Eye) and
-Map (Sphinx Eye) to produce the Bicephalous Perspective.
+Map (Sphinx Eye) to produce the Stereopsic Perspective.
 
 ### Why | must be inter-grammar
 

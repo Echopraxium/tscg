@@ -423,7 +423,7 @@ python create_tscg_rag.py local --verbose
 # ✓ Added 487 segments to database
 
 # 2. Query the database
-python query_tscg_rag.py "What is the bicephalous architecture?"
+python query_tscg_rag.py "What is the stereopsic architecture?"
 
 # 3. Explore interactively
 python query_tscg_rag.py -i

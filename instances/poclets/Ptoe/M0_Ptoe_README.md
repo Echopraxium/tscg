@@ -377,7 +377,7 @@ REVOI_mean = (0.95 + 0.80 + 0.95 + 0.90 + 0.85) / 5 = 0.89
 ### TSCG Framework
 
 11. **Echopraxium** (2024). "TSCG (Transdisciplinary System Construction Game): A Meta-Framework for Modeling Complex Systems". Zenodo. DOI: 10.5281/zenodo.18471860
-    - **M3 Genesis Space**: ASFID (Eagle Eye) + REVOI (Sphinx Eye) bicephalous architecture
+    - **M3 Genesis Space**: ASFID (Eagle Eye) + REVOI (Sphinx Eye) stereopsic architecture
     - **M2 GenericConcepts**: 81 universal patterns (Component, Hierarchy, Gradient, Code...)
     - **Epistemic Gap δ**: Map-territory alignment metric
 

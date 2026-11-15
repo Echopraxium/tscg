@@ -12,7 +12,7 @@
 ## 🎯 Role
 
 **M3_SphinxEye** defines the **Map Grammar (Gm)** — the epistemic/representational
-perspective of TSCG's bicephalous architecture. It formalizes the **REVOI** basis:
+perspective of TSCG's stereopsic architecture. It formalizes the **REVOI** basis:
 
 ```
 𝕋₀(+) = {R, E, V, O, Im}
@@ -71,7 +71,7 @@ M3_GenesisGrammar
 
 **Complete architecture:**
 ```
-TSCG Bicephalous Architecture  =  Gt (Territory) + Gm (Map)
+TSCG Stereopsic Architecture  =  Gt (Territory) + Gm (Map)
 Gs (Stereopsis) = reification of their stereopsic synergy
 ```
 

@@ -255,7 +255,7 @@ loop.
 ```
 M3_EagleEye   (Gt / × / Territory)
 M3_SphinxEye  (Gm / + / Map)
-M3_Stereopsis (Gs / | / Bicephalous Interface)
+M3_Stereopsis (Gs / | / Stereopsic Interface)
       ↓
 M3_GenesisGrammar = Gt + Gm + Gs
 ```

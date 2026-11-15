@@ -326,7 +326,7 @@ Across all poclets, **R (Representability) correlates most strongly with real-wo
 | 🦅 Eagle Eye (ASFID gap) | Map-Territory fidelity | ΔΘ ≈ 0.17 |
 | 🗿 Sphinx Eye (REVOI mean) | Intrinsic Map quality | 0.94 |
 
-ASFID gap measures how accurately the Map models the Territory. REVOI measures how good the Map *is as a Map* — independently of what Territory it models. Both perspectives are necessary for complete bicephalous analysis.
+ASFID gap measures how accurately the Map models the Territory. REVOI measures how good the Map *is as a Map* — independently of what Territory it models. Both perspectives are necessary for complete stereopsic analysis.
 
 ### 4. Balance and Trade-off validated as universal GenericConcepts
 
@@ -391,7 +391,7 @@ TPACK is a Map for constructing instructional Maps (lesson plans, curricula). If
 | Balance GenericConcept validated | ✅ |
 | Trade-off GenericConcept validated | ✅ |
 | REVOI mean ≥ 0.90 | ✅ (0.94) |
-| Bicephalous analysis (Eagle + Sphinx) | ✅ |
+| Stereopsic analysis (Eagle + Sphinx) | ✅ |
 | M1_Education extension motivated | ✅ |
 
 ---
@@ -556,7 +556,7 @@ A **good Map** (model, framework, theory) is:
 
 Not just Map-Territory fidelity (ASFID gap), but also intrinsic Map quality — the Sphinx Eye sees what the Eagle cannot.
 
-### Stereoscopic Bicephalous Vision
+### Stereoscopic Vision
 
 ```
 Territory (real teaching practice)

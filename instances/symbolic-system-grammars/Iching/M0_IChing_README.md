@@ -232,7 +232,7 @@ Two candidate M2 GenericConcepts initially proposed from I Ching analysis were r
 
 ---
 
-## Bicephalous Synthesis
+## Stereopsic Synthesis
 
 ```
 Territory strength (ASFID): 0.85

@@ -9,7 +9,7 @@
 
 ## 📋 Executive Summary
 
-This guide documents the migration from ambiguous `I_asfid`/`I_revoi` keys to the clear **It/Im nomenclature** in TSCG poclets, reflecting the bicephalous Territory/Map architecture.
+This guide documents the migration from ambiguous `I_asfid`/`I_revoi` keys to the clear **It/Im nomenclature** in TSCG poclets, reflecting the stereopsic Territory/Map architecture.
 
 **Nomenclature:**
 - **It** = Information (Territory) - Eagle Eye dimension
@@ -32,7 +32,7 @@ The old nomenclature used `I` (or `I_asfid`/`I_revoi`) for both dimensions, crea
 - ✅ Disambiguates the two "I" dimensions
 - ✅ Connects to Territory (t) and Map (m) metaphors
 - ✅ Maintains compact notation (1-2 chars)
-- ✅ Reinforces bicephalous architecture
+- ✅ Reinforces stereopsic architecture
 
 ---
 
@@ -323,7 +323,7 @@ pyshacl -s ontology/M0_Instances_Schema.shacl.ttl -df json-ld instances/poclets/
 - **TSCG Smart Prompt** - Complete framework documentation
 - **M0 Templates Usage Guide** - How to create new poclets
 - **SHACL Schema Documentation** - Validation constraints
-- **Bicephalous Architecture Guide** - Territory/Map theoretical foundation
+- **Stereopsic Architecture Guide** - Territory/Map theoretical foundation
 
 ---
 

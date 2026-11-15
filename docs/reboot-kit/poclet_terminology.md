@@ -28,12 +28,12 @@ Poclets play a fundamental and multifaceted role in the evolution of the TSCG fr
 
 ### 1. First-Level Proof of Concept: Framework Validation
 
-Each poclet serves as a **first-level PoC for the TSCG framework itself**. When we successfully model a poclet using TSCG's analytical tools (ASFID dimensions, ORIVE metrics, bicephalous strategy), we validate that:
+Each poclet serves as a **first-level PoC for the TSCG framework itself**. When we successfully model a poclet using TSCG's analytical tools (ASFID dimensions, ORIVE metrics, stereopsic strategy), we validate that:
 
 - The framework's conceptual foundations are sound enough to capture real-world systemic phenomena
 - The ASFID dimensions are indeed universal and applicable across diverse domains
 - The ORIVE scoring mechanism can effectively evaluate the quality of conceptual representations
-- The bicephalous distinction between Territory (Eagle Eye/ASFID) and Map (Sphinx Eye/ORIVE) holds empirical validity
+- The stereopsic distinction between Territory (Eagle Eye/ASFID) and Map (Sphinx Eye/ORIVE) holds empirical validity
 
 **Example**: When the Fire Triangle poclet yielded an ORIVE score of 0.94, it didn't just validate the Fire Triangle as a model—it validated TSCG's ability to recognize and quantify high-quality minimal system representations. Each successful poclet analysis strengthens our confidence that TSCG is capturing something fundamental about how systems work.
 

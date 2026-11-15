@@ -13,7 +13,7 @@
 This document presents the **first biological validation of the Processor GenericConcept** (v15.0.0) using the human renal system as a minimal complete processor demonstrating:
 
 - **Dual N-ary inputs** (blood + water) and **dual outputs** (filtered blood + urine)
-- **Bicephalous ternary hybrid formulas** for Territory (Transformation⊗Flow⊗Resource) and Map (Transformation⊗Representation⊗Interoperability)
+- **Stereopsic ternary hybrid formulas** for Territory (Transformation⊗Flow⊗Resource) and Map (Transformation⊗Representation⊗Interoperability)
 - **Multi-stage processing** (filtration → reabsorption → secretion)
 - **Homeostatic regulation** through processing (not just feedback control)
 - **Exceptional scores**: ASFID 0.87, REVOI 0.86, epistemic gap 0.01

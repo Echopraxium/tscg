@@ -18,7 +18,7 @@
 7. [VSM Components](#vsm-components)
 8. [Key Concepts](#key-concepts)
 9. [GenericConceptCombo Patterns](#GenericConceptcombo-patterns)
-10. [Bicephalous Analysis](#bicephalous-analysis)
+10. [Stereopsic Analysis](#stereopsic-analysis)
 11. [Applications](#applications)
 12. [References](#references)
 
@@ -368,7 +368,7 @@ Emergent Property:
 
 ---
 
-## 📊 Bicephalous Analysis
+## 📊 Stereopsic Analysis
 
 ### Scores
 
@@ -382,7 +382,7 @@ Emergent Property:
 
 ### Interpretation
 
-VSM achieves exceptional bicephalous balance:
+VSM achieves exceptional stereopsic balance:
 - **Territory (ASFID 0.93)**: Highly observable organizational structures, clear information flows, measurable dynamics
 - **Map (REVOI 0.85)**: Well-documented methodology, reproducible across domains, strong representability
 - **Gap (0.08)**: Minimal divergence - VSM models match organizational realities closely
@@ -485,7 +485,7 @@ This validates VSM as both scientifically grounded (Territory) and methodologica
 
 **Added:**
 - Complete VSM 5-system architecture
-- ASFID/REVOI bicephalous scores
+- ASFID/REVOI stereopsic scores
 - M2 prerequisites (ValueSpace, Amplification, Identity, Imbrication)
 - VSM OWL classes and properties
 - Historical context (Project Cybersyn)
@@ -505,7 +505,7 @@ This validates VSM as both scientifically grounded (Territory) and methodologica
 - ResourceBargain: ✅ Validated (Trade-off⊗Feedback iterative pattern)
 - Autonomy: ✅ Validated (Agent⊗Scope semantic completeness)
 
-**Bicephalous Scores:** ✅ Best in TSCG (δ=0.08)
+**Stereopsic Scores:** ✅ Best in TSCG (δ=0.08)
 
 **Transdisciplinary Application:** ✅ 8+ domains validated
 

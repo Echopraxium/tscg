@@ -11,7 +11,7 @@ function e(s,t,type){E.push({s,t,type});}
 
 /* --- M3 : foundations (the fixed, brightest stars) --- */
 n('GrammarFoundation','GrammarFoundation',M3,'m3',{ontologyType:'—'});
-['GenesisGrammar','EagleEye','SphinxEye','BicephalousPerspective'].forEach(x=>{
+['GenesisGrammar','EagleEye','SphinxEye','OdinsWisdom'].forEach(x=>{
   n(x,x,M3,'m3'); e(x,'GrammarFoundation','imports');});
 n('MonoidalType','MonoidalType',M3,'m3'); e('MonoidalType','GrammarFoundation','subClassOf');
 ['Territory','Map','Stereopsis'].forEach(x=>{n(x,x,M3,'m3'); e(x,'MonoidalType','subClassOf');});

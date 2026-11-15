@@ -153,7 +153,7 @@ The **Blood Pressure Control** poclet models the long-term regulation of arteria
 
 ---
 
-### Bicephalous Perspective
+### Stereopsic Perspective
 
 **Eagle Eye (Territory/ASFID)**: **DOMINANT**
 - This poclet is strongly rooted in **observable physiological phenomena**

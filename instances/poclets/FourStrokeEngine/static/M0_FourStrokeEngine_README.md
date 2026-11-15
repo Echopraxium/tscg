@@ -203,7 +203,7 @@ Where:
 **Example**: r = 10:1 → η ≈ 60% (ideal)  
 **Reality**: Real engines achieve 25–30% due to friction, heat loss, incomplete combustion
 
-## Bicephalous Perspective
+## Stereopsic Perspective
 
 ### Eagle Eye (Territory — ASFID)
 - **Observable**: Piston motion, pressure waves, temperature profiles

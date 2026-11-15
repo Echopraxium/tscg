@@ -189,7 +189,7 @@ def run_analysis(g):
     """
     execute_query(g, query6, "6. MetaconceptCombos")
     
-    # 7. Metaconcepts Dual (Bicephalous)
+    # 7. Metaconcepts Dual (Stereopsic)
     query7 = """
     PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -205,7 +205,7 @@ def run_analysis(g):
     ORDER BY ?epistemicGap
     LIMIT 15
     """
-    execute_query(g, query7, "7. Metaconcepts Dual (Bicephalous) - 15 premiers")
+    execute_query(g, query7, "7. Metaconcepts Dual (Stereopsic) - 15 premiers")
     
     # 8. Vérification Processor (v15.0.0)
     query8 = """

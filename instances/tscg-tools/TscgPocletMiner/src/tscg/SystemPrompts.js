@@ -22,12 +22,12 @@ a meta-ontological system developed by Michel Joindot (Echopraxium).
 ## TSCG Architecture
 
 TSCG uses a 4-layer ontological stack:
-- M3: Genesis Space — 10D bicephalous basis (ASFID + REVOI)
+- M3: Genesis Space — 10D stereopsic basis (ASFID + REVOI)
 - M2: GenericConcepts — 75+ universal atomic concepts (tensor products of M3 dimensions)
 - M1: Domain extensions (Biology, Chemistry, Economics, etc.) + all Combos
 - M0: Poclets — minimal validated system models (concrete instances)
 
-## The Bicephalous Architecture
+## The Stereopsic Architecture
 
 ### ASFID (Eagle Eye — Territory Space): what a system IS
 - A = Attractor: the system's goal, setpoint, equilibrium

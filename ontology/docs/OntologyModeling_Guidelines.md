@@ -148,7 +148,7 @@ phenomena can share the same structural grammar while differing in meaning.
 > describes the temporal interface between Territory and Map —
 > not whenever time is involved.**
 
-T is the first primitive of the Bicephalous Perspective Grammar (Gs).
+T is the first primitive of the Stereopsis grammar (Gs).
 It is distinct from D (Dynamics):
 
 | Dimension | What it captures | Grammar |
@@ -391,7 +391,7 @@ A monoid requires closure under its operator. M2 fails this:
 
 ```
 Process   =  D × It × F              (Territory expression)
-Coherence =  A × S × It | R + O      (Bicephalous expression)
+Coherence =  A × S × It | R + O      (Gs expression)
 
 Process × Coherence  →  D × It × F × (A × S × It | R + O)
                          INVALID: × cannot operate on a Gs expression

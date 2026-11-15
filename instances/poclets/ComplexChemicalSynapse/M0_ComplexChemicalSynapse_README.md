@@ -301,7 +301,7 @@ The 5-pole model is validated by the precise, predictable effects of targeting e
 ### Triple Role of This Poclet
 
 **1. Proof of concept for TSCG itself**
-Demonstrates that the TSCG bicephalous analysis (Eagle Eye / Sphinx Eye) provides non-trivial insights beyond classical neuroscience framing: ASFID = 0.76 vs. REVOI = 0.87 reveals the Map is more mature than direct Territory observation.
+Demonstrates that the TSCG stereopsic analysis (Eagle Eye / Sphinx Eye) provides non-trivial insights beyond classical neuroscience framing: ASFID = 0.76 vs. REVOI = 0.87 reveals the Map is more mature than direct Territory observation.
 
 **2. M2 GenericConcept identification**
 The synapse poclet mobilizes 22 GenericConcepts (~40% of M2 catalog). Particularly strong validators for:
@@ -395,7 +395,7 @@ Predicted additions:
 
 ### TSCG Framework
 - Echopraxium (2026). *TSCG M2 GenericConcepts Ontology* (v15.1.0).
-- Echopraxium (2026). *TSCG Bicephalous Architecture — Eagle Eye (ASFID) + Sphinx Eye (REVOI)*.
+- Echopraxium (2026). *TSCG Stereopsic Architecture — Eagle Eye (ASFID) + Sphinx Eye (REVOI)*.
 
 ---
 

@@ -237,7 +237,7 @@ Vulnerability, Trade-off and Code appear descriptively in the analysis but are n
 
 ---
 
-## 5. BICEPHALOUS PERSPECTIVE INTEGRATION
+## 5. STEREOPSIC PERSPECTIVE INTEGRATION
 
 ### 5.1 Eagle Eye (ASFID - Territory) Dominant Aspects
 - **Measurable**: Morphological changes, hormone titers, developmental timing
@@ -249,8 +249,8 @@ Vulnerability, Trade-off and Code appear descriptively in the analysis but are n
 - **Representational**: Multiple models (morphological, hormonal, genetic)
 - **Cultural**: Transformation symbolism, metamorphosis metaphor
 
-### 5.3 Synthesis: Bicephalous Unity
-The butterfly metamorphosis poclet exemplifies **perfect bicephalous balance**:
+### 5.3 Synthesis: Stereopsic Unity
+The butterfly metamorphosis poclet exemplifies **perfect stereopsic balance**:
 - **Territory (ASFID)**: Exceptionally measurable and observable (0.95 mean)
 - **Map (REVOI)**: high-quality Map (0.84 mean, provisional)
 - **Coupling**: Strong ASFID↔REVOI correspondence
@@ -396,7 +396,7 @@ The **Butterfly Metamorphosis (6-Pole Model)** is an **exceptional poclet** for 
 - ✓ **Minimal**: 6 poles necessary and sufficient
 - ✓ **Complete**: All ASFID dimensions strongly present (mean: 0.95)
 - ✓ **Valid**: High REVOI scores (mean: 0.84, provisional)
-- ✓ **Bicephalous Balance**: Strong Territory and Map perspectives
+- ✓ **Stereopsic Balance**: Strong Territory and Map perspectives
 - ✓ **Educational**: Clear demonstration of transformation principles
 - ✓ **Generative**: Contributes M2 validation and candidates
 

@@ -93,7 +93,7 @@ This creates a self-referential loop where the tool you're using requires the ex
 ### 1. Clear Division of Labor
 
 **Human Ontologist (You):**
-- Architectural decisions (e.g., bicephalous ASFID/REVOI structure)
+- Architectural decisions (e.g., stereopsic ASFID/REVOI structure)
 - Fundamental semantics (e.g., It vs Im distinction)
 - Final validation ("does this make sense?")
 - Domain expertise and conceptual modeling

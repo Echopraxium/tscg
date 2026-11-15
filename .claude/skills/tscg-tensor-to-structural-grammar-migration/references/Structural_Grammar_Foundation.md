@@ -298,7 +298,7 @@ between functors:
 ```
 
 This is legitimate category theory — well-established, metric-free, and
-perfectly suited to the TSCG bicephalous architecture.
+perfectly suited to the TSCG stereopsic architecture.
 
 ---
 
@@ -323,7 +323,7 @@ is a valid Euclidean distance within it.
 
 This duality — qualitative grammar at M2, quantitative evaluation at M0 — is
 not a weakness but a **structural virtue** that mirrors the Eagle/Sphinx
-bicephalous architecture itself.
+stereopsic architecture itself.
 
 ### Terminology Update
 

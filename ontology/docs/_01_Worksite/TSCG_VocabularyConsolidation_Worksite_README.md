@@ -160,7 +160,7 @@ Intuition (to confirm): it is **mixed** — the data/documentation frontier runs
 *inside* the eagleView block. `formula` is data; `pros`/`cons` is documentation.
 That mixed frontier is precisely the accidental δ₁.
 
-**Watch — latent duplication**: `role` exists both as `m3:role` (B1, in Bicephalous)
+**Watch — latent duplication**: `role` exists both as `m3:role` (B1, in OdinsWisdom)
 and as bare `role` (B2, 308× in M2 eagleView). Defining `m3:role` (M3 layer) *and*
 `m2:role` (M2 layer) is legitimate under per-layer specialisation **only if their
 semantics genuinely differ**; otherwise it re-creates the retired eagleView/D8

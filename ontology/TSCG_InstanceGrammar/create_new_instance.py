@@ -32,7 +32,7 @@ DESCRIPTION_PLACEHOLDER = (
     "Detailed description of the poclet and its systemic properties. "
     "Explain what system/phenomenon is modeled and why it's a good TSCG candidate."
 )
-CHANGELOG_PLACEHOLDER = "Initial M0 poclet ontology with ASFID/REVOI bicephalous modeling"
+CHANGELOG_PLACEHOLDER = "Initial M0 poclet ontology with ASFID/REVOI stereopsic modeling"
 DATE_PLACEHOLDER = "2026-04-18"
 
 

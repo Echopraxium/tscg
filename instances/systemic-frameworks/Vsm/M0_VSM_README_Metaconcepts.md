@@ -18,7 +18,7 @@
 7. [Key Concepts](#key-concepts)
 8. [OWL Structure](#owl-structure)
 9. [Prerequisites](#prerequisites)
-10. [Bicephalous Analysis](#bicephalous-analysis)
+10. [Stereopsic Analysis](#stereopsic-analysis)
 11. [Diagnostics & Pathologies](#diagnostics--pathologies)
 12. [Applications & Extensions](#applications--extensions)
 13. [References](#references)
@@ -378,7 +378,7 @@ S3 and S4 are coupled: S3 wants operational stability, S4 wants strategic change
 
 ---
 
-## 📊 Bicephalous Analysis
+## 📊 Stereopsic Analysis
 
 ### Eagle Eye — ASFID (Territory)
 

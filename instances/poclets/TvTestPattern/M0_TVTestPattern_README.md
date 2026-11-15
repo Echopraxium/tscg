@@ -52,7 +52,7 @@ A **test pattern** (*mire*) is a precisely constructed image containing a set of
 
 ---
 
-## Bicephalous Architecture — Key Architectural Insight
+## Stereopsic Architecture — Key Architectural Insight
 
 This poclet exhibits a unique **self-referential Territory/Map duality** that makes it architecturally exceptional in the TSCG framework:
 

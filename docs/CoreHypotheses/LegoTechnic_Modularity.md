@@ -163,7 +163,7 @@ Grammar** of M3 specifies which types can combine and how.
 +   Structural Sum (Map / Sphinx Eye / REVOI)
     Combines map-level types into representation patterns
 
-|   Stereopsis Operator (Gs / Bicephalous Interface)
+|   Stereopsis Operator (Gs / Stereopsic Interface)
     Mediates between Territory and Map perspectives
 ```
 

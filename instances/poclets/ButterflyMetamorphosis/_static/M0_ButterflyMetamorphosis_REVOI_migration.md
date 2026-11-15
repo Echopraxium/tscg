@@ -126,7 +126,7 @@ Replace the five `m0:orive_*` nodes with these five (⚠️ scores provisional):
 
 ---
 
-## 5. Bicephalous synthesis — update
+## 5. Stereopsic synthesis — update
 
 ```diff
 - "m0:mapStrength": 0.88,

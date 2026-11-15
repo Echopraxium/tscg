@@ -242,7 +242,7 @@ Status: Requires cross-domain validation (stem cells,
 
 ---
 
-## 8. BICEPHALOUS INTEGRATION
+## 8. STEREOPSIC INTEGRATION
 
 ```
 EAGLE EYE (ASFID - Territory)     SPHINX EYE (ORIVE - Map)
@@ -266,7 +266,7 @@ Mean: 0.95 (EXCEPTIONAL)          Mean: 0.88 (HIGH)
         ╰──────────╯                      ╰──────────╯
 
 EPISTEMIC GAP (θ): ~25° (Low-Moderate)
-Perfect bicephalous balance: Strong Territory AND Map
+Perfect stereopsic balance: Strong Territory AND Map
 ```
 
 ---
@@ -275,7 +275,7 @@ Perfect bicephalous balance: Strong Territory AND Map
 
 ### 9.1 To TSCG Framework
 ✓ **Validates**: Multi-pole developmental system analysis  
-✓ **Demonstrates**: Perfect bicephalous balance (Territory 0.95, Map 0.88)  
+✓ **Demonstrates**: Perfect stereopsic balance (Territory 0.95, Map 0.88)  
 ✓ **Introduces**: Latency as candidate M2 GenericConcept  
 ✓ **Confirms**: Emergence deserves distinct pole status  
 
@@ -361,7 +361,7 @@ POCLET VALIDATION CRITERIA
 ✓ M1 CONTRIBUTION:  Identifies 7 developmental biology
                     concepts for M1_Biology
 
-✓ BICEPHALOUS BALANCE: Territory (0.95) + Map (0.88)
+✓ STEREOPSIC BALANCE: Territory (0.95) + Map (0.88)
                         Strong correspondence (low epistemic gap)
 
 ───────────────────────────────────────────────────
@@ -402,7 +402,7 @@ The **Butterfly Metamorphosis (6-Pole Model)** is an **exceptional poclet** for 
 - **ASFID**: 0.95 (Exceptional observability)
 - **ORIVE**: 0.88 (High-quality model)
 - **Epistemic Gap**: 25° (Low-moderate uncertainty)
-- **Bicephalous Balance**: Perfect Territory-Map correspondence
+- **Stereopsic Balance**: Perfect Territory-Map correspondence
 
 ### Qualitative Strengths:
 - **Minimal yet Complete**: 6 poles capture full holometabolous cycle
