@@ -3,7 +3,7 @@
 worksite_graph.py — the Worksites dependency graph, as an SVG, from worksite.yaml.
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.2.0
+Version: 0.3.0
 Home   : ontology/toolchain/worksite_graph.py
 
 Reads the worksite state layer (worksite.yaml + _01_Worksite/WS-*/worksite.yaml, through
@@ -19,7 +19,9 @@ form a last "Independent" band), so no edge crosses another cluster. Inside a ba
 columns by depth (one column right of the deepest prerequisite, `batched` does not
 count), rows by barycentre of the prerequisites then priority (1 first; unset, mixed,
 done last); an edge that skips a column runs in the corridor between two rows.
-Arrows go from the prerequisite to the worksite that waits for it.
+Arrows go from the prerequisite to the worksite that waits for it. An arrow's tooltip gives
+the `why` of the dependency; a box has no tooltip (it would repeat the box) but carries
+data-ws="WS-n", which the Compendium uses to link the box to the worksite's documents.
 
 Checks (exit 1, nothing written): a `depends_on` naming an unknown worksite, an unknown
 kind, or a cycle among hard / soft dependencies.
@@ -224,8 +226,9 @@ def render(doc: dict, edges: list, depth: dict) -> str:
         fill, stroke = STATUS_FILL.get(status, STATUS_FILL["todo"])
         prio = w.get("priority")
         ptxt = f"P{prio}" if isinstance(prio, int) else ("P?" if prio is None else str(prio))
-        tip = f"{w['id']} — {w.get('title', '')}\nstatus: {status} · priority: {prio}"
-        out.append(f'<g><title>{e(tip)}</title>'
+        # no tooltip on a box: it would only repeat the box (Michel, 2026-11-15). data-ws lets
+        # the Compendium make the box a link to the worksite in its document list.
+        out.append(f'<g class="ws" data-ws="{e(w["id"])}">'
                    f'<rect x="{x}" y="{y}" width="{BOX_W}" height="{BOX_H}" rx="8" fill="{fill}" stroke="{stroke}" stroke-width="1.5"/>'
                    f'<text x="{x + 10}" y="{y + 19}" font-size="13" font-weight="700" fill="#222">{e(w["id"])}</text>'
                    f'<text x="{x + BOX_W - 10}" y="{y + 19}" font-size="11.5" text-anchor="end" fill="{stroke}">'
@@ -239,7 +242,7 @@ def render(doc: dict, edges: list, depth: dict) -> str:
         f'<path d="M{MARGIN},{ly} h40" stroke="#555" stroke-width="1.8" marker-end="url(#ah)"/><text x="{MARGIN + 48}" y="{ly + 4}">hard</text>'
         f'<path d="M{MARGIN + 100},{ly} h40" stroke="#888" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#ah)"/><text x="{MARGIN + 148}" y="{ly + 4}">soft (defer / measure)</text>'
         f'<path d="M{MARGIN + 290},{ly} h40" stroke="#9a7bb8" stroke-width="1.6" stroke-dasharray="2 4"/><text x="{MARGIN + 338}" y="{ly + 4}">batched (same files)</text>'
-        f'<text x="{MARGIN + 480}" y="{ly + 4}">P? = priority not set · hover a box or an arrow for details</text></g>')
+        f'<text x="{MARGIN + 480}" y="{ly + 4}">P? = priority not set · hover an arrow: why it depends</text></g>')
     out.append("</svg>")
     return "\n".join(out)
 

@@ -173,6 +173,7 @@ h1{text-align:left;font-family:var(--disp);font-weight:700;font-size:clamp(30px,
 .xcorner{position:absolute;top:10px;right:12px;z-index:2;font-size:13px;font-weight:600;color:#2f6f68;
   background:rgba(251,250,247,.92);border:1px solid #d9d5cc;border-radius:999px;padding:3px 10px;text-decoration:none}
 .xcorner:hover{background:#fff;border-color:#2f6f68}
+details.fold.flash>summary{box-shadow:0 0 0 2px var(--accent) inset;transition:box-shadow .3s}
 @media (max-width:640px){.health-frame:has(.xcorner){padding-top:34px}.xcorner{top:6px;right:8px;font-size:12px;padding:2px 9px}}
 .health-frame object{display:block;width:100%;height:auto}
 .health-legend{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0 4px;font-size:13px;color:var(--muted)}
@@ -584,14 +585,34 @@ function renderWorksiteGraph(){
   return `<section class="group"><details class="fold" id="wsgFold" ${WSG_OPEN?"open":""}>
     <summary><span class="n">Worksites dependency graph</span><span class="c">regenerated at this build</span></summary>
     <p class="health-intro">One box per worksite (colour = status, P = priority), one arrow per declared dependency
-    (field <code>depends_on</code>). <b>Hover</b> a box or an arrow for details. Priorities and dependencies change in
+    (field <code>depends_on</code>). <b>Click</b> a worksite to open its documents below; hover an arrow for why it depends. Priorities and dependencies change in
     <a href="${yml}">worksite.yaml</a> (and <code>WS-*/worksite.yaml</code>); the graph follows at the next build.</p>
-    <div class="health-frame">${sectionsForAudience().includes(HEALTH)?`<a href="#" class="xlink xcorner" data-xgo="health">LayerCake Health Map →</a>`:""}<object type="image/svg+xml" data="${esc(G.svg)}" style="aspect-ratio:${G.width}/${G.height}"
+    <div class="health-frame">${sectionsForAudience().includes(HEALTH)?`<a href="#" class="xlink xcorner" data-xgo="health">LayerCake Health Map →</a>`:""}<object id="wsgObj" type="image/svg+xml" data="${esc(G.svg)}" style="aspect-ratio:${G.width}/${G.height}"
       aria-label="Worksites dependency graph">Worksites dependency graph (SVG)</object></div>
     <p class="health-intro">Generator: <a href="${gen}">worksite_graph.py</a> · open the graph alone:
       <a href="${esc(G.svg)}" target="_blank" rel="noopener">${esc(G.svg)}</a></p></details></section>`;
 }
 let WSG_OPEN=true;
+/* a worksite box of the graph is a link to that worksite in the document list (Michel,
+   2026-11-15): open "Worksites" and "Worksites/WS-n", scroll there and flash it. A worksite
+   with no document has no folder: the "Worksites" folder is shown instead. */
+function showWorksite(id){
+  const base="Project management|Worksites", key=base+"/"+id;
+  const sel=k=>document.querySelector(`details.fold[data-k="${CSS.escape(k)}"]`);
+  foldState[base]=true; if(sel(base)) sel(base).open=true;
+  if(sel(key)){ foldState[key]=true; sel(key).open=true; }
+  const t=document.querySelector(`details.fold[data-k="${CSS.escape(key)}"]`)||document.querySelector(`details.fold[data-k="${CSS.escape(base)}"]`);
+  if(!t) return;
+  requestAnimationFrame(()=>{t.scrollIntoView({behavior:"smooth",block:"start"});
+    t.classList.add("flash"); setTimeout(()=>t.classList.remove("flash"),1600);});
+}
+function wireWorksiteGraph(){
+  const o=document.getElementById("wsgObj"); if(!o) return;
+  const hook=()=>{ let doc; try{doc=o.contentDocument;}catch(_){return;} if(!doc) return;
+    doc.querySelectorAll("g[data-ws]").forEach(g=>{ if(g.dataset.wired) return; g.dataset.wired="1";
+      g.style.cursor="pointer"; g.addEventListener("click",()=>showWorksite(g.dataset.ws)); }); };
+  o.addEventListener("load",hook); hook();
+}
 /* cross-links between the two diagrams (Michel, 2026-11-15): switch tab, open the graph, scroll to it */
 document.addEventListener("click",e=>{
   const a=e.target.closest&&e.target.closest("a.xlink[data-xgo]"); if(!a) return;
@@ -661,6 +682,7 @@ function render(focus){
   document.getElementById("pn").onclick=()=>step(1);
   v.querySelectorAll(".switch[data-aud]").forEach(b=>b.onclick=()=>setAudience(b.dataset.aud));
   v.querySelectorAll(".switch[data-sec]").forEach(b=>b.onclick=()=>go(b.dataset.sec,false));
+  wireWorksiteGraph();
 }
 function setAudience(a){
   audience=a; mode="tabs"; try{localStorage.setItem("tscg-aud",a);}catch(e){}
