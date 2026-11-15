@@ -1,7 +1,7 @@
 # Epistemic gap δ₁ — Feasibility note / Decision Record draft
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.1.0 (draft) · **Date**: 2026-11-15
+**Version**: 0.2.0 (draft) · **Date**: 2026-11-15
 **Kind**: feasibility study (pipeline Phase 0 + Phase 1). **No ontology file is changed.**
 **Worksite id**: not registered. The folder name `WS-TBD_EpistemicGap/` is a
 placeholder; rename it with `git mv` once Michel picks the id (decision D1).
@@ -11,6 +11,27 @@ Everything below that is a number comes from a command run in this session. The
 inventory script is committed next to this note (`delta1_inventory.py`, standard
 library, read-only) and its output at `5a26560` is `delta1_inventory_5a26560.md`.
 Everything marked **proposal** is Claude's analysis: Michel decides.
+
+---
+
+## Michel's positions (2026-11-15, after reading v0.1.0)
+
+These are decisions and positions, stated in the conversation; they are not
+verifiable at HEAD and are recorded here as said.
+
+1. **A scalar measure of the epistemic gap has no meaning.**
+2. **The epistemic gap itself has no meaning** — not only its formula. v0.1.0 proposed
+   to keep the concept ("their disparity gives depth") and drop the measure; that
+   proposal is withdrawn.
+3. **Korzybski's principle is a foundation of TSCG** and stays: the Map is not the
+   Territory. It is kept as a principle, without a gap, a distance or a disparity
+   derived from it.
+4. **Intuition, to be designed**: replace the gap with **validation heuristics** inside
+   a **human/machine cybernetic loop**, which has yet to be invented.
+
+What this changes below: §2 (the "concept" column now means Korzybski only), §4
+(option (a) removes concept and measure; option (c) becomes the heuristics loop),
+§6 (L7) and §7 (D2 answered, D4/D5 narrowed, D13–D15 added).
 
 ---
 
@@ -173,7 +194,12 @@ Most M0 G8 hits are files where `m0:` is misbound (check_m0 C02): their
 
 ## 2. Q2 — Concept or measure? (proposals)
 
-Two checks a reader can redo by hand:
+Since Michel's positions (above), the question is no longer "concept or measure":
+both go, and only **Korzybski's principle** stays. Each row therefore asks whether the
+statement can be rewritten as Korzybski alone (the Map is not the Territory), with no
+gap, distance or disparity left in it.
+
+Two checks a reader can redo by hand (evidence for position 1):
 
 - **Range.** With both means in [0, 1], `|a − b| / √2 ≤ 1/√2 ≈ 0.707`. The declared range
   [0, 1] (`M0_Common`, M0 SHACL, `intersubjectiveBenchmark`) is never reached above 0.707.
@@ -189,21 +215,25 @@ Two checks a reader can redo by hand:
 | Q2-2 | GenesisGrammar `connection/epistemic_gap` | it *is* the number | delete (bare key) | low |
 | Q2-3 | `m3:CouplingStructure/m3:mathematicalForm` | no — Φ and Ψ stand alone | drop the δ₁ clause | low |
 | Q2-4 | `m3:KorzybskiPrinciple/m3:formalization` | no | keep "Φ : Gt → Gm is never a perfect isomorphism", drop "δ₁ > 0 …" | low |
-| Q2-5 | `m3:AlignmentLoop/m3:iteration` and `feedback_loop/convergence` "until δ₁ converges", "δ₁ → 0 = equilibrium" | **yes, as written**: δ₁ is the loop's only stated stopping criterion | rewrite the criterion without a scalar (e.g. "until the Map's checks stop failing"), which is what option (b) would make concrete. Wording is Michel's | **medium** |
+| Q2-5 | `m3:AlignmentLoop/m3:iteration` and `feedback_loop/convergence` "until δ₁ converges", "δ₁ → 0 = equilibrium" | **yes, as written**: δ₁ is the loop's only stated stopping criterion | the loop keeps its Φ/Ψ structure; its stopping criterion is what the validation-heuristics loop (option c) is to define. Until then, state the loop without a criterion ("iterative refinement via Φ/Ψ") rather than invent one. Wording is Michel's | **medium** |
 | Q2-6 | `TypeSystem/M0/curry_howard` "δ₁ = degree of proof" | the clause does; the reading does not | keep "Poclet = proof term"; drop "δ₁ = degree of proof" (Curry–Howard has inhabitation, not degrees) | low |
 | Q2-7 | `intersubjectiveBenchmark/structure/epistemicScore` → `m0:epistemicGap` | the slot does; the benchmark (consensus, ICC/κ, resolution order) does not | remove the `epistemicScore` slot; the benchmark calibrates the 10 scores | medium (it is the benchmark's only named score) |
 | Q2-8 | `StereopsisEmptySet` "δ₁ = max", `StereopsisUniversalSet` "δ₁ = 0", "distinct from SpectralClass Coherent" | no — the algebra (neutral element, pseudo-absorbent) and "Territory and Map share nothing" carry it | drop the δ₁ glosses (they also contradict the formula, see above); deletes 2 G8 predicates | low |
 | Q2-9 | `SystemicFramework` step 5 "Document epistemic gaps …" | no | "Document where the mapping fails" | low |
 | Q2-10 | M2 `m2:epistemicGapFormula` | it is the number | delete (G8) | low |
 | Q2-11 | M2 `m2:Modelisation/m2:korzybskiConnection` "δ₁ > 0 is constitutive" | no | "the imperfection of Φ is constitutive of Modelisation" | low |
-| Q2-12 | Debt Overview §"Odin's Wisdom": "the gap δ₁ is the source of depth" | no — binocular depth needs a disparity, not this scalar | "the disparity between Territory and Map is the source of depth" | low |
+| Q2-12 | Debt Overview §"Odin's Wisdom": "the gap δ₁ is the source of depth" | the **concept** does: the rationale is the disparity itself | v0.1.0 proposed "the disparity is the source of depth"; withdrawn (position 2). The naming rationale of Odin's Wisdom / Stereopsis needs another ground, or is reduced to "one place where the two views fuse" (D14) | **medium** |
 
-**Verdict (proposal).** No M3 axiom, operator or type depends on the formula. Two claims
-lose their content if the number goes: the AlignmentLoop stopping criterion (Q2-5) and
-the benchmark's score slot (Q2-7). Both are wording decisions, not structural ones, so
-this is a doctrine edit of medium risk rather than pipeline Scenario 2 (architectural,
-high risk). The concept (the Map is not the Territory; their disparity gives depth)
-survives every proposed edit.
+**Verdict (proposal, revised in 0.2.0).** No M3 axiom, operator or type depends on the
+formula or on the gap: the algebra of Gs (neutral element, pseudo-absorbent, the
+operator `|`) is defined without them. Three statements lose their content: the
+AlignmentLoop stopping criterion (Q2-5), the benchmark's score slot (Q2-7), and the
+metaphoric rationale of the Stereopsis as "depth from disparity" (Q2-12). These are
+wording and rationale decisions, not structural ones: a doctrine edit of medium risk,
+not pipeline Scenario 2. Korzybski's principle survives every row (Q2-1, Q2-4, Q2-11
+keep it, stated without a gap). Q2-4 and Q2-11 still say "Φ is never a perfect
+isomorphism" / "the imperfection of Φ": that is Korzybski in categorical words, not a
+gap, but Michel should confirm it does not smuggle the gap back (D4).
 
 ---
 
@@ -234,10 +264,11 @@ survives every proposed edit.
 
 ## 4. Q4 — Options (impact only; the choice is Michel's)
 
-**(a) Remove with no replacement.** Keep the concept in prose (Korzybski, disparity as
-the source of depth). Impact: lots L1–L6 below; the gallery loses the `δ=` badge; the
-instance pipeline loses a step. Cost: TSCG has no instrument at all for a Map/Territory
-comparison. Smallest modelling change.
+**(a) Remove the measure and the concept.** (0.2.0: per positions 1–2, the concept
+goes too; only Korzybski's principle stays, as M3 doctrine.) Impact: lots L1–L6 below;
+the gallery loses the `δ=` badge; the instance pipeline loses a step. Cost: until (c)
+exists, TSCG says nothing about how well a Map holds against its Territory. Smallest
+modelling change, and it can run **before** (c) is designed (D13).
 
 **(b) Grounding channel.** Per instance, a list of external checks that can fail, each
 with an outcome. Existing vocabularies, verified at source on 2026-11-15:
@@ -266,7 +297,32 @@ Two ways to bring (b) in, impact only:
   Writing `earl:untested` everywhere would be invented content; absence means "nothing
   asserted".
 
-**(c) Something else** proposed by Michel.
+(0.2.0: with positions 1–2, (b) is no longer an alternative to (a). It survives as a
+possible **recording format** for the outcomes of (c): EARL outcomes, PROV-O provenance.)
+
+**(c) Validation heuristics in a human/machine cybernetic loop** (Michel's intuition,
+2026-11-15; to be invented). A separate design worksite, not a replacement written into
+the removal lots. Inputs for that design, as **proposals**:
+
+- *What a heuristic could be*: a question put to a model that **can fail** (does it
+  predict something observable? does its simulation behave like the system? does the
+  pattern hold in a poclet of another domain? is there a source, or a counter-example?),
+  with **who runs it** (human, machine, both), an **outcome** (EARL values fit), and
+  **what a failure triggers** (revise the Map, revise a score, record a limit of the
+  model). The loop is cybernetic because the outcome feeds back; there is no final
+  grade, only a record of what was put to the test and how it went.
+- *TSCG already runs such heuristics, on itself*: the M2 candidate filter
+  (Decomposability, Transdisciplinarity, Atomicity), the debt-honesty rule,
+  baseline-before-blame, the gate and the reasoner (checks that can fail), and the
+  diagnosis pipeline (Human / LLM / Formal Tools with separate roles) — a human/machine
+  loop already, applied to the ontology rather than to the models. (c) would bring the
+  same discipline to M0 instances.
+- *Reflexive-modelling trap* (HandOver §6): the loop belongs to the **method**
+  (instance pipeline, toolchain, gate), not to the grammar of systems (M2). Modelling it
+  as a GenericConcept would make TSCG's own quality control a TSCG instance.
+- *RequisiteVarietyDuo* (Ashby, human/AI duo, paused) is close to this subject: a
+  tempting test bench, and precisely where the reflexive trap would close. Keep the two
+  apart, or link them knowingly (D15).
 
 ---
 
@@ -307,7 +363,7 @@ M0), and a written reason for every counter move.
 | **L4** | M0 instances: delete the values (incl. the 9 objects, typed literals, local twins), riding the WS-10 batches (P3); regenerate the gallery | C16 → 0; C10/C11/D1/G8 fall by deletion | sweep |
 | **L5** | producers: skills, sim template, PocletMiner prompt, PocletGenerator, `modernize_m0.py` | none (outside the gate) | none |
 | **L6** | narrative: CoreHypotheses, Debt Overview, instance READMEs, UserGuide samples | none | none |
-| **L7** | (only if option b) grounding channel | per design | per design |
+| **L7** | option (c): open a separate design worksite for the validation-heuristics loop; not a prerequisite of L1–L6 unless D13 says so | per design | per design |
 | **L8** | remove the deprecated terms from `M0_Common` once the counter is 0 | instrument retired | `M0_Common` + sweep |
 
 Historical material (`docs/papers/`, old Smart Prompts, `ontology/Ref/`) is not an
@@ -319,15 +375,16 @@ authority (root `CLAUDE.md`) and is left as written unless Michel decides otherw
 
 - **D1** — Worksite id and priority. `WS-14` is free in `worksite.yaml` but was the draft
   name of WS-13 (renumbered 2026-10-11); `WS-15` avoids the confusion.
-- **D2** — Do the five arguments of the HandOver stand, with the evidence added here
-  (range ≤ 0.707, M3 special elements contradict the formula, 3 class mismatches, 5
-  stored ≠ recomputed, six formula families)?
+- **D2** — *Answered 2026-11-15*: the scalar measure and the gap itself have no meaning
+  (positions 1–2). The evidence of §1–§2 stays as the written record.
 - **D3** — Scope: δ₁ + spectral classes only, or also the focal family (`m0:focalBias`,
   `m0:focalScore`, `m0:FocalClass`, "δ₂"), which reuses the same subtraction?
-- **D4** — Wording of each Q2 row; in particular Q2-5 (AlignmentLoop criterion) and Q2-7
-  (benchmark slot).
-- **D5** — Option (a), (b) or (c).
-- **D6** — If (b): (b1) EARL/PROV declared in the apex, or (b2) a TSCG concept through the
+- **D4** — Wording of each Q2 row, now under the constraint "Korzybski only, no gap";
+  in particular Q2-5 (AlignmentLoop criterion), Q2-7 (benchmark slot), and whether
+  "Φ is never a perfect isomorphism" (Q2-4, Q2-11) is Korzybski or the gap in disguise.
+- **D5** — *Direction given 2026-11-15*: (a) for the removal, (c) as the replacement to
+  invent. To confirm: (b) kept only as a recording format for (c)?
+- **D6** — If (b) is kept as the recording format of (c): (b1) EARL/PROV declared in the apex, or (b2) a TSCG concept through the
   candidate filter?
 - **D7** — C16 (and the cross-layer counter): FAIL or WARN (facts in §5)?
 - **D8** — `m2:hasEpistemicGap` (0 uses): delete outright or deprecate first? SHAPE 11:
@@ -340,6 +397,15 @@ authority (root `CLAUDE.md`) and is left as written unless Michel decides otherw
 
 ---
 
+- **D13** — Sequencing: run the removal (L0–L6) first and design (c) afterwards, or
+  design (c) first so that the pipeline step and the AlignmentLoop criterion are
+  replaced in the same move?
+- **D14** — Odin's Wisdom / Stereopsis: what grounds the metaphor once "depth from
+  disparity" is withdrawn (Q2-12)? The Gs algebra does not need it; the naming rationale
+  in the Debt Overview and in `docs/CoreHypotheses/` does.
+- **D15** — RequisiteVarietyDuo and (c): kept apart, or used as the test bench of the
+  loop, knowing the reflexive trap?
+
 ## 8. Go / no-go (recommendation)
 
 **GO for opening the worksite, with two conditions**: no deprecation before the
@@ -349,7 +415,8 @@ Why go: no M3 axiom depends on the number (§2); every live consumer either degr
 cleanly or is a producer that can be edited (§3); and the measure is already
 inconsistent at HEAD (six formulas, unreachable range, M3 contradicting its own
 formula, stored classes and values that the thresholds and means do not give).
-Keeping δ₁ is itself debt. What can go wrong is mostly the order of work: deprecating
+Keeping δ₁ is itself debt. (0.2.0: with the concept withdrawn too, the case for
+removal is stronger; the condition on M3 now reads "no M3 edit before D4 and D14".) What can go wrong is mostly the order of work: deprecating
 at M0 first would hide the debt that M3 still asserts.
 
 ---
@@ -364,4 +431,5 @@ at M0 first would hide the debt that M3 still asserts.
 
 | version | date | change |
 |---|---|---|
+| 0.2.0 | 2026-11-15 | Michel's positions recorded (scalar and gap meaningless; Korzybski a foundation; validation heuristics in a human/machine cybernetic loop to invent). §2 recast as "Korzybski only"; Q2-5, Q2-12 and verdict revised; §4 (a) removes concept and measure, (b) reduced to a recording format, (c) = heuristics loop with design inputs; L7 re-scoped; D2 answered, D4/D5 narrowed, D13–D15 added. |
 | 0.1.0 | 2026-11-15 | Draft: Phase 0 + Phase 1 feasibility study at `5a26560`. |
