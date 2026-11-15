@@ -570,15 +570,19 @@ function renderWorksiteGraph(){
   if(query&&!matchTxt("Worksites dependency graph")) return "";
   if(G.status!=="ok") return `<section class="group"><h2><span>Worksites dependency graph</span><span>N/A</span></h2>
     <p class="health-intro">${esc(G.reason||"unknown reason")}</p></section>`;
-  return `<section class="group"><h2><span>Worksites dependency graph</span><span>regenerated at this build</span></h2>
+  // inline but foldable (Michel, 2026-11-15): open by default, the state survives re-renders
+  return `<section class="group"><details class="fold" id="wsgFold" ${WSG_OPEN?"open":""}>
+    <summary><span class="n">Worksites dependency graph</span><span class="c">regenerated at this build</span></summary>
     <p class="health-intro">One box per worksite (colour = status, P = priority), one arrow per declared dependency
     (field <code>depends_on</code>). <b>Hover</b> a box or an arrow for details. Priorities and dependencies change in
     <a href="${yml}">worksite.yaml</a> (and <code>WS-*/worksite.yaml</code>); the graph follows at the next build.</p>
     <div class="health-frame"><object type="image/svg+xml" data="${esc(G.svg)}" style="aspect-ratio:${G.width}/${G.height}"
       aria-label="Worksites dependency graph">Worksites dependency graph (SVG)</object></div>
     <p class="health-intro">Generator: <a href="${gen}">worksite_graph.py</a> · open the graph alone:
-      <a href="${esc(G.svg)}" target="_blank" rel="noopener">${esc(G.svg)}</a></p></section>`;
+      <a href="${esc(G.svg)}" target="_blank" rel="noopener">${esc(G.svg)}</a></p></details></section>`;
 }
+let WSG_OPEN=true;
+document.addEventListener("toggle",e=>{ if(e.target&&e.target.id==="wsgFold") WSG_OPEN=e.target.open; },true);
 
 function renderHealth(){
   const H=DATA.health||{status:"unavailable",reason:"no health data in this build"};
