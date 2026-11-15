@@ -1,7 +1,5 @@
 # TSCG Instances - Complete Grammar SHACL Schema v1.6
-# 2026-08-21 (Option B): score/mean/gap/focal datatype relaxed from strict
-#   xsd:float to (xsd:float OR xsd:double). A bare JSON number parses as
-#   xsd:double; this reconciles C10 (bare numerics) with C15 (SHACL).
+# 2026-11-15 (v1.9): the scoring family is retired (score shapes removed).
 # Author: Echopraxium with the collaboration of Claude AI
 # Date: 2026-06-28
 # Status: ACTIVE
@@ -9,6 +7,13 @@
 # ============================================
 # CHANGELOG
 # ============================================
+# v1.9 (2026-11-15): SCORING FAMILY RETIRED (epistemological reason: a model is not
+#   legitimate to evaluate itself — CH4 LayerCake_Models_The_Kit.md §6).
+#   - REMOVED: the 20 property shapes m0:scoreA … m0:focalClass of m0:TscgInstanceShape,
+#     m0:FocalScoreCoherenceShape, m0:ForbidStringSpectralClassShape,
+#     m0:ForbidStringScoringStatusShape, m0:ForbidStringFocalClassShape.
+#   - Messages of ForbidAsfidScores / ForbidRevoiScores / ForbidOrive no longer advise scores.
+#   - Uses of deprecated terms are caught by check_m0 C16 (set read from M0_Common).
 # v1.8 (2026-09-30): WS-1 lot 1e — changelog container m2:changelog -> m3:changelog (recommended);
 #   m2:changelog FORBIDDEN (sh:maxCount 0). Entries {owl:versionInfo, dcterms:date, adms:versionNotes}.
 # v1.7 (2026-09-01): SC-3 — FACET MECHANISM MOVED TO M3
@@ -100,21 +105,11 @@
 #   ✅ "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"
 #   ❌ "m3": "M3_GenesisGrammar.jsonld#"
 #
-# SCORE CONVENTION (v1.5 MANDATORY):
-#   Scores MUST be flat at owl:Ontology root level as m0:scoreX bare numerics:
-#   m0:scoreA, m0:scoreS, m0:scoreF, m0:scoreIt, m0:scoreD  (ASFID / Gt)
-#   m0:scoreR, m0:scoreE, m0:scoreV, m0:scoreO, m0:scoreIm  (REVOI / Gm)
-#   Properties defined in M0_Common.jsonld with rdfs:range xsd:float.
-#   FORBIDDEN: A_score/S_score/... @context aliases (replaced by m0:scoreX directly)
-#   FORBIDDEN: m0:asfidScores{} and m0:revoiScores{} sub-objects.
-#   FORBIDDEN: {"@value":"0.85","@type":"xsd:float"} — use bare numeric 0.85
-#
-# ENUMERATION CONVENTION (v1.5 NEW):
-#   m0:spectralClass, m0:focalClass, m0:scoringStatus are owl:ObjectProperty.
-#   Values MUST be IRIs using pattern: m0:<propertyName>.<ValuePascalCase>
-#   ✅ "m0:spectralClass": {"@id": "m0:spectralClass.Coherent"}
-#   ❌ "m0:spectralClass": "Coherent"   (string — FORBIDDEN since v1.5)
-#   All enum individuals defined in M0_Common.jsonld.
+# SCORES, MEANS, GAP, SPECTRAL / FOCAL CLASSES, SCORING STATUS: RETIRED (v1.9, 2026-11-15).
+#   No M0 instance carries a score or a gap: a model is not legitimate to evaluate
+#   itself (CH4 LayerCake_Models_The_Kit.md §6). The terms stay in M0_Common as
+#   owl:deprecated; check_m0 C16 forbids any use. The v1.5 score and enumeration
+#   conventions that stood here are kept in the changelog above.
 #
 # M0_Common.jsonld (v1.5 NEW — MANDATORY):
 #   All M0 instances MUST declare in @context:
@@ -122,10 +117,6 @@
 #   AND in owl:imports: "M0_Common.jsonld"
 #   Instance-local properties use: "m0.<instanceName>": "instances/.../M0_<Name>.jsonld#"
 #
-# FOCAL SCORE (v1.3 NEW — conditional):
-#   Only meaningful when stereopsic GenericConcepts (isStereopsic=true) are mobilized.
-#   m0:focalApplicable=true triggers the full focal score family.
-#   m0:focalApplicable=false → all other focal properties MUST be absent.
 # ============================================
 
 # ============================================
@@ -237,231 +228,14 @@ m0:TscgInstanceShape
     sh:path m2:changelog ;
     sh:maxCount 0 ;
     sh:message "FORBIDDEN: m2:changelog is retired (WS-1 lot 1e, 2026-09-30) — use m3:changelog."
-  ] ;
-
-  # ===== SCORES — FLAT AT ROOT LEVEL (Option B — v1.3) =====
-  # ASFID scores: A_score, S_score, F_score, It_score, D_score
-
-  sh:property [
-    sh:path m0:scoreA ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:scoreA (Attractor score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld. NO @type annotation needed. NOT inside m0:asfidScores{}."
-  ] ;
-
-  sh:property [
-    sh:path m0:scoreS ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:scoreS (Structure score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld."
-  ] ;
-
-  sh:property [
-    sh:path m0:scoreF ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:scoreF (Flow score). Bare numeric float in [0.0, 1.0]. F=0.0 valid (Stase — no flow is legitimate). Defined in M0_Common.jsonld."
-  ] ;
-
-  sh:property [
-    sh:path m0:scoreIt ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:scoreIt (Information/Territory score). NOT m0:scoreIm (Interoperability/Map). Bare numeric float [0.0, 1.0]."
-  ] ;
-
-  sh:property [
-    sh:path m0:scoreD ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:scoreD (Dynamics score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld."
-  ] ;
-
-  # REVOI scores: R_score, E_score, V_score, O_score, Im_score
-
-  sh:property [
-    sh:path m0:scoreR ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:scoreR (Representability score). R = Representability, NEVER Reproducibility. Bare numeric float [0.0, 1.0]."
-  ] ;
-
-  sh:property [
-    sh:path m0:scoreE ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:scoreE (Evolvability score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld."
-  ] ;
-
-  sh:property [
-    sh:path m0:scoreV ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:scoreV (Verifiability score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld."
-  ] ;
-
-  sh:property [
-    sh:path m0:scoreO ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:scoreO (Observability score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld."
-  ] ;
-
-  sh:property [
-    sh:path m0:scoreIm ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:scoreIm (Interoperability/Map score). NOT m0:scoreIt (Information/Territory). Bare numeric float [0.0, 1.0]."
-  ] ;
-
-  # Aggregate scores
-
-  sh:property [
-    sh:path m0:asfidMean ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:asfidMean = (A_score + S_score + F_score + It_score + D_score) / 5. Recommended when scores present."
-  ] ;
-
-  sh:property [
-    sh:path m0:revoiMean ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:revoiMean = (R_score + E_score + V_score + O_score + Im_score) / 5. Recommended when scores present."
-  ] ;
-
-  # Epistemic gap δ₁
-
-  sh:property [
-    sh:path m0:epistemicGap ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:epistemicGap = |asfidMean - revoiMean| / √2. Must be float in [0.0, 1.0]. Recommended when asfidMean and revoiMean are present."
-  ] ;
-
-  sh:property [
-    sh:path m0:spectralClass ;
-    sh:nodeKind sh:IRI ;
-    sh:in (
-      m0:spectralClass.Coherent
-      m0:spectralClass.OnCriticalLine
-      m0:spectralClass.Liminal
-      m0:spectralClass.Enigmatic
-    ) ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:spectralClass MUST be an IRI from m0:SpectralClass enumeration. Use: m0:spectralClass.Coherent (δ₁<0.05), m0:spectralClass.OnCriticalLine (0.05≤δ₁<0.15), m0:spectralClass.Liminal (0.15≤δ₁<0.30), m0:spectralClass.Enigmatic (δ₁≥0.30). FORBIDDEN: bare string 'Coherent' — use IRI with @id."
-  ] ;
-
-  # Scoring status (for stubs / incomplete instances)
-
-  sh:property [
-    sh:path m0:scoringStatus ;
-    sh:nodeKind sh:IRI ;
-    sh:in (
-      m0:scoringStatus.Complete
-      m0:scoringStatus.Partial
-      m0:scoringStatus.Pending
-    ) ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:scoringStatus MUST be an IRI from m0:ScoringStatus enumeration. Use: m0:scoringStatus.Complete (all 10 scores), m0:scoringStatus.Partial (some scores), m0:scoringStatus.Pending (no scores — stub). FORBIDDEN: bare string 'complete' — use IRI with @id."
-  ] ;
-
-  # ===== FOCAL SCORE — Gs Stereopsis (v1.3 NEW — OPTIONAL, CONDITIONAL) =====
-
-  sh:property [
-    sh:path m0:focalApplicable ;
-    sh:datatype xsd:boolean ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:focalApplicable: true if instance mobilizes at least one stereopsic GenericConcept (isStereopsic=true in M2). false otherwise. When false, all other m0:focal* properties MUST be absent."
-  ] ;
-
-  sh:property [
-    sh:path m0:stereopsicDepth ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:stereopsicDepth: Gs depth score [0,1]. Computed from TKSL primitives active in mobilized stereopsic GenericConcepts: (T×0.25 + K×0.25 + Ss×0.25 + L×0.25). Only present when m0:focalApplicable=true."
-  ] ;
-
-  sh:property [
-    sh:path m0:focalBias ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive -1.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:focalBias = REVOI_mean - ASFID_mean. Signed float in [-1.0, 1.0]. Positive = Map dominant (Hyperopic). Negative = Territory dominant (Myopic). Only present when m0:focalApplicable=true."
-  ] ;
-
-  sh:property [
-    sh:path m0:focalScore ;
-    sh:or ( [ sh:datatype xsd:float ] [ sh:datatype xsd:double ] ) ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:focalScore: Epistemic Focal Score (SFE) [0,1]. Formula: stereopsicDepth × (1 - |focalBias|). 1=Emmetropic (sharp combined image), 0=Astigmatic (no stereopsic depth) or strongly biased. Only present when m0:focalApplicable=true."
-  ] ;
-
-  sh:property [
-    sh:path m0:focalClass ;
-    sh:nodeKind sh:IRI ;
-    sh:in (
-      m0:focalClass.Emmetropic
-      m0:focalClass.SlightlyMyopic
-      m0:focalClass.SlightlyHyperopic
-      m0:focalClass.Myopic
-      m0:focalClass.Hyperopic
-      m0:focalClass.Astigmatic
-    ) ;
-    sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "m0:focalClass MUST be an IRI from m0:FocalClass enumeration. Use: m0:focalClass.Emmetropic (SFE≥0.70), m0:focalClass.SlightlyMyopic/.SlightlyHyperopic (0.50≤SFE<0.70), m0:focalClass.Myopic/.Hyperopic (0.30≤SFE<0.50), m0:focalClass.Astigmatic (SFE<0.30). Only present when m0:focalApplicable=true. FORBIDDEN: bare string — use IRI with @id."
   ] .
+
+# ===== SCORES — RETIRED (v1.9, 2026-11-15) =====
+# The 20 property shapes on m0:scoreA … m0:focalClass are removed: the scoring
+# family is deprecated in M0_Common (a model is not legitimate to evaluate
+# itself — docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). Any use of a
+# deprecated term is now caught by check_m0 C16, which reads the deprecated set
+# from M0_Common.
 
 # ============================================
 # FORBIDDEN PATTERNS (v1.3 — extended)
@@ -489,7 +263,7 @@ m0:ForbidAsfidScoresSubObjectShape
       sh:minCount 1
     ]
   ] ;
-  sh:message "FORBIDDEN (v1.3): m0:asfidScores{} sub-object is obsolete (Pattern A). Use flat scores A_score, S_score, F_score, It_score, D_score at owl:Ontology root level (Option B convention)." .
+  sh:message "FORBIDDEN: m0:asfidScores{} is obsolete. Scores are retired (2026-11-15): a model is not legitimate to evaluate itself; evaluation is done by the observers of the mock-up, outside the model (CH4 LayerCake_Models_The_Kit.md §6)." .
 
 # FORBIDDEN: m0:revoiScores{} sub-object (Pattern A — obsolete since v1.3)
 m0:ForbidRevoiScoresSubObjectShape
@@ -501,7 +275,7 @@ m0:ForbidRevoiScoresSubObjectShape
       sh:minCount 1
     ]
   ] ;
-  sh:message "FORBIDDEN (v1.3): m0:revoiScores{} sub-object is obsolete (Pattern A). Use flat scores R_score, E_score, V_score, O_score, Im_score at owl:Ontology root level (Option B convention)." .
+  sh:message "FORBIDDEN: m0:revoiScores{} is obsolete. Scores are retired (2026-11-15): a model is not legitimate to evaluate itself; evaluation is done by the observers of the mock-up, outside the model (CH4 LayerCake_Models_The_Kit.md §6)." .
 
 # FORBIDDEN: m3:ontologyCategory and m2:ontologyCategory
 m0:ForbidObsoleteOntologyCategoriesShape
@@ -573,7 +347,7 @@ m0:ForbidOriveShape
       [ sh:property [ sh:path m0:sphinxEye_ORIVE ; sh:minCount 1 ] ]
     )
   ] ;
-  sh:message "FORBIDDEN: ORIVE is obsolete terminology. Use m0:revoiMean, R_score..Im_score, REVOI throughout. R = Representability (NEVER Reproducibility)." .
+  sh:message "FORBIDDEN: ORIVE is obsolete terminology. Use REVOI throughout. R = Representability (NEVER Reproducibility). (Scores, including REVOI scores, are retired since 2026-11-15.)" .
 
 # FORBIDDEN: tscg: namespace
 m0:ForbidTscgNamespaceShape
@@ -593,35 +367,7 @@ m0:ForbidTscgNamespaceShape
     """
   ] .
 
-# ============================================
-# FOCAL SCORE COHERENCE RULES (v1.3)
-# ============================================
-# When focalApplicable=false, other focal props must be absent.
-# Expressed as SPARQL constraint for cross-property coherence.
-
-m0:FocalScoreCoherenceShape
-  a sh:NodeShape ;
-  sh:targetClass owl:Ontology ;
-  sh:sparql [
-    a sh:SPARQLConstraint ;
-    sh:message "FOCAL SCORE COHERENCE: When m0:focalApplicable=false, properties m0:focalScore, m0:focalClass, m0:stereopsicDepth, m0:focalBias MUST be absent." ;
-    sh:select """
-      PREFIX m0: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#>
-      SELECT $this
-      WHERE {
-        $this m0:focalApplicable false .
-        {
-          { $this m0:focalScore ?s }
-          UNION
-          { $this m0:focalClass ?c }
-          UNION
-          { $this m0:stereopsicDepth ?d }
-          UNION
-          { $this m0:focalBias ?b }
-        }
-      }
-    """
-  ] .
+# FOCAL SCORE COHERENCE RULES (v1.3): REMOVED in v1.9 (focal family deprecated).
 
 # ============================================
 # FACET STRING GUARD (v1.7 — SC-3)
@@ -659,7 +405,7 @@ m0:RequireM0CommonImportShape
   sh:severity sh:Warning ;
   sh:sparql [
     a sh:SPARQLConstraint ;
-    sh:message "M0_Common.jsonld IMPORT RECOMMENDED (v1.5): All M0 instances should declare owl:imports M0_Common.jsonld to inherit shared property definitions (m0:scoreA..m0:scoreIm, m0:epistemicGap, m0:focalScore, enumeration classes). Without this import, m0: properties may not resolve correctly in OWL reasoners." ;
+    sh:message "M0_Common.jsonld IMPORT RECOMMENDED (v1.5): All M0 instances should declare owl:imports M0_Common.jsonld to inherit the shared m0: vocabulary (the federating namespace). Without this import, m0: properties may not resolve correctly in OWL reasoners." ;
     sh:select """
       PREFIX owl: <http://www.w3.org/2002/07/owl#>
       PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -677,44 +423,8 @@ m0:RequireM0CommonImportShape
     """
   ] .
 
-# ============================================
-# FORBIDDEN: String values for enum properties (v1.5)
-# ============================================
-m0:ForbidStringSpectralClassShape
-  a sh:NodeShape ;
-  sh:targetClass owl:Ontology ;
-  sh:not [
-    sh:property [
-      sh:path m0:spectralClass ;
-      sh:datatype xsd:string ;
-      sh:minCount 1
-    ]
-  ] ;
-  sh:message "FORBIDDEN (v1.5): m0:spectralClass must be an IRI (e.g. {'@id': 'm0:spectralClass.Coherent'}), NOT a string literal ('Coherent'). Use @id notation." .
-
-m0:ForbidStringScoringStatusShape
-  a sh:NodeShape ;
-  sh:targetClass owl:Ontology ;
-  sh:not [
-    sh:property [
-      sh:path m0:scoringStatus ;
-      sh:datatype xsd:string ;
-      sh:minCount 1
-    ]
-  ] ;
-  sh:message "FORBIDDEN (v1.5): m0:scoringStatus must be an IRI (e.g. {'@id': 'm0:scoringStatus.Complete'}), NOT a string literal. Use @id notation." .
-
-m0:ForbidStringFocalClassShape
-  a sh:NodeShape ;
-  sh:targetClass owl:Ontology ;
-  sh:not [
-    sh:property [
-      sh:path m0:focalClass ;
-      sh:datatype xsd:string ;
-      sh:minCount 1
-    ]
-  ] ;
-  sh:message "FORBIDDEN (v1.5): m0:focalClass must be an IRI (e.g. {'@id': 'm0:focalClass.Emmetropic'}), NOT a string literal. Use @id notation." .
+# FORBIDDEN string values for m0:spectralClass / m0:scoringStatus / m0:focalClass (v1.5):
+# REMOVED in v1.9 — the three enumerations are deprecated; C16 forbids any use.
 
 # ============================================
 # FORBIDDEN: A_score/S_score/... aliases (v1.5)
@@ -727,8 +437,8 @@ m0:ForbidStringFocalClassShape
 # FORBIDDEN aliases (must NOT appear in @context):
 #   "A_score", "S_score", "F_score", "It_score", "D_score"
 #   "R_score", "E_score", "V_score", "O_score", "Im_score"
-# CORRECT: use m0:scoreA, m0:scoreS, m0:scoreF, m0:scoreIt, m0:scoreD
-#          and m0:scoreR, m0:scoreE, m0:scoreV, m0:scoreO, m0:scoreIm directly
+# (v1.9, 2026-11-15) m0:scoreA … m0:scoreIm are deprecated too: there is no
+# correct form of a score any more.
 
 # ============================================
 # STATISTICS (v1.5 — 2026-06-19)
@@ -737,33 +447,8 @@ m0:ForbidStringFocalClassShape
 #   26 Poclets + 3 SystemicFrameworks (Vsm, Triz, Bmc)
 #   + 1 SymbolicSystemGrammar (IChing) + 3 TscgTools
 #
-# Score Convention Status:
-#   Pattern B (flat, correct):  Vsm, Triz, Bmc + ~20 poclets migrated
-#   Pattern A (sub-objects):    FireTriangle + ~6 older poclets → migrate
-#   No scores (pending):        ~5 stub poclets
-#
-# Focal Score Status:
-#   Introduced in v1.3 — no instances scored yet.
-#   BMC: focalApplicable=true, focalScore≈0.716, focalClass=SlightlyHyperopic
-#
-# FocalClass IRI values (v1.5 — owl:NamedIndividual in M0_Common.jsonld):
-#   m0:focalClass.Emmetropic        SFE ≥ 0.70
-#   m0:focalClass.SlightlyMyopic    0.50 ≤ SFE < 0.70 AND focalBias < 0
-#   m0:focalClass.SlightlyHyperopic 0.50 ≤ SFE < 0.70 AND focalBias > 0
-#   m0:focalClass.Myopic            0.30 ≤ SFE < 0.50 AND focalBias < 0
-#   m0:focalClass.Hyperopic         0.30 ≤ SFE < 0.50 AND focalBias > 0
-#   m0:focalClass.Astigmatic        SFE < 0.30 (regardless of bias)
-#
-# SpectralClass IRI values (v1.5 — owl:NamedIndividual in M0_Common.jsonld):
-#   m0:spectralClass.Coherent       δ₁ < 0.05
-#   m0:spectralClass.OnCriticalLine 0.05 ≤ δ₁ < 0.15
-#   m0:spectralClass.Liminal        0.15 ≤ δ₁ < 0.30
-#   m0:spectralClass.Enigmatic      δ₁ ≥ 0.30
-#
-# ScoringStatus IRI values (v1.5 — owl:NamedIndividual in M0_Common.jsonld):
-#   m0:scoringStatus.Complete       all 10 scores present
-#   m0:scoringStatus.Partial        some scores present
-#   m0:scoringStatus.Pending        no scores (stub instance)
+# Score / focal / spectral / scoring-status notes: REMOVED in v1.9 (2026-11-15).
+# The whole scoring family is deprecated in M0_Common; see the v1.9 changelog.
 # ============================================
 
 # ============================================

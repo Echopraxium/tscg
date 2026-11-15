@@ -1,7 +1,7 @@
 # Epistemic gap δ₁ and the scoring family — Feasibility note / Decision Record draft
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.6.0 (draft) · **Date**: 2026-11-15
+**Version**: 0.7.0 (draft) · **Date**: 2026-11-15
 **Kind**: feasibility study (pipeline Phase 0 + Phase 1). **No ontology file is changed.**
 **Worksite id**: not registered. The folder name `WS-TBD_EpistemicGap/` is a
 placeholder; rename it with `git mv` once Michel picks the id (decision D1).
@@ -64,6 +64,11 @@ Added later the same day (after reading the Ashby reading of Odin's Wisdom):
     other M3 edits.
 15. **Validation / refutation heuristics** for mock-ups and for the Toolkit must be
     proposed — recorded in `ontology/docs/_02_EpistemicReview/MockupValidation_Heuristics_Draft.md` §6.
+16. **Method validated** (2026-11-15): deprecate the definitions (with the
+    epistemological reason in their comment, text approved by Michel), delete their uses;
+    M0 first, M3 prose afterwards once the wordings are given; in several steps.
+    **Step 1 (M0 lot) done** — see `TSCG_Debt_Overview.md` §8.0h. C16 is a guard at 0, so
+    D7 (FAIL or WARN) is moot.
 
 What this changes below: §2 (the "concept" column now means Korzybski only), §4
 (option (a) removes concept and measure; option (c) becomes the heuristics loop),
@@ -596,6 +601,7 @@ at M0 first would hide the debt that M3 still asserts.
 
 | version | date | change |
 |---|---|---|
+| 0.7.0 | 2026-11-15 | Position 16: method validated (deprecate definitions, delete uses; M0 first); step 1, the M0 lot, done (Debt Overview §8.0h). |
 | 0.6.0 | 2026-11-15 | Positions 13–15: evaluation outside the model (CH4 §6), the IntersubjectiveBenchmark README deleted, validation/refutation heuristics recorded. |
 | 0.5.0 | 2026-11-15 | Positions 10–12: priority = no scores, no δ₁, no δ₂ (a gap too: `focalBias` = revoiMean − asfidMean); `M0_Common` kept as the federating namespace; facets for M0 instances parked in `_02_EpistemicReview/`. D13 and D19 answered. |
 | 0.4.0 | 2026-11-15 | Positions 8 (the monoids and the Layer Cake are not a model of reality; M2 concepts are proxies) and 9 (no scores; evaluation belongs to the user and observers). §2b headed by the category error; §2d scope of the whole scoring family (40/43 `M0_Common` nodes, 42/43 instances, M3 role (2) of the primitives); L3/L4 widened; D3/D16 answered; D19–D21 added. Inventory script: section F. |

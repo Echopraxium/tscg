@@ -1,5 +1,5 @@
 {
-  "_measured": "2026-11-08, real repository (--update-golden)",
+  "_measured": "2026-11-15, real repository (--update-golden)",
   "_note": "Reference values, TriskeleVM-style. EXACT match required. A count that DROPS is as suspicious as one that rises: either a deliberate fix (then --update-golden, and the drop is recorded under '_previous'/'_delta') or a validator that stopped biting. A silently shrinking count is the most dangerous signal in this repo — it looks like progress.",
   "M3": {
     "status": "INSTRUMENTED",
@@ -105,18 +105,20 @@
     "note": "MIGRATION BACKLOG, measured not blessed: v1.5 namespace/imports cluster C02/C03/C07/C09, SHACL C15, tensor remnants C12. The frozen values are the counts above; per-instance detail: check_m0_instances.py --json. Lower them ONLY by repairing instances (CheckM0 repair campaign), never by loosening a check. Metric mapping: errors = sum of non-SHACL check failures; shacl_violations = C15.",
     "_previous": {
       "files": 43,
-      "errors": 124,
+      "errors": 117,
       "warnings": 0,
-      "shacl_violations": 22
+      "shacl_violations": 19
     },
     "_delta": {
-      "errors": "124 -> 117",
-      "shacl_violations": "22 -> 19"
+      "errors": "117 -> 112",
+      "engine.D1": "6364 -> 6273",
+      "engine.G5": "129 -> 123",
+      "engine.G8": "1162 -> 1123"
     },
-    "_delta_reason": "WS-1 lot 1i (2026-09-30): C12 25 -> 24, a FALSE POSITIVE removed, not a formula repair. M0_VSM's only U+2297 was inside its OLDEST changelog entry ('⊗⇒ notation used internally', history prose). Adding the lot-1i entry rotated that entry out under the 3-entry retention policy, so C12 (which scans every string of @graph, changelog prose included) no longer fires on VSM. No check loosened; tscg_metrics.py already excludes changelog prose from its tensor gauge for the same reason ('a mention in history is not a defect'). Scanning changelog prose in C12 remains a known over-reach, to be decided separately.",
-    "_updated": "2026-11-08",
+    "_delta_reason": "Scoring family retired, M0 lot (2026-11-15, decided by Michel: the scores, the gaps and the classes are deprecated; epistemological reason: a model is not legitimate to evaluate itself — CH4 LayerCake_Models_The_Kit.md §6). DATA REPAIRED BY DELETION, not a loosened check: (1) the 40 scoring-family nodes of M0_Common are owl:deprecated (definitions kept, with the reason in rdfs:comment); (2) every use of them was deleted from the 42 instances concerned (347 JSON members, the last one the emptied m0:scoringJustification of Bmc; incl. the @context coercions, the 9 malformed m0:epistemicGap objects, the typed literals, the string enums); (3) C10 (score bare numerics, 2) and C11 (enum IRIs, 3) are retired with the terms they checked — their 5 failures were all on deleted values (Counterpoint C11; VSM, IChing C10+C11) — and are REPLACED by the stricter C16 (any use of a deprecated M0_Common term = FAIL; the deprecated set is read from M0_Common; negative tests: check-M0/test_check_m0_c16.py), at 0. errors 117 -> 112 = -2 C10 -3 C11. Engine: D1 6364 -> 6273, G5 129 -> 123, G8 1162 -> 1123 — all on keys inside the deleted members (bare keys of the gap objects, phantom m0:<term> predicates of misbound files); per-key comparison against HEAD 5a26560: NO finding rose. The ad hoc score encodings that are NOT uses of M0_Common terms (A_score objects, asfidState, numbers inside asfid/revoi analyses, local m0.<inst>:…Score) remain: next step, measured by ontology/docs/_01_Worksite/WS-TBD_EpistemicGap/delta1_inventory.py section F.",
+    "_updated": "2026-11-15",
     "files": 43,
-    "errors": 117,
+    "errors": 112,
     "warnings": 0,
     "shacl_violations": 19,
     "pass": 18,
@@ -127,29 +129,28 @@
       "C07": 22,
       "C08": 6,
       "C09": 16,
-      "C10": 2,
-      "C11": 3,
       "C12": 23,
       "C13": 1,
       "C15": 19
     },
     "engine": {
-      "errors": 1337,
-      "warnings": 6406,
+      "errors": 1292,
+      "warnings": 6315,
       "by_code": {
         "AXIS-2": 10,
         "CTX-1": 1,
         "CTX-5": 42,
-        "D1": 6364,
+        "D1": 6273,
         "D5": 6,
         "D7": 28,
-        "G5": 129,
+        "G5": 123,
         "G6": 1,
-        "G8": 1162
+        "G8": 1123
       }
     },
     "_delta_reason_engine": "Lot K0 (2026-11-01, Michel: reveal the vocabulary debt, never mask it): the engine gains G8 — a TSCG-namespace predicate used in the expanded graph but declared AS A PROPERTY nowhere (OWL 2: an entity's type comes from its declaration). It closes the escape hatch of D1: a bare key 'fixed' by a @context entry alone becomes a G8. First capture M0 engine section: D1 6364, D7 28 (28 of 42 instances rejected by a strict JSON-LD 1.1 processor — rdflib reads them leniently), G5 129, G8 1162, D5 6, AXIS-2 10, CTX-1 1, CTX-5 42, G6 1.",
-    "engine_note": "Lot K0: the validator engine's view of this layer (tscg_validator.py --doc --ext, no SHACL — this layer's SHACL is counted by its own checker above). by_code compared EXACTLY. D1 = bare-key OCCURRENCES; G8 = DISTINCT phantom predicates. A D1 repair is valid only if G8 does not rise (declare the key as a property, map it to an existing one, or delete it)."
+    "engine_note": "Lot K0: the validator engine's view of this layer (tscg_validator.py --doc --ext, no SHACL — this layer's SHACL is counted by its own checker above). by_code compared EXACTLY. D1 = bare-key OCCURRENCES; G8 = DISTINCT phantom predicates. A D1 repair is valid only if G8 does not rise (declare the key as a property, map it to an existing one, or delete it).",
+    "_delta_reason_previous_WS-1_lot_1i": "WS-1 lot 1i (2026-09-30): C12 25 -> 24, a FALSE POSITIVE removed, not a formula repair. M0_VSM's only U+2297 was inside its OLDEST changelog entry ('⊗⇒ notation used internally', history prose). Adding the lot-1i entry rotated that entry out under the 3-entry retention policy, so C12 (which scans every string of @graph, changelog prose included) no longer fires on VSM. No check loosened; tscg_metrics.py already excludes changelog prose from its tensor gauge for the same reason ('a mention in history is not a defect'). Scanning changelog prose in C12 remains a known over-reach, to be decided separately."
   },
   "_known_pre_existing_not_counted_here": {
     "SHAPE2_vs_SHAPE3": "~256 of the 502 SHACL violations are a VALIDATOR BUG, not data defects. sh:targetClass follows subclasses, so every extension combo is validated TWICE — by SHAPE 2 (which demands Fm2( ) and SHAPE 3 (which demands Fm1m2( ) — mutually exclusive. No extension combo can satisfy both. SHAPE 2 must exclude the subclass. → SC-5. THIS IS THE REAL GOLDMINE: ~256 violations that describe no defect at all.",
@@ -159,14 +160,23 @@
   },
   "M0_REASONER": {
     "files": 43,
-    "not_passed": 2,
-    "failed": 1,
+    "not_passed": 1,
+    "failed": 0,
     "error": 1,
     "files_not_passed": {
-      "instances/poclets/yggdrasil/M0_Yggdrasil.jsonld": "ERROR",
-      "instances/systemic-frameworks/Bmc/M0_Bmc.jsonld": "FAILED"
+      "instances/poclets/yggdrasil/M0_Yggdrasil.jsonld": "ERROR"
     },
-    "_previous": null,
-    "_updated": "2026-11-08"
+    "_previous": {
+      "files": 43,
+      "not_passed": 2,
+      "failed": 1,
+      "error": 1,
+      "files_not_passed": {
+        "instances/poclets/yggdrasil/M0_Yggdrasil.jsonld": "ERROR",
+        "instances/systemic-frameworks/Bmc/M0_Bmc.jsonld": "FAILED"
+      }
+    },
+    "_updated": "2026-11-15",
+    "_delta_reason_2026-11-15": "M0_Bmc FAILED -> PASSED: its inconsistency came from score values deleted in this lot — m0:scoreA … m0:scoreIm were also used inside an (undeclared) m0:scoringJustification object with STRING values (the justification texts); that object, left empty, was deleted too, against the xsd:float range declared in M0_Common. Removing the deprecated uses removed the clash. M0_Yggdrasil ERROR unchanged (pre-existing). M0_Common.jsonld itself reasoned alone (8 files merged): PASSED."
   }
 }

@@ -21,8 +21,8 @@
       "rdfs:comment": "Canonical source of truth for all shared properties used across TSCG M0 instances (Poclets, SystemicFrameworks, SymbolicSystemGrammars, TscgTools). Defines the m0: namespace as the unique, stable namespace for cross-instance properties. All M0 instances MUST import this file and declare m0: pointing to this ontology. Instance-local properties use a distinct alias m0.<instanceName>: pointing to the instance file itself.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19",
-      "owl:versionInfo": "1.7.0",
-      "dcterms:modified": "2026-11-08",
+      "owl:versionInfo": "1.8.0",
+      "dcterms:modified": "2026-11-15",
       "m3:ontologyType": {
         "@id": "m3:CommonVocabulary"
       },
@@ -33,6 +33,11 @@
       ],
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.8.0",
+          "dcterms:date": "2026-11-15",
+          "adms:versionNotes": "Scoring family deprecated (40 nodes: the ten scores, the two means, m0:epistemicGap, the spectral and focal classes and their properties, the scoring status, m0:scoreJustification, m0:ScoringProperty, m0:FocalProperty). Epistemological reason: a model is not legitimate to evaluate itself; evaluation belongs to the observers of the mock-up, outside the model (CH4 §6). Uses removed from the instances; check_m0 C16 guards against any use. m0:InstanceProperty kept as the generic hook. Decision: Michel, 2026-11-15."
+        },
+        {
           "owl:versionInfo": "1.7.0",
           "dcterms:date": "2026-11-08",
           "adms:versionNotes": "owl:oneOf of m0:SpectralClass, m0:FocalClass and m0:ScoringStatus written as JSON-LD lists {\"@list\": [...]}. As plain JSON arrays they expanded to separate values instead of an RDF list (Pellet: 'Invalid list structure ... does not have a rdf:first property'), each enumeration was read as empty (class equivalent to owl:Nothing) and the individuals typed with it made this file inconsistent, together with every M0 instance that imports it (18 of 18 found by owl_reasoning_test, 2026-11-08). Found while reasoning the Thermostat poclet."
@@ -41,11 +46,6 @@
           "owl:versionInfo": "1.6.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 3 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.5.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "m0:namespaceConvention": {
@@ -73,7 +73,7 @@
       "@id": "m0:InstanceProperty",
       "@type": "owl:Class",
       "rdfs:label": "M0 Instance Property",
-      "rdfs:comment": "Abstract superclass of all shared M0 properties defined in M0_Common. Provides a common type for SPARQL queries across all M0 instances.",
+      "rdfs:comment": "Abstract superclass of all shared M0 properties defined in M0_Common. Provides a common type for SPARQL queries across all M0 instances. Since 1.8.0 (2026-11-15) its only two subclasses, m0:ScoringProperty and m0:FocalProperty, are deprecated; it stays, until further notice, as the generic hook for future shared M0 properties (M0_Common remains the federating m0: namespace).",
       "rdfs:subClassOf": {
         "@id": "owl:Thing"
       }
@@ -81,8 +81,9 @@
     {
       "@id": "m0:ScoringProperty",
       "@type": "owl:Class",
+      "owl:deprecated": true,
       "rdfs:label": "M0 Scoring Property",
-      "rdfs:comment": "Superclass of all ASFID and REVOI score properties. All scoring properties have domain=owl:Ontology and range=xsd:float in [0.0, 1.0].",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Superclass of all ASFID and REVOI score properties. All scoring properties have domain=owl:Ontology and range=xsd:float in [0.0, 1.0].",
       "rdfs:subClassOf": {
         "@id": "m0:InstanceProperty"
       }
@@ -90,8 +91,9 @@
     {
       "@id": "m0:FocalProperty",
       "@type": "owl:Class",
+      "owl:deprecated": true,
       "rdfs:label": "M0 Focal Score Property",
-      "rdfs:comment": "Superclass of all focal score properties (Gs stereopsis). Only applicable when m0:focalApplicable=true.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Superclass of all focal score properties (Gs stereopsis). Only applicable when m0:focalApplicable=true.",
       "rdfs:subClassOf": {
         "@id": "m0:InstanceProperty"
       }
@@ -99,11 +101,12 @@
     {
       "@id": "m0:scoreA",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "Attractor Score (A)",
-      "rdfs:comment": "ASFID/Gt score for the Attractor dimension. Measures the presence and strength of equilibrium states or basins of attraction in the modeled system. Range: [0.0, 1.0]. 0.0 = no identifiable attractor; 1.0 = strong, well-defined attractor(s).",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: ASFID/Gt score for the Attractor dimension. Measures the presence and strength of equilibrium states or basins of attraction in the modeled system. Range: [0.0, 1.0]. 0.0 = no identifiable attractor; 1.0 = strong, well-defined attractor(s).",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -119,11 +122,12 @@
     {
       "@id": "m0:scoreS",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "Structure Score (S)",
-      "rdfs:comment": "ASFID/Gt score for the Structure dimension. Measures the formality and clarity of the system's architectural topology: components, their relationships, and invariant organization. Range: [0.0, 1.0].",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: ASFID/Gt score for the Structure dimension. Measures the formality and clarity of the system's architectural topology: components, their relationships, and invariant organization. Range: [0.0, 1.0].",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -139,11 +143,12 @@
     {
       "@id": "m0:scoreF",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "Flow Score (F)",
-      "rdfs:comment": "ASFID/Gt score for the Flow dimension. Measures the presence and identifiability of material, energy, or information flows through the system. Range: [0.0, 1.0]. NOTE: F=0.0 is valid (Stase — no flow) and is not a special case or error.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: ASFID/Gt score for the Flow dimension. Measures the presence and identifiability of material, energy, or information flows through the system. Range: [0.0, 1.0]. NOTE: F=0.0 is valid (Stase — no flow) and is not a special case or error.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -160,11 +165,12 @@
     {
       "@id": "m0:scoreIt",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "Information Score (It)",
-      "rdfs:comment": "ASFID/Gt score for the Information dimension (Territory side). Measures the degree to which the system encodes, processes, or transmits information signals. Range: [0.0, 1.0]. CRITICAL: It = Information (Territory/ASFID). NEVER confuse with Im (Interoperability/REVOI). In hybrid formulas: always use It explicitly.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: ASFID/Gt score for the Information dimension (Territory side). Measures the degree to which the system encodes, processes, or transmits information signals. Range: [0.0, 1.0]. CRITICAL: It = Information (Territory/ASFID). NEVER confuse with Im (Interoperability/REVOI). In hybrid formulas: always use It explicitly.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -181,11 +187,12 @@
     {
       "@id": "m0:scoreD",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "Dynamics Score (D)",
-      "rdfs:comment": "ASFID/Gt score for the Dynamics dimension. Measures the presence of feedback loops, phase transitions, temporal evolution, and self-modifying behavior. Range: [0.0, 1.0].",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: ASFID/Gt score for the Dynamics dimension. Measures the presence of feedback loops, phase transitions, temporal evolution, and self-modifying behavior. Range: [0.0, 1.0].",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -201,11 +208,12 @@
     {
       "@id": "m0:scoreR",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "Representability Score (R)",
-      "rdfs:comment": "REVOI/Gm score for the Representability dimension. Measures how formally the system can be encoded in diagrams, equations, ontologies, or other notations. Range: [0.0, 1.0]. CRITICAL: R = Representability. NEVER Reproducibility.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: REVOI/Gm score for the Representability dimension. Measures how formally the system can be encoded in diagrams, equations, ontologies, or other notations. Range: [0.0, 1.0]. CRITICAL: R = Representability. NEVER Reproducibility.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -222,11 +230,12 @@
     {
       "@id": "m0:scoreE",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "Evolvability Score (E)",
-      "rdfs:comment": "REVOI/Gm score for the Evolvability dimension. Measures how extensible, parametrizable, and version-capable the model is. Range: [0.0, 1.0].",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: REVOI/Gm score for the Evolvability dimension. Measures how extensible, parametrizable, and version-capable the model is. Range: [0.0, 1.0].",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -242,11 +251,12 @@
     {
       "@id": "m0:scoreV",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "Verifiability Score (V)",
-      "rdfs:comment": "REVOI/Gm score for the Verifiability dimension. Measures how empirically testable or falsifiable the model is (Popper criterion). Range: [0.0, 1.0].",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: REVOI/Gm score for the Verifiability dimension. Measures how empirically testable or falsifiable the model is (Popper criterion). Range: [0.0, 1.0].",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -262,11 +272,12 @@
     {
       "@id": "m0:scoreO",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "Observability Score (O)",
-      "rdfs:comment": "REVOI/Gm score for the Observability dimension. Measures how directly the system's state variables can be measured or instrumented. Range: [0.0, 1.0].",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: REVOI/Gm score for the Observability dimension. Measures how directly the system's state variables can be measured or instrumented. Range: [0.0, 1.0].",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -282,11 +293,12 @@
     {
       "@id": "m0:scoreIm",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "Interoperability Score (Im)",
-      "rdfs:comment": "REVOI/Gm score for the Interoperability dimension (Map side). Measures compatibility with other frameworks, methodologies, and models. Range: [0.0, 1.0]. CRITICAL: Im = Interoperability (Map/REVOI). NEVER confuse with It (Information/Territory/ASFID).",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: REVOI/Gm score for the Interoperability dimension (Map side). Measures compatibility with other frameworks, methodologies, and models. Range: [0.0, 1.0]. CRITICAL: Im = Interoperability (Map/REVOI). NEVER confuse with It (Information/Territory/ASFID).",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -303,11 +315,12 @@
     {
       "@id": "m0:asfidMean",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "ASFID Mean",
-      "rdfs:comment": "Arithmetic mean of the 5 ASFID scores: (scoreA + scoreS + scoreF + scoreIt + scoreD) / 5. Represents the overall Territory (Eagle Eye / Gt) alignment of the instance. Range: [0.0, 1.0].",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Arithmetic mean of the 5 ASFID scores: (scoreA + scoreS + scoreF + scoreIt + scoreD) / 5. Represents the overall Territory (Eagle Eye / Gt) alignment of the instance. Range: [0.0, 1.0].",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -321,11 +334,12 @@
     {
       "@id": "m0:revoiMean",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:ScoringProperty"
       },
       "rdfs:label": "REVOI Mean",
-      "rdfs:comment": "Arithmetic mean of the 5 REVOI scores: (scoreR + scoreE + scoreV + scoreO + scoreIm) / 5. Represents the overall Map (Sphinx Eye / Gm) alignment of the instance. Range: [0.0, 1.0].",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Arithmetic mean of the 5 REVOI scores: (scoreR + scoreE + scoreV + scoreO + scoreIm) / 5. Represents the overall Map (Sphinx Eye / Gm) alignment of the instance. Range: [0.0, 1.0].",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -339,8 +353,9 @@
     {
       "@id": "m0:epistemicGap",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:label": "Epistemic Gap (δ₁)",
-      "rdfs:comment": "Normalized distance between ASFID mean and REVOI mean: |asfidMean − revoiMean| / √2. Measures the alignment between Territory (Eagle Eye) and Map (Sphinx Eye) perspectives. Range: [0.0, 1.0]. Small gap = good Map/Territory coherence.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Normalized distance between ASFID mean and REVOI mean: |asfidMean − revoiMean| / √2. Measures the alignment between Territory (Eagle Eye) and Map (Sphinx Eye) perspectives. Range: [0.0, 1.0]. Small gap = good Map/Territory coherence.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -360,8 +375,9 @@
     {
       "@id": "m0:scoreJustification",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:label": "Score Justification",
-      "rdfs:comment": "Human-readable justification object for each of the 10 ASFID/REVOI scores. Structure: {A_score: string, S_score: string, ..., Im_score: string}. One sentence per dimension explaining the score value.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Human-readable justification object for each of the 10 ASFID/REVOI scores. Structure: {A_score: string, S_score: string, ..., Im_score: string}. One sentence per dimension explaining the score value.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -374,11 +390,12 @@
     {
       "@id": "m0:stereopsicDepth",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:FocalProperty"
       },
       "rdfs:label": "Stereopsic Depth (Gs)",
-      "rdfs:comment": "Depth of Gs (stereopsis) engagement in this instance, computed from the TKSL primitives active in the mobilized stereopsic GenericConcepts. Formula: (T_present × 0.25) + (K_present × 0.25) + (Ss_present × 0.25) + (L_present × 0.25). Range: [0.0, 1.0]. Only present when m0:focalApplicable=true.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Depth of Gs (stereopsis) engagement in this instance, computed from the TKSL primitives active in the mobilized stereopsic GenericConcepts. Formula: (T_present × 0.25) + (K_present × 0.25) + (Ss_present × 0.25) + (L_present × 0.25). Range: [0.0, 1.0]. Only present when m0:focalApplicable=true.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -398,11 +415,12 @@
     {
       "@id": "m0:focalBias",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:FocalProperty"
       },
       "rdfs:label": "Focal Bias",
-      "rdfs:comment": "Signed Map/Territory imbalance: m0:revoiMean − m0:asfidMean. Range: [−1.0, +1.0]. Positive = Map dominant (Hyperopic — model abstracts beyond observable territory). Negative = Territory dominant (Myopic — territory detail exceeds model capacity). Zero = perfect balance (Emmetropic candidate). Only present when m0:focalApplicable=true.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Signed Map/Territory imbalance: m0:revoiMean − m0:asfidMean. Range: [−1.0, +1.0]. Positive = Map dominant (Hyperopic — model abstracts beyond observable territory). Negative = Territory dominant (Myopic — territory detail exceeds model capacity). Zero = perfect balance (Emmetropic candidate). Only present when m0:focalApplicable=true.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -421,11 +439,12 @@
     {
       "@id": "m0:focalScore",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:FocalProperty"
       },
       "rdfs:label": "Focal Score (SFE)",
-      "rdfs:comment": "Epistemic Focal Score — measures the sharpness of the combined Map+Territory image through the Gs stereopsis lens. Formula: m0:stereopsicDepth × (1 − |m0:focalBias|). Range: [0.0, 1.0]. 1.0 = Emmetropic (sharp binocular fusion). 0.0 = Astigmatic (no Gs depth) or strongly biased (blind spot). Analogous to visual acuity in ophthalmic metaphor. Only present when m0:focalApplicable=true.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Epistemic Focal Score — measures the sharpness of the combined Map+Territory image through the Gs stereopsis lens. Formula: m0:stereopsicDepth × (1 − |m0:focalBias|). Range: [0.0, 1.0]. 1.0 = Emmetropic (sharp binocular fusion). 0.0 = Astigmatic (no Gs depth) or strongly biased (blind spot). Analogous to visual acuity in ophthalmic metaphor. Only present when m0:focalApplicable=true.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -439,11 +458,12 @@
     {
       "@id": "m0:stereopsicDepthProfile",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:subPropertyOf": {
         "@id": "m0:FocalProperty"
       },
       "rdfs:label": "Stereopsic Depth Profile",
-      "rdfs:comment": "Detailed breakdown of which Gs TKSL primitives are active in the mobilized stereopsic GenericConcepts. Structure: {T_present: bool, K_present: bool, Ss_present: bool, L_present: bool, mobilizedStereopsicGC: int, stereopsicGCNames: [string]}. Only present when m0:focalApplicable=true.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Detailed breakdown of which Gs TKSL primitives are active in the mobilized stereopsic GenericConcepts. Structure: {T_present: bool, K_present: bool, Ss_present: bool, L_present: bool, mobilizedStereopsicGC: int, stereopsicGCNames: [string]}. Only present when m0:focalApplicable=true.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -481,8 +501,9 @@
     {
       "@id": "m0:SpectralClass",
       "@type": "owl:Class",
+      "owl:deprecated": true,
       "rdfs:label": "Spectral Class",
-      "rdfs:comment": "Enumeration of epistemic gap (δ₁) qualitative classifications. Derived from m0:epistemicGap value. Naming convention: m0:spectralClass.<Value>.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Enumeration of epistemic gap (δ₁) qualitative classifications. Derived from m0:epistemicGap value. Naming convention: m0:spectralClass.<Value>.",
       "owl:oneOf": {
         "@list": [
           {
@@ -508,8 +529,9 @@
         "owl:NamedIndividual",
         "m0:SpectralClass"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "Coherent",
-      "rdfs:comment": "δ₁ < 0.05 — excellent Map/Territory alignment, strong epistemic coherence",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: δ₁ < 0.05 — excellent Map/Territory alignment, strong epistemic coherence",
       "m0:threshold": "δ₁ < 0.05",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
@@ -520,8 +542,9 @@
         "owl:NamedIndividual",
         "m0:SpectralClass"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "OnCriticalLine",
-      "rdfs:comment": "0.05 ≤ δ₁ < 0.15 — good alignment with notable gap, on the epistemic boundary",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: 0.05 ≤ δ₁ < 0.15 — good alignment with notable gap, on the epistemic boundary",
       "m0:threshold": "0.05 ≤ δ₁ < 0.15",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
@@ -532,8 +555,9 @@
         "owl:NamedIndividual",
         "m0:SpectralClass"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "Liminal",
-      "rdfs:comment": "0.15 ≤ δ₁ < 0.30 — significant gap, Map and Territory partially misaligned",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: 0.15 ≤ δ₁ < 0.30 — significant gap, Map and Territory partially misaligned",
       "m0:threshold": "0.15 ≤ δ₁ < 0.30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
@@ -544,8 +568,9 @@
         "owl:NamedIndividual",
         "m0:SpectralClass"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "Enigmatic",
-      "rdfs:comment": "δ₁ ≥ 0.30 — large gap, Map and Territory strongly divergent",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: δ₁ ≥ 0.30 — large gap, Map and Territory strongly divergent",
       "m0:threshold": "δ₁ ≥ 0.30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
@@ -553,8 +578,9 @@
     {
       "@id": "m0:spectralClass",
       "@type": "owl:ObjectProperty",
+      "owl:deprecated": true,
       "rdfs:label": "spectral Class",
-      "rdfs:comment": "Qualitative classification of the epistemic gap δ₁ between ASFID and REVOI perspectives. Use enumeration values: m0:spectralClass.Coherent, m0:spectralClass.OnCriticalLine, m0:spectralClass.Liminal, m0:spectralClass.Enigmatic.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Qualitative classification of the epistemic gap δ₁ between ASFID and REVOI perspectives. Use enumeration values: m0:spectralClass.Coherent, m0:spectralClass.OnCriticalLine, m0:spectralClass.Liminal, m0:spectralClass.Enigmatic.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -567,8 +593,9 @@
     {
       "@id": "m0:FocalClass",
       "@type": "owl:Class",
+      "owl:deprecated": true,
       "rdfs:label": "Focal Class",
-      "rdfs:comment": "Enumeration of epistemic focal score (SFE) ophthalmic classifications. Derived from m0:focalScore and sign of m0:focalBias. Naming convention: m0:focalClass.<Value>. Only applicable when m0:focalApplicable=true.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Enumeration of epistemic focal score (SFE) ophthalmic classifications. Derived from m0:focalScore and sign of m0:focalBias. Naming convention: m0:focalClass.<Value>. Only applicable when m0:focalApplicable=true.",
       "owl:oneOf": {
         "@list": [
           {
@@ -600,8 +627,9 @@
         "owl:NamedIndividual",
         "m0:FocalClass"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "Emmetropic",
-      "rdfs:comment": "SFE ≥ 0.70 — sharp combined Map+Territory image through Gs stereopsis",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: SFE ≥ 0.70 — sharp combined Map+Territory image through Gs stereopsis",
       "m0:derivationRule": "SFE ≥ 0.70",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
@@ -612,8 +640,9 @@
         "owl:NamedIndividual",
         "m0:FocalClass"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "SlightlyMyopic",
-      "rdfs:comment": "0.50 ≤ SFE < 0.70 AND focalBias < 0 — Territory slightly dominant, Map slightly blurred",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: 0.50 ≤ SFE < 0.70 AND focalBias < 0 — Territory slightly dominant, Map slightly blurred",
       "m0:derivationRule": "0.50 ≤ SFE < 0.70, bias < 0",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
@@ -624,8 +653,9 @@
         "owl:NamedIndividual",
         "m0:FocalClass"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "SlightlyHyperopic",
-      "rdfs:comment": "0.50 ≤ SFE < 0.70 AND focalBias > 0 — Map slightly dominant, Territory slightly blurred",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: 0.50 ≤ SFE < 0.70 AND focalBias > 0 — Map slightly dominant, Territory slightly blurred",
       "m0:derivationRule": "0.50 ≤ SFE < 0.70, bias > 0",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
@@ -636,8 +666,9 @@
         "owl:NamedIndividual",
         "m0:FocalClass"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "Myopic",
-      "rdfs:comment": "0.30 ≤ SFE < 0.50 AND focalBias < 0 — Territory dominant, Map significantly blurred",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: 0.30 ≤ SFE < 0.50 AND focalBias < 0 — Territory dominant, Map significantly blurred",
       "m0:derivationRule": "0.30 ≤ SFE < 0.50, bias < 0",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
@@ -648,8 +679,9 @@
         "owl:NamedIndividual",
         "m0:FocalClass"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "Hyperopic",
-      "rdfs:comment": "0.30 ≤ SFE < 0.50 AND focalBias > 0 — Map dominant, Territory significantly blurred",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: 0.30 ≤ SFE < 0.50 AND focalBias > 0 — Map dominant, Territory significantly blurred",
       "m0:derivationRule": "0.30 ≤ SFE < 0.50, bias > 0",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
@@ -660,8 +692,9 @@
         "owl:NamedIndividual",
         "m0:FocalClass"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "Astigmatic",
-      "rdfs:comment": "SFE < 0.30 — insufficient Gs stereopsic depth regardless of Map/Territory bias",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: SFE < 0.30 — insufficient Gs stereopsic depth regardless of Map/Territory bias",
       "m0:derivationRule": "SFE < 0.30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
@@ -669,8 +702,9 @@
     {
       "@id": "m0:focalClass",
       "@type": "owl:ObjectProperty",
+      "owl:deprecated": true,
       "rdfs:label": "focal Class",
-      "rdfs:comment": "Ophthalmic classification of the epistemic focal score (SFE). Use enumeration values: m0:focalClass.Emmetropic, m0:focalClass.SlightlyMyopic, etc. Only present when m0:focalApplicable=true.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Ophthalmic classification of the epistemic focal score (SFE). Use enumeration values: m0:focalClass.Emmetropic, m0:focalClass.SlightlyMyopic, etc. Only present when m0:focalApplicable=true.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -683,8 +717,9 @@
     {
       "@id": "m0:ScoringStatus",
       "@type": "owl:Class",
+      "owl:deprecated": true,
       "rdfs:label": "Scoring Status",
-      "rdfs:comment": "Enumeration of ASFID/REVOI score completion states for an M0 instance. Naming convention: m0:scoringStatus.<Value>.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Enumeration of ASFID/REVOI score completion states for an M0 instance. Naming convention: m0:scoringStatus.<Value>.",
       "owl:oneOf": {
         "@list": [
           {
@@ -707,8 +742,9 @@
         "owl:NamedIndividual",
         "m0:ScoringStatus"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "Complete",
-      "rdfs:comment": "All 10 ASFID+REVOI scores present. m0:asfidMean, m0:revoiMean, m0:epistemicGap, m0:spectralClass computed.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: All 10 ASFID+REVOI scores present. m0:asfidMean, m0:revoiMean, m0:epistemicGap, m0:spectralClass computed.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
     },
@@ -718,8 +754,9 @@
         "owl:NamedIndividual",
         "m0:ScoringStatus"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "Partial",
-      "rdfs:comment": "Some scores present (typically 5 ASFID without REVOI, or vice versa). Means and gap not yet computable.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Some scores present (typically 5 ASFID without REVOI, or vice versa). Means and gap not yet computable.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
     },
@@ -729,16 +766,18 @@
         "owl:NamedIndividual",
         "m0:ScoringStatus"
       ],
+      "owl:deprecated": true,
       "rdfs:label": "Pending",
-      "rdfs:comment": "No scores present. Stub instance awaiting full ASFID/REVOI analysis session.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: No scores present. Stub instance awaiting full ASFID/REVOI analysis session.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
     },
     {
       "@id": "m0:scoringStatus",
       "@type": "owl:ObjectProperty",
+      "owl:deprecated": true,
       "rdfs:label": "scoring Status",
-      "rdfs:comment": "Completion state of ASFID/REVOI scoring for this M0 instance. Use enumeration values: m0:scoringStatus.Complete, m0:scoringStatus.Partial, m0:scoringStatus.Pending.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Completion state of ASFID/REVOI scoring for this M0 instance. Use enumeration values: m0:scoringStatus.Complete, m0:scoringStatus.Partial, m0:scoringStatus.Pending.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -751,8 +790,9 @@
     {
       "@id": "m0:focalApplicable",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:label": "focal Applicable",
-      "rdfs:comment": "Boolean flag: true if instance mobilizes at least one stereopsic GenericConcept (m2:isStereopsic=true) AND all 10 scores are present. When false, all other m0:focal* and m0:stereopsic* properties MUST be absent.",
+      "rdfs:comment": "DEPRECATED (2026-11-15) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (a score, a gap, a class or an evaluation status) and is kept only so that older documents still resolve. Do not use it. Its uses have been removed from the instances. Former definition: Boolean flag: true if instance mobilizes at least one stereopsic GenericConcept (m2:isStereopsic=true) AND all 10 scores are present. When false, all other m0:focal* and m0:stereopsic* properties MUST be absent.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },

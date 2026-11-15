@@ -1,8 +1,8 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.20.0
-**Date**: 2026-11-08
+**Version**: 1.21.0
+**Date**: 2026-11-15
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
 it does not replace the per-worksite notes.
@@ -759,6 +759,48 @@ for those layers.
 DECLARED properties. Decision table per key for Michel. Then
 `m2:possibleValues` (404 bare keys).
 
+### 8.0h Scoring family retired — M0 lot (2026-11-15)
+
+**Decision** (Michel, 2026-11-15): no scores, no epistemic gap (δ₁), no focal score (δ₂).
+Epistemological reason: a model is not legitimate to evaluate itself — a mock-up no more
+than the toolkit; evaluation is subjective and belongs to the user and the observers,
+outside the model (`docs/CoreHypotheses/LayerCake_Models_The_Kit.md` §6). Definitions are
+**deprecated** (kept, with the reason); their **uses are deleted**. Study and decisions:
+`ontology/docs/_01_Worksite/WS-TBD_EpistemicGap/` (worksite id still to choose).
+
+**Done in this lot (M0):**
+- `M0_Common` 1.8.0: 40 nodes `owl:deprecated` (the ten scores, the two means,
+  `m0:epistemicGap`, spectral and focal classes and properties, scoring status,
+  `m0:scoreJustification`, `m0:ScoringProperty`, `m0:FocalProperty`), each with the reason
+  in `rdfs:comment`; `m0:InstanceProperty` kept as the empty generic hook.
+- 42 instances + the StroboscopicYinYang UserGuide sample: 347 JSON members deleted (all
+  uses of those terms, their `@context` coercions, the 9 gap objects, Bmc's emptied
+  `m0:scoringJustification`). Edited as text (minimal diff), each file checked against a
+  JSON-level deletion. No per-instance changelog entry was added (it would rotate the
+  3-entry changelogs and move C12, as in WS-1 lot 1i): this section is the record.
+- check_m0 1.8.0: C10, C11 retired with their terms; **C16** added (any use of a
+  deprecated `M0_Common` term = FAIL; set read from `M0_Common`; negative tests
+  `check-M0/test_check_m0_c16.py`) — at 0. M0 SHACL schema v1.9: the score shapes removed.
+- Gate: M0 errors 117 → 112 (C10 −2, C11 −3); engine D1 6364 → 6273, G5 129 → 123,
+  G8 1162 → 1123 — repairs by deletion, no finding rose (per-key comparison with HEAD).
+  Reasoner: `M0_Bmc` FAILED → PASSED (its score justifications were strings against the
+  `xsd:float` range); `M0_Common` PASSED; sweep 42/43 (Yggdrasil ERROR, pre-existing).
+
+**Left, and how it is measured** (debt honesty: not moved out of sight):
+- **Cross-layer window**: M3 and M2 still state the scoring (formulas in prose, the
+  "evaluation at M0" role of the primitives, `intersubjectiveBenchmark`,
+  `defeasibilityStatus`, `m2:hasEpistemicGap`, the δ₁ phantoms). Next lots, waiting for
+  Michel's wording (D4, D14, D20 of the study). Measured by
+  `delta1_inventory.py` sections B and F.
+- **Ad hoc score encodings** that are not uses of `M0_Common` terms: `A_score`… objects,
+  `asfidState`, numbers inside ASFID/REVOI analyses, local `m0.<instance>:…Score`,
+  `m0:dominantASFID`, the `A_score` @context aliases (C07). Next M0 step, with a rule for
+  the qualitative text that sits next to the numbers (to decide). Measured by
+  `delta1_inventory.py` section F.
+- Producers outside the gate: the gallery radars and δ badge, the simulation score panel
+  template, the instance-pipeline and simulation skills, PocletMiner / PocletGenerator,
+  `modernize_m0.py`, `migrate_m0_to_v1_5.py`.
+
 ### 8.1 S5-1 — primitives always suffixed
 
 Rule: the ambiguous letters are always qualified by their monoid —
@@ -785,6 +827,9 @@ No bare `S` or `I` anywhere: formulas, alphabet listings, prose.
 - Owner: SC-2 reopened (or a new SC id), M1/M0 repair after the gauge.
 
 ### 8.1b S5-1b — M0 primitive scores (`m0:asfidScores`, `m0:revoiScores`)
+
+> **SUPERSEDED (2026-11-15)**: the scores are retired (§8.0h). The target format below is
+> kept for the record; it will not be built.
 
 > **Overlap (found 2026-10-11)**: WS-10 item NS-4 already plans the scores as a shared
 > vocabulary (`m0:scoreA`…, M0_Common). The key names must be reconciled with the
@@ -856,6 +901,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.21.0 (2026-11-15)** — §8.0h: scoring family retired, M0 lot (40 `M0_Common` terms
+  deprecated, their uses deleted from 42 instances, C10/C11 → C16). Gate: M0 errors −5,
+  engine D1 −91, G5 −6, G8 −39 (deletions). Reasoner: Bmc PASSED. §8.1b superseded.
 - **1.20.0 (2026-11-08)** — §5: the M0 reasoner sweep enters the gate (`--reasoner`, frozen
   2/43); the 22 misbound `m0:` are C02 (already counted).
 - **1.19.0 (2026-11-08)** — §5: Fm2 notation (argument blocks), GCC009 5 → 1; the structured

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-TSCG M0 Instance Checker — v1.7.0 (WS-1 lot 1e: changelog container m3:changelog)
+TSCG M0 Instance Checker — v1.8.0 (scores retired: C10/C11 removed, C16 added)
 Author: Echopraxium with the collaboration of Claude AI
 Date: 2026-06-26
 
 Analyses all M0 instance JSON-LD files and reports their compliance
-with the v1.5 conventions (M0_Common namespace, bare numerics, enum IRIs).
+with the v1.5 conventions (M0_Common namespace, imports, no deprecated terms).
 
 Checks performed (each reported as PASS / WARN / FAIL):
   C01  @base present and canonical
@@ -17,8 +17,8 @@ Checks performed (each reported as PASS / WARN / FAIL):
   C07  Obsolete aliases absent (A_score, m1core:, sm:, ...)
   C08  m1.extensions.<domain>: pattern (no old m1bio:, m1chem:, ...)
   C09  owl:imports includes M0_Common.jsonld
-  C10  Score values are bare numerics (not {"@value":..., "@type":xsd:float})
-  C11  Enum values are IRIs (not bare strings "Coherent")
+  C10  RETIRED 2026-11-15 (score values as bare numerics — the scores are deprecated)
+  C11  RETIRED 2026-11-15 (enum values as IRIs — the enumerations were all score classes)
   C12  No tensor formula remnants:
          (a) m2:hasTensorFormula absent in ALL graph nodes
          (b) "tensorFormula" key absent in nested objects (NakamotoConsensus pattern)
@@ -26,7 +26,16 @@ Checks performed (each reported as PASS / WARN / FAIL):
   C13  m3:ontologyType absent from sub-nodes (@graph[1+])
   C14  m3:changelog <= 3 entries (m2:changelog retired: FAIL)
   C15  SHACL v1.5 validation (optional — requires pyshacl)
+  C16  No use of a deprecated M0_Common term. The deprecated set is READ from
+       M0_Common.jsonld (nodes with owl:deprecated true), never hardcoded. A use is
+       a "m0:<term>" key anywhere in @graph or in @context, or a "m0:<term>" IRI
+       value ({"@id": ...} or a bare string). Added 2026-11-15 with the deprecation
+       of the scoring family (evaluation is outside the model: CH4 §6).
 
+Changes vs v1.7.0 (2026-11-15):
+  C10, C11 retired with the scoring family they checked (deprecated in M0_Common:
+  a model is not legitimate to evaluate itself). C16 guards against any use of a
+  deprecated term. --scores removed (nothing left to show).
 Changes vs v1.5.0:
   C12: Extended to detect tensorFormula in nested objects and U+2297 in formula values
 
@@ -35,7 +44,6 @@ Usage:
 
     --instance NAME     Check only one instance
     --verbose           Full check detail
-    --scores            Include parsed score values in output
     --fails             Only show instances with violations
     --no-shacl          Skip pyshacl (faster)
     --shacl-schema PATH Override SHACL schema path
@@ -97,18 +105,54 @@ OLD_EXT_ALIASES = {"m1bio","m1chem","m1phys","m1elec","m1mus",
                    "m1myth","m1econ","m1opt","m1photo","m1sysmod",
                    "m1geo","m1edu","m1energy","m1biz"}
 
-SCORE_PROPS = [
-    "m0:scoreA","m0:scoreS","m0:scoreF","m0:scoreIt","m0:scoreD",
-    "m0:scoreR","m0:scoreE","m0:scoreV","m0:scoreO","m0:scoreIm",
-    "m0:asfidMean","m0:revoiMean","m0:epistemicGap",
-    "m0:focalScore","m0:focalBias","m0:stereopsicDepth",
-]
+M0_COMMON_FILE = ONTOLOGY_DIR / "M0_Common.jsonld"
 
-ENUM_PROPS = {
-    "m0:spectralClass": "m0:spectralClass.",
-    "m0:focalClass":    "m0:focalClass.",
-    "m0:scoringStatus": "m0:scoringStatus.",
-}
+
+def load_deprecated_terms(path: Path = M0_COMMON_FILE) -> frozenset:
+    """C16: the deprecated M0_Common terms, read from the owning file.
+
+    Returns the compact names ("m0:scoreA", ...) of every @graph node whose
+    owl:deprecated is true. Never hardcoded: deprecating a term in M0_Common is
+    enough for C16 to guard it. An unreadable M0_Common raises (a crashed check
+    must not look like a pass).
+    """
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    out = set()
+    for node in data.get("@graph", []):
+        dep = node.get("owl:deprecated") if isinstance(node, dict) else None
+        if isinstance(dep, dict):
+            dep = dep.get("@value")
+        if dep is True or (isinstance(dep, str) and dep.lower() == "true"):
+            out.add(node.get("@id"))
+    return frozenset(x for x in out if isinstance(x, str) and x.startswith("m0:"))
+
+
+def find_deprecated_uses(data: dict, deprecated: frozenset) -> list:
+    """C16: every use of a deprecated term in an instance (keys and IRI values)."""
+    uses = []
+
+    def walk(o, where):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                if k in deprecated:
+                    uses.append(f"{where}:{k}")
+                if k == "@id" and isinstance(v, str):
+                    if v in deprecated:
+                        uses.append(f"{where}:@id={v}")
+                    continue          # counted once, not again as a bare string
+                walk(v, where)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v, where)
+        elif isinstance(o, str) and o in deprecated:
+            uses.append(f"{where}:value={o}")
+
+    ctx = data.get("@context", {})
+    for c in (ctx if isinstance(ctx, list) else [ctx]):
+        if isinstance(c, dict):
+            uses += [f"@context:{k}" for k in c if k in deprecated]
+    walk(data.get("@graph", []), "@graph")
+    return uses
 
 # ============================================================================
 # CHECK RESULT
@@ -132,7 +176,6 @@ class InstanceReport:
     itype:         str
     path:          Path
     checks:        list = field(default_factory=list)
-    scores:        dict = field(default_factory=dict)
     shacl_status:  str  = NA
     shacl_msg:     str  = ""
     parse_error:   str  = ""
@@ -154,10 +197,11 @@ class InstanceReport:
 
 class InstanceChecker:
 
-    def __init__(self, path: Path, name: str, itype: str):
+    def __init__(self, path: Path, name: str, itype: str, deprecated: frozenset = frozenset()):
         self.path = path
         self.name = name
         self.itype = itype
+        self.deprecated = deprecated
 
     def _camel(self):
         import re as _re
@@ -257,32 +301,16 @@ class InstanceChecker:
         else:
             rep.checks.append(Check("C09","owl:imports M0_Common", FAIL, "M0_Common not in imports"))
 
-        # ── C10 ───────────────────────────────────────────────────────────────
-        typed_scores = [p for p in SCORE_PROPS
-                        if isinstance(ontology.get(p), dict) and "@value" in ontology[p]]
-        if typed_scores:
-            rep.checks.append(Check("C10","Score bare numerics", FAIL, f"Typed: {', '.join(typed_scores)}"))
-        else:
-            rep.checks.append(Check("C10","Score bare numerics", PASS))
+        # ── C10, C11: retired 2026-11-15 (see the module docstring) ──────────
 
-        for prop in SCORE_PROPS:
-            val = ontology.get(prop)
-            if isinstance(val, (int, float)):
-                rep.scores[prop] = val
-            elif isinstance(val, dict) and "@value" in val:
-                try: rep.scores[prop] = float(val["@value"])
-                except: pass
-
-        # ── C11 ───────────────────────────────────────────────────────────────
-        string_enums = []
-        for prop, prefix in ENUM_PROPS.items():
-            val = ontology.get(prop)
-            if isinstance(val, str) and not val.startswith(prefix):
-                string_enums.append(f"{prop}={val!r}")
-        if string_enums:
-            rep.checks.append(Check("C11","Enum values as IRIs", FAIL, f"String values: {', '.join(string_enums)}"))
+        # ── C16: no use of a deprecated M0_Common term ───────────────────────
+        uses = find_deprecated_uses(data, self.deprecated)
+        if uses:
+            shown = ", ".join(uses[:6]) + (f" (+{len(uses) - 6})" if len(uses) > 6 else "")
+            rep.checks.append(Check("C16","No deprecated M0 term", FAIL,
+                                    f"{len(uses)} use(s): {shown}"))
         else:
-            rep.checks.append(Check("C11","Enum values as IRIs", PASS))
+            rep.checks.append(Check("C16","No deprecated M0 term", PASS))
 
         # ── C12: No tensor formula remnants (v1.5.1 — extended) ──────────────
         # Detects three patterns:
@@ -401,12 +429,11 @@ CHECKS_META = [
     ("C07","No obsolete aliases"),
     ("C08","m1.extensions. pattern"),
     ("C09","owl:imports M0_Common"),
-    ("C10","Score bare numerics"),
-    ("C11","Enum values as IRIs"),
     ("C12","No tensor remnants"),
     ("C13","ontologyType only in @graph[0]"),
     ("C14","changelog <= 3 entries"),
     ("C15","SHACL v1.5"),
+    ("C16","No deprecated M0 term"),
 ]
 
 STATUS_ICON = {PASS: "OK", WARN: "WN", FAIL: "XX", NA: "--"}
@@ -464,7 +491,7 @@ def print_summary_table(reports):
     print(f"{'─'*95}")
 
 
-def print_verbose(rep: InstanceReport, show_scores=False):
+def print_verbose(rep: InstanceReport):
     overall = rep.status_summary()
     icon = {"PASS":"OK","WARN":"WN","FAIL":"XX","N/A":"--"}.get(overall, "--")
     print(f"\n{'='*70}")
@@ -480,10 +507,6 @@ def print_verbose(rep: InstanceReport, show_scores=False):
         if c.detail:
             line += f"\n         {c.detail}"
         print(line)
-    if show_scores and rep.scores:
-        print(f"\n  Scores:")
-        for k, v in rep.scores.items():
-            print(f"    {k}: {v:.3f}")
 
 
 def print_compact_fails(reports):
@@ -505,7 +528,6 @@ def write_json_report(reports, path):
             "status": r.status_summary(),
             "counts": {"pass": r.count(PASS), "warn": r.count(WARN), "fail": r.count(FAIL)},
             "checks": [{"code":c.code,"name":c.name,"status":c.status,"detail":c.detail} for c in r.checks],
-            "scores": r.scores,
             "shacl":  {"status": r.shacl_status, "message": r.shacl_msg},
         }
     out = {
@@ -528,10 +550,9 @@ def write_json_report(reports, path):
 # ============================================================================
 
 def main():
-    parser = argparse.ArgumentParser(description="TSCG M0 Instance Checker v1.7.0")
+    parser = argparse.ArgumentParser(description="TSCG M0 Instance Checker v1.8.0")
     parser.add_argument("--instance",    metavar="NAME")
     parser.add_argument("--verbose",     action="store_true")
-    parser.add_argument("--scores",      action="store_true")
     parser.add_argument("--fails",       action="store_true")
     parser.add_argument("--no-shacl",    action="store_true")
     parser.add_argument("--shacl-schema", metavar="PATH")
@@ -542,8 +563,11 @@ def main():
     run_shacl    = not args.no_shacl
 
     print("=" * 70)
-    print("TSCG M0 INSTANCE CHECKER — v1.5.1")
+    print("TSCG M0 INSTANCE CHECKER — v1.8.0")
     print("=" * 70)
+
+    deprecated = load_deprecated_terms()   # C16: read from M0_Common, never hardcoded
+    print(f"C16: {len(deprecated)} deprecated M0_Common term(s) guarded")
 
     instances = list(discover_instances(only_name=args.instance))
     if not instances:
@@ -554,7 +578,7 @@ def main():
 
     reports = []
     for jsonld_path, name, itype in instances:
-        checker = InstanceChecker(jsonld_path, name, itype)
+        checker = InstanceChecker(jsonld_path, name, itype, deprecated)
         rep     = checker.run(run_shacl=run_shacl, shacl_schema=shacl_schema)
         reports.append(rep)
         overall = rep.status_summary()
@@ -563,7 +587,7 @@ def main():
 
     if args.verbose:
         for r in reports:
-            print_verbose(r, show_scores=args.scores)
+            print_verbose(r)
     elif args.fails:
         print_compact_fails(reports)
     else:
