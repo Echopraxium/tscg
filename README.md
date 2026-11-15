@@ -14,9 +14,9 @@
 
 ## 🦇 The Bat's Lesson
 
-A bat navigates a pitch-black cave without ever seeing it. It emits a pulse, listens to the echo, and from the gap between what it sent and what returned, it builds a usable map of the dark. It never touches reality directly — yet it flies.
+A bat navigates a pitch-black cave without ever seeing it. It emits a pulse, listens to the echo, and from the difference between what it sent and what returned, it builds a usable map of the dark. It never touches reality directly — yet it flies.
 
-We are in the same position with complex systems. We never access them directly; we work with our **Maps** (how we represent them) and infer the **Territory** (what is actually there) from the gap between model and observation. TSCG borrows the bat's strategy — emit, measure, correct — and turns it into a disciplined workflow for building system models.
+We are in the same position with complex systems. We never access them directly; we work with our **Maps** (how we represent them) and infer the **Territory** (what is actually there) from where model and observation agree or part ways. TSCG borrows the bat's strategy — emit, listen, correct — and turns it into a disciplined workflow for building system models.
 
 ---
 
@@ -44,10 +44,10 @@ Complex systems are hard to reason about because we constantly confuse two thing
 
 1. **Build** a model of the system from shared building blocks.
 2. **Observe** how the real system behaves.
-3. **Measure** the gap between model and observation.
+3. **Confront** the model with what you observe — you, and other observers.
 4. **Refine** the model — and repeat.
 
-The goal is never a perfect representation. It is to make the gap *visible and measurable*, so that "my model is wrong here" becomes a precise, actionable statement instead of a vague unease.
+The goal is never a perfect representation. It is to make the mismatches *visible and nameable*, so that "my model is wrong here" becomes a precise, actionable statement instead of a vague unease. That judgment is yours and your observers': a model is not legitimate to evaluate itself ([CH4 §6](docs/CoreHypotheses/LayerCake_Models_The_Kit.md)).
 
 ---
 
@@ -66,35 +66,28 @@ Just as Esperanto aims to bridge human languages, TSCG provides:
 
 ---
 
-### 2️⃣ **Map-Territory Duality: The Bicephalous Vision**
+### 2️⃣ **Map-Territory Duality: Two Eyes (Sphinx Eye, Eagle Eye)**
 
 At the heart of TSCG is a rigorous distinction inspired by Alfred Korzybski's principle: **"The map is not the territory."**
 
-TSCG formalizes this through a **dual-layer architecture**:
+TSCG formalizes this through **three grammars — three monoids** (M3):
 
-| Perspective | Metaphor | What It Measures | 5 Dimensions |
-|-------------|----------|------------------|--------------|
-| **🦅 Eagle Eye (ASFID)** | The bat's echo | **Territory** — What exists empirically | **A**ttractor, **S**tructure, **F**low, **I**nformation, **D**ynamics |
-| **🦁 Sphinx Eye (REVOI)** | The bat's emission | **Map** — How we represent it | **R**epresentability, **E**volvability, **V**erifiability, **O**bservability, **I**nteroperability |
+| Grammar (monoid) | Perspective | Metaphor | What It Describes | Primitives |
+|------------------|-------------|----------|-------------------|------------|
+| **Gt** (×) — 🦅 Eagle Eye (ASFID) | **Territory** | The bat's echo | What exists empirically | **A**ttractor, **St**ructure, **F**low, **It** (information), **D**ynamics |
+| **Gm** (+) — 🦁 Sphinx Eye (REVOI) | **Map** | The bat's emission | How we represent it | **R**epresentability, **E**volvability, **V**erifiability, **O**bservability, **Im** (interoperability) |
+| **Gs** (\|) — Odin's Wisdom (Stereopsis) | **Both views combined** | Two eyes, one image | What appears only when the two views are composed | **T**emporality, **K**nowledge, **Ss** (symbol), **L**ocalizability, and two poles **_^** / **_$** |
 
-**Why two perspectives?**
-- **ASFID** asks: *"What is the system doing?"* (measurement)
-- **REVOI** asks: *"How well can we model it?"* (representation)
+**Why three grammars?**
+- **Gt** asks: *"What is the system doing?"* (observation)
+- **Gm** asks: *"How well can we model it?"* (representation)
+- **Gs** composes the two, with its own operator `|`, for what neither view holds alone
 
-The **epistemic gap (δ₁)** between these perspectives tells us how aligned our understanding is with reality — and where to improve.
+The three monoids — and the Layer Cake built on them — are **not a model of reality**: they are the architecture of the kit, adopted *until further notice*, for building maquettes ([CH4](docs/CoreHypotheses/LayerCake_Models_The_Kit.md)). The exact primitives live in `ontology/M3_EagleEye.jsonld`, `M3_SphinxEye.jsonld` and `M3_OdinsWisdom.jsonld` — read them there.
+
+Keeping the Map and the Territory apart lets you see where your representation and the system part ways — and where to improve. TSCG does not turn that into a number: the evaluation belongs to you and to the observers of the maquette, outside the model ([CH4 §6](docs/CoreHypotheses/LayerCake_Models_The_Kit.md)).
 
 This creates a **layered model** (M3 → M2 → M1 → M0) where universal foundations cascade into domain-specific applications.
-
-#### 🔭 A Third Measure: the Focal Score (δ₂)
-
-Beyond the Map/Territory *gap* (δ₁), TSCG defines an optional second score, δ₂, that measures the *sharpness* of the fusion between the two perspectives — an ophthalmic metaphor borrowed from binocular vision. Where δ₁ asks "how far apart are Map and Territory?", δ₂ asks "how well do they fuse into a single, in-focus image?".
-
-| Score | Captures | Question |
-|-------|----------|----------|
-| **δ₁** (epistemic gap) | Map/Territory *alignment* | *How far apart?* |
-| **δ₂** (focal score) | Map/Territory *fusion sharpness* | *How in-focus?* |
-
-δ₂ is **optional and conditional** — it applies only to instances that mobilize at least one *stereopsic* GenericConcept. *Note (2026-11-15): the scores are retired and their definition document (`ScoringSystem.md`) is deleted — a model is not legitimate to evaluate itself; evaluation is outside the model ([CH4 §6](docs/CoreHypotheses/LayerCake_Models_The_Kit.md)). This section is still to be rewritten.*
 
 ---
 
@@ -143,7 +136,7 @@ M0 (Instances)          → 33+ grammatically-consistent system models
 
 ## 📦 M0 Corpus — 33 Grammatically-Consistent Instances
 
-*"Grammatically consistent" means each instance conforms to the M0 **structural grammar** (validated via SHACL) and carries explicit ASFID/REVOI scores. It does **not** mean empirically confirmed — the scores are intersubjective judgments, revisable as the evaluating community grows.*
+*"Grammatically consistent" means each instance conforms to the M0 **structural grammar** (validated via SHACL) and describes its system through the ASFID / REVOI perspectives. It does **not** mean empirically confirmed, and an instance carries no score: it is a maquette, and judging it belongs to its users and observers.*
 
 ### Poclets (26) — `instances/poclets/`
 
@@ -169,11 +162,11 @@ Minimal yet complete system models spanning 15+ domains:
 
 ### SystemicFrameworks (3) — `instances/systemic-frameworks/`
 
-| Framework | Domain | SpectralClass |
-|-----------|--------|---------------|
-| **Vsm** | Cybernetics (Viable System Model) | OnCriticalLine (δ₁=0.057) |
-| **Triz** | Innovation methodology | OnCriticalLine (δ₁=0.057) |
-| **Bmc** ← *new* | Business Model Canvas lifecycle simulation | pending |
+| Framework | Domain |
+|-----------|--------|
+| **Vsm** | Cybernetics (Viable System Model) |
+| **Triz** | Innovation methodology |
+| **Bmc** ← *new* | Business Model Canvas lifecycle simulation |
 
 ### SymbolicSystemGrammars (1) — `instances/symbolic-system-grammars/`
 
@@ -232,22 +225,21 @@ Want to model a system with TSCG? Follow the **bat's cycle**:
 
 ### 1. **Emit a pulse (Build your Map)**
    - Identify relevant GenericConcepts from M2
-   - Score your model on REVOI dimensions (0–1)
+   - Describe how you represent the system (REVOI perspective)
 
-### 2. **Listen for the echo (Measure the Territory)**
+### 2. **Listen for the echo (Observe the Territory)**
    - Observe the real-world system
-   - Score it on ASFID dimensions (0–1)
+   - Describe what it does (ASFID perspective)
 
-### 3. **Compute the gap**
-   - **δ₁** — the epistemic gap between ASFID and REVOI means.
-     Small δ₁ (**Coherent**) means Map and Territory agree; large δ₁ (**Enigmatic**) flags a mismatch to investigate.
-   - **δ₂** *(optional)* — the focal score, when stereopsic concepts apply.
-   - *Note (2026-11-15): scores and gaps are retired, evaluation is outside the model ([CH4 §6](docs/CoreHypotheses/LayerCake_Models_The_Kit.md)); this step is still to be rewritten.*
+### 3. **Compare, with observers**
+   - Put the maquette in front of what you observed — yourself and at least one other human observer.
+   - Note where it fits, where it fails, and what it leaves out.
+   - No score, no gap: the model does not evaluate itself ([CH4 §6](docs/CoreHypotheses/LayerCake_Models_The_Kit.md)). Draft heuristics for this step: `ontology/docs/_02_EpistemicReview/MockupValidation_Heuristics_Draft.md`.
 
 ### 4. **Correct your flight (Refine the model)**
-   - Use the gap to identify mismatches
+   - Use the mismatches you and your observers noted
    - Adjust your GenericConcept selection
-   - Iterate until coherence is achieved
+   - Iterate until the maquette serves the purpose you declared for it
 
 ---
 
@@ -259,7 +251,7 @@ tscg/
 │   ├── M3_GenesisGrammar.jsonld       # Structural grammar foundation
 │   ├── M3_EagleEye.jsonld             # ASFID Territory perspective
 │   ├── M3_SphinxEye.jsonld            # REVOI Map perspective
-│   ├── M3_OdinsWisdom.jsonld  # Unified bicephalous view
+│   ├── M3_OdinsWisdom.jsonld          # Stereopsis between the sacrificed eye (Map) and the remaining one (Territory)
 │   ├── M2_GenericConcepts.jsonld      # ~80 universal atomic patterns
 │   ├── M1_CoreConcepts.jsonld         # GenericConceptCombo instances
 │   ├── M1_Domains.jsonld              # Domain registry (19 domains)
@@ -319,7 +311,7 @@ An Electron-based ontology browser dedicated to the TSCG framework:
 | **M3** | `M3_GenesisGrammar.jsonld`, `M3_EagleEye.jsonld`, `M3_SphinxEye.jsonld` | ASFID/REVOI structural primitives |
 | **M2** | `M2_GenericConcepts.jsonld` | ~80 GenericConcepts with structural formulas |
 | **M1** | `ontology/M1_extensions/` | Domain vocabularies (Biology, Physics…) |
-| **M0** | `instances/poclets/` | Grammatically-consistent Poclets with ASFID/REVOI scores |
+| **M0** | `instances/poclets/` | Grammatically-consistent Poclets (scale models) |
 
 **Key features:**
 - **Object Explorer** — class hierarchy, mode selector, regex search
@@ -336,7 +328,7 @@ AI-powered corpus analysis — multi-backend LLM (Gemini Free Tier default | Oll
 ## 📚 Essential Documentation
 
 - **[User Guide](_00_UserGuide/UserGuide.md)** — *Start here.* The complete hands-on journey for newcomers: install the repo, set up Claude, and build your first Poclet or TscgTool, with worked exercises under [`_00_UserGuide/exercises/`](_00_UserGuide/exercises/)
-- **[M3 Bicephalous Architecture](ontology/docs/M3_OdinsWisdom_README.md)** — Philosophical foundation
+- **[M3 Odin's Wisdom (Stereopsis)](ontology/docs/M3_OdinsWisdom_README.md)** — Philosophical foundation
 - **[Structural Grammar Foundation](ontology/docs/Structural_Grammar_Foundation.md)** — Lambek calculus formalism
 - **[UX Controls Catalog](ontology/InstanceSimulations/M0_InstanceSimulation_UXControls_README.md)** — Reusable simulation UI patterns
 
@@ -390,7 +382,7 @@ TSCG is currently a **single-developer project** (Michel/Echopraxium) with Claud
 
 ## 🔄 A Revisable Proposal
 
-TSCG is a **revisable proposal**: a toolkit introducing newcomers to systemic modelling, not a theory of reality. Every score is an intersubjective judgment, defeasible by better consensus; every Poclet is the best current maquette of its system, not its final word. TSCG can be **neither self-validated nor self-refuted** — that judgment belongs to the people who use it, build with it, and criticise it.
+TSCG is a **revisable proposal**: a toolkit introducing newcomers to systemic modelling, not a theory of reality. TSCG scores nothing: judging a maquette belongs to its users and observers, at least one of them human, outside the model; every Poclet is the best current maquette of its system, not its final word. TSCG can be **neither self-validated nor self-refuted** — that judgment belongs to the people who use it, build with it, and criticise it.
 
 Its epistemological stance is borrowed from Terry Pratchett's Discworld, a flat world carried on the back of the Great A'Tuin, the cosmic turtle: every theory of reality rests on some axioms or dogmas that are not demonstrated. Accordingly, a TSCG scale model can be built **within any coherent paradigm** — a scientific theory, a mythology, a belief system, a fiction — as long as the maquette declares the criteria it is built on. TSCG never says which paradigm is true — see **[Context Switching](docs/CoreHypotheses/ContextSwitching.md)**.
 
@@ -405,7 +397,7 @@ What TSCG *can* do is lay out how a paradigm stops being held. A candidate insta
 > And that echo is enough to navigate any darkness."*
 
 **TSCG doesn't give you direct access to reality.**
-**It gives you a way to emit models, receive measurements, compute gaps, and refine your understanding.**
+**It gives you a way to emit models, listen to the echo, notice where they fail, and refine your understanding.**
 **And that is often enough to navigate complexity.**
 
 ---

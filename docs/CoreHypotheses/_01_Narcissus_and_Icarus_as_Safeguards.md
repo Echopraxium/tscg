@@ -2,7 +2,7 @@
 ## An Honest Position Statement on TSCG
 
 **Author**: Echopraxium with the collaboration of Claude AI  
-**Date**: 2026-05-23  
+**Date**: 2026-05-23 · **Updated**: 2026-11-16 (§1–§2, §6: scores retired, evaluation outside the model)  
 **Framework**: TSCG (Transdisciplinary System Construction Game) v16.0.0+  
 **Status**: Position Statement — epistemological self-assessment  
 **Location**: `docs/CoreHypotheses/Narcissus_and_Icarus_as_Safeguards.md`  
@@ -17,13 +17,13 @@ both drawn from Greek mythology:
 
 **Narcissus** — who drowned contemplating his own reflection.  
 In TSCG terms: the risk of *circular self-validation* — a system that
-scores its own poclets, builds its own grammar from its own corpus, and
+evaluates its own poclets, builds its own grammar from its own corpus, and
 produces results that appear to validate a theory built to produce them.
 
 **Icarus** — who flew too close to the sun on wings of wax.  
 In TSCG terms: the risk of *excessive claims* — asserting a "universal
 Systemic Esperanto" from a corpus of 24 poclets, or claiming scientific
-objectivity for scores evaluated by a single cook.
+objectivity for judgments made by a single cook.
 
 **The insight that prompted this document**: naming these risks explicitly,
 and building architectural responses to them, transforms them from failure
@@ -67,9 +67,8 @@ A rigorous external reviewer would note this immediately.
 
 ### What TSCG Does Contribute
 
-- **ASFID/REVOI bicephaly with measurable δ₁**: simultaneously measuring
-  what a system *does* and how well we can *represent* it, with an
-  explicit quantified gap. Rare in the field.
+- **Territory (Gt) / Map (Gm) Stereopsis**: two complementary perspectives
+  in stereoscopic synergy with Gs.
 - **Structural Grammar formalisation at M3**: more rigorous than most
   comparable transdisciplinary frameworks, which remain qualitative.
 - **M3→M2→M1→M0 architecture**: a well-structured ontological hierarchy
@@ -79,25 +78,13 @@ A rigorous external reviewer would note this immediately.
 - **Epistemic self-awareness**: documented acknowledgement of its own
   risks, limitations, and provisional status.
 
-### Honest Scoring
-
-```
-Formal originality        : ★★★★☆  (real, built on existing tools)
-Architectural rigour      : ★★★★☆  (above field average)
-Validation corpus         : ★★☆☆☆  (embryonic for claims made)
-External adoption         : ★☆☆☆☆  (near-zero at this stage)
-Accessibility             : ★★☆☆☆  (dense vocabulary, high entry barrier)
-Falsifiability            : ★★★☆☆  (improving with multisubjective protocol)
-Differentiated positioning: ★★★☆☆  (δ₁ + bicephaly are distinctive)
-```
-
 ---
 
 ## 2. The Narcissus Risk and Its Architectural Response
 
 ### The Risk
 
-TSCG scores are currently evaluated by a single cook (Echopraxium) using
+TSCG instances have so far been built and judged by a single cook (Echopraxium) using
 a single kitchen (Claude + TSCG corpus). The SHACL grammar was constructed
 *from* the existing corpus. The M2 GenericConcepts were validated against
 poclets created by the same author. The circularity is real.
@@ -107,20 +94,20 @@ have length."*
 
 ### The Response
 
-*Note (2026-11-15): the two documents that held these responses
-(`MultisubjectiveScoreEvaluationProtocol.md`, `CredibilityAccretion_Process.md`) are
-deleted with the scores — evaluation is outside the model (`LayerCake_Models_The_Kit.md`
-§6). The list below is what they proposed, kept until this section is rewritten
-(decision D18, worksite WS-15):*
+The response is to take evaluation out of the model. A model — a maquette as
+much as the toolkit itself — is not legitimate to evaluate itself, so TSCG no
+longer carries scores, gaps or classes (retired 2026-11-15;
+`LayerCake_Models_The_Kit.md` §6). Evaluation is subjective: it belongs to the
+user and the observers of the maquette, at least one of them human, outside
+the model. What stays inside the toolkit:
 
-- `objectivityLevel` declared explicitly: currently `Subjective`
-- `scoringHistory` designed for multi-cook convergence measurement (ICC)
-- `defeasibilityStatus`: all scores provisional by design
-- SHACL grammar: formal rejection mechanism independent of the scorer
-- Canonical benchmark poclets: external reference points for scoring
+- SHACL grammar: a formal rejection mechanism — it says whether an instance is
+  well-formed, never whether it is true
+- Validation and refutation heuristics offered to observers (draft:
+  `ontology/docs/_02_EpistemicReview/MockupValidation_Heuristics_Draft.md`)
 
-The circularity is not eliminated — it is **explicitly declared and
-architecturally reduced**. The difference between Narcissus and a
+The circularity is not eliminated — it is **explicitly declared**, and the
+judgment is handed to people who did not build the maquette. The difference between Narcissus and a
 self-aware researcher is that the researcher builds mirrors that can
 show a different reflection.
 
@@ -239,7 +226,7 @@ architectural nor theoretical — it is **the practice of asking the hard
 questions before others do**:
 
 - Is this self-proving?
-- Are the scores legitimate or merely reassuring?
+- Who judges the maquette, and did they build it?
 - What does this framework fail to explain?
 - Who is the community that would benefit, and do they know it?
 - What would it take to be wrong?
