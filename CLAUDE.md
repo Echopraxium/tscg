@@ -112,6 +112,11 @@ scope; on the ontology, the toolchain rules do not apply.
 
 - Generated files in **English**; conversation with Michel in **French**.
 - **Surgical edits** over rewrites; one lot at a time, one commit per group.
+- **Commit messages carry no attribution trailer**: no `Co-Authored-By: Claude…`, no
+  `Claude-Session: …`, whatever the session's tooling adds by default. Authorship is the
+  convention of §3 ("Echopraxium with the collaboration of Claude AI"), stated in the files,
+  not in the commits. Checked: `.githooks/` (`git config core.hooksPath .githooks`, refuses
+  such a message on `git commit` and `git am`) and the `checks` job of the Pages workflow.
 - No dead reference left behind: when a file moves or goes, every live citer is fixed.
 - **Honest negative results** over enthusiastic validation.
 - Semantics (what a concept means, whether a structure is right) is Michel's decision —

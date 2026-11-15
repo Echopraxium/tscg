@@ -2,7 +2,7 @@
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-09-30
-**Measured on**: HEAD `9505d03`, canonical scope of `tscg_metrics.py` (root `ontology/`) —
+**Measured on**: HEAD `a024c7d`, canonical scope of `tscg_metrics.py` (root `ontology/`) —
 4177 bare-key occurrences, 1272 distinct.
 **Scope of this triage**: every bare key with ≥ 5 occurrences, every key already in
 `STANDARD_REPLACEABLE`, and rare keys whose name looks standard (117 + ~25 keys).

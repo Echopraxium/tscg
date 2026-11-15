@@ -1,7 +1,7 @@
 # TSCG — Session Handover 2026-09-01 — Finalize the Facet-M3 principle
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**HEAD at close**: `7da58af` — *nothing was pushed this session (exploration only); treat as unverified, confirm with `git show HEAD`.*
+**HEAD at close**: `35f308b` — *nothing was pushed this session (exploration only); treat as unverified, confirm with `git show HEAD`.*
 **Suggested archive path**: `ontology/docs/_01_Worksite/WS-0/`
 
 > This is a **HandOver**: a thin loader to resume an in-progress worksite. It carries

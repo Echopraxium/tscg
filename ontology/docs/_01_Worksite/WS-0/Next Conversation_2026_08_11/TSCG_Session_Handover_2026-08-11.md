@@ -1,21 +1,21 @@
 # TSCG — Session Handover 2026-08-11
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**HEAD at close**: `9cc3868`
+**HEAD at close**: `e88e7b4`
 
 ---
 
 ## 1. Pushed this session (HEAD chain)
 
 ```
-9cc3868  worksite_report.py: aggregate central + distributed WS-n; add WS-9 + WS-10
-f353943  Rebrand step 1-bis: fix template + SHACL that re-injected M0_Poclet#
-c80361f  Rebrand step 1/3: M0_Poclet# -> M0_Common.jsonld# + remove orphan m0:mean
-485dcad  KitArchitect-01 report obfuscation
-fb34b3b  Archive KitArchitect-01 regression cycle
-83abd58  Fix PEPITE-013: xsd:float coercion off prose
-0e496ea  Stop tracking pytest cache
-dbde7df  APIServer: fix PEPITE-001 + scope filter (003/005/011)
+e88e7b4  worksite_report.py: aggregate central + distributed WS-n; add WS-9 + WS-10
+fe49e5a  Rebrand step 1-bis: fix template + SHACL that re-injected M0_Poclet#
+895f8d2  Rebrand step 1/3: M0_Poclet# -> M0_Common.jsonld# + remove orphan m0:mean
+ac079eb  KitArchitect-01 report obfuscation
+154799a  Archive KitArchitect-01 regression cycle
+b81f8da  Fix PEPITE-013: xsd:float coercion off prose
+1b12de0  Stop tracking pytest cache
+70357d4  APIServer: fix PEPITE-001 + scope filter (003/005/011)
 ```
 
 ## 2. Delivered but NOT yet applied/committed (in outputs/)
@@ -25,7 +25,7 @@ dbde7df  APIServer: fix PEPITE-001 + scope filter (003/005/011)
   improvement pistes (see §5).
 - **WS-11** — `WS-11_worksite.yaml` (place at `WS-11/worksite.yaml`).
 - **KitArchitect-01 retest guide** — `KitArchitect-01_retest_guide.md`, updated to HEAD
-  `9cc3868` + a "Known / in progress" section. Replaces the committed copy under
+  `e88e7b4` + a "Known / in progress" section. Replaces the committed copy under
   `ontology/docs/_00_test_reports/2026_07_26_regression_KitArchitect-01/`.
 
 ## 3. Corpus state
@@ -79,7 +79,7 @@ dbde7df  APIServer: fix PEPITE-001 + scope filter (003/005/011)
 
 ## 7. Cosmetic / carried
 
-- `worksite.yaml` central `meta.head` still `f0daa1a` -> bump to real HEAD.
+- `worksite.yaml` central `meta.head` still `02b9ea1` -> bump to real HEAD.
 - Double `ontology/ontology/` in graph IRIs (`_file_to_iri`) — addressing decision (Aki
   §9 Q1), not a bug.
 - Aki §9 Q1-Q3 still to answer (Q4 done via subsidiarity rule).

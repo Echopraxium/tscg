@@ -5,7 +5,7 @@
 `ontology/docs/_01_Worksite/worksite.yaml` (structured state layer, schema 0.1.0).
 This handover is the SNAPSHOT of this session.
 
-**Authority**: `git show HEAD:<file>` only. HEAD at close = **`d5e81a7`** (origin/main,
+**Authority**: `git show HEAD:<file>` only. HEAD at close = **`b98583a`** (origin/main,
 pushed, working tree clean). Re-measure any figure at the next session's start.
 
 ---
@@ -15,14 +15,14 @@ pushed, working tree clean). Re-measure any figure at the next session's start.
 Both lots are ADDITIVE — no corpus file was modified (every corpus `git status` was
 clean throughout; the guard held). Staged scoped, committed alone.
 
-- **`9bdf7c4`** — **WS-5 lot 1: TscgOntologyValidator engine (CTX family + `--source`)**.
+- **`7c17489`** — **WS-5 lot 1: TscgOntologyValidator engine (CTX family + `--source`)**.
   New package `ontology/cli-tools/validator/` (sibling of `check-M1/`, reuses
   `tscg_paths`): `tscg_validator.py` (CLI + JSON/human report + exit code),
   `sources.py` (`--source local|head|github` + in-scope git manifest + layer
   bucketing), `checks/ctx.py` (CTX-1..CTX-5 + CTX-CANON). Lot report at
   `ontology/docs/_01_Worksite/WS-5/WS-5_LOT1_Report.md`. Built strictly from the
   design spec §8 (CTX first; NO SHACL grammar generation).
-- **`d5e81a7`** — **Worksite state layer**: `ontology/docs/_01_Worksite/worksite.yaml`
+- **`b98583a`** — **Worksite state layer**: `ontology/docs/_01_Worksite/worksite.yaml`
   (source of truth, schema 0.1.0) + `ontology/cli-tools/worksite_report.py`
   (renders the roadmap table, text + `--markdown` derivation).
 
@@ -87,7 +87,7 @@ STATE; the prose map (`_00_TSCG_Worksite_Map.md`) is the narrative beside it. Ra
 ## 4. IMPORTANT ENVIRONMENT FINDING — golden 151 vs 153 (Windows)
 
 `check_M1.py --dry-run` on Michel's Windows machine returns **153**, not the golden
-**151**. VERIFIED NOT A REGRESSION: `git diff --stat f0daa1a..HEAD` shows only the
+**151**. VERIFIED NOT A REGRESSION: `git diff --stat 02b9ea1..HEAD` shows only the
 handover `.md` between the golden-measurement HEAD and now — zero `.jsonld`, the 16 M1
 files are byte-identical to the 151 measurement. The +2 is the documented `publicID=`
 Windows bug (rdflib mints the base IRI from the Windows path, not `@base`).
@@ -118,8 +118,8 @@ Windows baseline in `golden_values.json`. This is precisely the debt WS-5 exists
 
 ## 6. BACKLOG CARRIED / LOGGED THIS SESSION
 
-- **Update `meta.head` in worksite.yaml** — frozen at `f0daa1a` at build; real HEAD is
-  now `d5e81a7`. Re-sync at next session start (or let a future `--measure` do it).
+- **Update `meta.head` in worksite.yaml** — frozen at `02b9ea1` at build; real HEAD is
+  now `b98583a`. Re-sync at next session start (or let a future `--measure` do it).
 - **Golden 151-vs-153** (§4) — WS-5 target.
 - **CTX-5 = 28** fix (R3).
 - **Fill worksite.yaml sub-items** for WS-1/3/4/6/7/8 at-the-flow.
@@ -139,7 +139,7 @@ Windows baseline in `golden_values.json`. This is precisely the debt WS-5 exists
 
 ## 7. OPENING PACKET FOR NEXT CONVERSATION
 
-- Anchor on **HEAD `d5e81a7`** (re-measure at start; expect Windows check_M1 = 153).
+- Anchor on **HEAD `b98583a`** (re-measure at start; expect Windows check_M1 = 153).
 - The validator and worksite_report are LIVE tools now — use the validator as the
   measurement instrument for the next lot instead of hand-scripting.
 - Announce the worksite: **WS-5 lot 2 (FRB)** or the **CTX-5 fix**.

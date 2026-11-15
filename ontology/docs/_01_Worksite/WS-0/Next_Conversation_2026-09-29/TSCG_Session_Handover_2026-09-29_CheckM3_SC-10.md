@@ -25,7 +25,7 @@ carries decisions and pointers, not framework content.
 - **Active worksite**: WS-0 / **SC-10 "M3 grammar"** — `scoped`, rank 8,
   note "prerequisites met; plumbing, not arbitration" *(observed in `worksite.yaml`)*.
 - **Staleness to fix**: `ontology/docs/_01_Worksite/worksite.yaml` meta says
-  `head: f0daa1a`, `generated: 2026-08-08`, and still shows SC-3 as `design-decided`
+  `head: 02b9ea1`, `generated: 2026-08-08`, and still shows SC-3 as `design-decided`
   although SC-3 was graved on 2026-09-01. Resync as part of this session.
 - **Working copy in flight**: none.
 - **Origin**: decisions came from the Ship Builder design session (a modular 3D ship

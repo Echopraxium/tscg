@@ -4,7 +4,7 @@
 **Companion**: `_00_TSCG_Worksite_Map.md` v2.2.1 — the durable index. Read it first.
 This handover is the SNAPSHOT of this session.
 
-**Authority**: `git show HEAD:<file>` only. HEAD at close = **`72487e1`** (origin/main).
+**Authority**: `git show HEAD:<file>` only. HEAD at close = **`9d8b98a`** (origin/main).
 Figures below were measured 2026-07-30; re-measure at the next session's start.
 
 ---
@@ -13,11 +13,11 @@ Figures below were measured 2026-07-30; re-measure at the next session's start.
 
 Two commits, both clean (`working tree clean`, up to date with origin/main):
 
-- **`d92ded2`** — WS-n worksite reorganization (folders `_00_Worksite_00_SC1-9`→`WS-0`,
+- **`b46e2e3`** — WS-n worksite reorganization (folders `_00_Worksite_00_SC1-9`→`WS-0`,
   `_01`→`WS-8`, `_02`→`WS-3`); Canopy `_protos/`→`instances/poclets/CanopyGraphVizProto/`
   (typed `m3:Poclet`); `TscgLayerCakeMCPServer` added; SC-2 recorded complete; SC-3
   Decision Record + worksite map v2.2.0; empty stray files removed.
-- **`72487e1`** — docs refresh: worksite map **v2.2.1**, reference corpus **v3.0.1**,
+- **`9d8b98a`** — docs refresh: worksite map **v2.2.1**, reference corpus **v3.0.1**,
   file tree **v17.0.1**, smart prompt **v16.3.0** (v16.2.0 archived under
   `SmartPrompts/`); `create_files_URIS.py` fixed to read `git ls-files` (not local
   disk); case-divergence debt recorded.

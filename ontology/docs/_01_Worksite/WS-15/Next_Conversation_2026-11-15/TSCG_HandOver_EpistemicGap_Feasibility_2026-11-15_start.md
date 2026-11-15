@@ -23,7 +23,7 @@ invariants, debt-honesty rule) and `ontology/docs/_01_Worksite/worksite.yaml`
 
 ## 2. Fresh session state (perishable — verify, do not trust)
 
-- **HEAD when this was written**: `5a26560` (2026-11-09). *Unverified: run
+- **HEAD when this was written**: `e2e80d2` (2026-11-09). *Unverified: run
   `git show HEAD` first.*
 - **Working copy in flight, NOT pushed**: two patches from the 2026-11-15 conversation
   (attach them if you want them as reference):

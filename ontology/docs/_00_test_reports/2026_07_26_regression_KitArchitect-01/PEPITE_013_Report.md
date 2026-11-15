@@ -2,7 +2,7 @@
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-08-09
-**Base**: repo HEAD `d5e81a7` (after the API-server fixes)
+**Base**: repo HEAD `b98583a` (after the API-server fixes)
 **Golden**: M0-only change → the M1 golden gate (16/151/3) is NOT affected.
 
 ## The defect (KitArchitect-KitArchitect-01-01's PEPITE-KitArchitect-01-013)

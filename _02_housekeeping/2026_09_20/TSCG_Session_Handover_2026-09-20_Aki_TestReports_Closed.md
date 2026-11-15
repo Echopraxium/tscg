@@ -5,10 +5,10 @@
 fresh 8801), separated the deployment-artifact noise from the real defects, and
 **resolved every real defect**. Each fix was measured before/after, guarded by a test,
 and shipped as its own commit.
-**HEAD at close**: **`d22306f`** — *fix(api): graph IRI = raw-CDN URL (remove
+**HEAD at close**: **`e39b18a`** — *fix(api): graph IRI = raw-CDN URL (remove
 /ontology/ontology/ doubling)*, on `origin/main`.
 
-> **head-over-memory**: every number below was measured this session on HEAD (54318ee +
+> **head-over-memory**: every number below was measured this session on HEAD (95291de +
 > the two new commits). HEAD may move; re-verify (§5) before acting.
 
 ---
@@ -22,14 +22,14 @@ and shipped as its own commit.
 
 ## 1. What shipped for the Aki thread (three commits)
 ```
-d22306f  fix(api): graph IRI = raw-CDN URL (remove /ontology/ontology/ doubling)
-7534bdc  fix(api): exclude test dirs from recursive corpus discovery (Aki tests/fixtures gap)
-c80625c  fix(ontology): drop M2_MetaConcepts_Ref vestiges, rename tools -> ref_tool_links   [PEPITE-RT-008]
+e39b18a  fix(api): graph IRI = raw-CDN URL (remove /ontology/ontology/ doubling)
+c14d886  fix(api): exclude test dirs from recursive corpus discovery (Aki tests/fixtures gap)
+05eae24  fix(ontology): drop M2_MetaConcepts_Ref vestiges, rename tools -> ref_tool_links   [PEPITE-RT-008]
 ```
-(The M1-golden refresh `3b81112` and the M0 instrumentation commit `54318ee` that sit
-between `c80625c` and the two new ones are the *gate* workstream — separate HandOvers, not Aki.)
+(The M1-golden refresh `2396b94` and the M0 instrumentation commit `95291de` that sit
+between `05eae24` and the two new ones are the *gate* workstream — separate HandOvers, not Aki.)
 
-- **PEPITE-RT-008** (`c80625c`) — removed the pre-migration `M2_MetaConcepts_Ref.{jsonld,ttl}`
+- **PEPITE-RT-008** (`05eae24`) — removed the pre-migration `M2_MetaConcepts_Ref.{jsonld,ttl}`
   copies (`ontology/tools/` + `ontology/Ref/`) that re-declared the canonical
   `m2:M2_GenericConcepts` `owl:Ontology` subject; renamed `ontology/tools/ →
   ontology/ref_tool_links/`; updated the `tscg_metrics` / `verify_migration` scope markers;
@@ -49,7 +49,7 @@ Test suite: **80 passed** (was 78 at the base; +1 per new guard).
 ## 2. The Aki ledger — final
 | Item (Aki 2026-08-14) | Resolution |
 |---|---|
-| PEPITE-RT-008 — duplicate `owl:Ontology` subject (8801=2) | ✅ resolved (`c80625c`); measured 2→1 |
+| PEPITE-RT-008 — duplicate `owl:Ontology` subject (8801=2) | ✅ resolved (`05eae24`); measured 2→1 |
 | PEPITE-001/003/005/011/013, `M0_Poclet#` legacy, archives/Ref/docs/static | ✅ were **8800 deployment-mismatch artifacts** — already clean on a repo-root mount |
 | tests/fixtures coverage gap (8801=1) | ✅ resolved — recursive discovery no longer sweeps `tests/` |
 | double `/ontology/ontology/` (8801=28) | ✅ resolved — store re-measured **28→0**; graph IRIs now equal the files' CDN URLs |
@@ -65,7 +65,7 @@ and, for the `ontology` anchor, `rel` restarts with `ontology/` → `.../ontolog
 (28 canonical graphs: all M3, M2_GenericConcepts, etc.). The `instances` anchor got a
 spurious `ontology/` prefix by the same bug. Only the **graph name** was malformed — all
 subjects/predicates/objects were clean (0). The 2026-08-05 `@context` absolutisation
-(`c49386c`) fixed content IRIs but not the graph-name construction, which is why a **static
+(`dd43b46`) fixed content IRIs but not the graph-name construction, which is why a **static
 grep read 0 while the loaded store still had 28** — the doubling happens at load time. Fix:
 derive the raw-CDN root inside `_file_to_iri`.
 

@@ -61,8 +61,8 @@ counter-evidence too (OE tools that do fail loudly; SE areas with weak oracles).
 ## 3. Case material — first-hand, dated, verifiable
 
 All measured on the TSCG repository (`github.com/Echopraxium/tscg`), WS-1 worksite,
-2026-09-30 / 2026-10-01. Commits on `main`: lot 1h `d99f6b1`, lot 1i `6fc0e7b`, lot 1j
-`ac74136`, scoping `c79ca47`, skills `0173643` / `9033baf`. Details in
+2026-09-30 / 2026-10-01. Commits on `main`: lot 1h `1225d58`, lot 1i `eeb9aa2`, lot 1j
+`ca8451b`, scoping `8cbc81b`, skills `b597f8d` / `6cf4407`. Details in
 `ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md` and
 `ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md`.
 

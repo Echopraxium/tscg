@@ -2,9 +2,9 @@
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **This session did**: resolved the red M1 gate cleanly. Localised and **proved** the SHACL −16, classified it (belt-and-suspenders), and committed the two decisions from the 2026-09-18 HandOver. **The M1 gate is now GREEN, legitimately.**
-**HEAD at close**: **`3b81112`** — *"fix(gate): refresh M1 golden 680->664 + add Cartography to gate (files 16->17)"*.
+**HEAD at close**: **`2396b94`** — *"fix(gate): refresh M1 golden 680->664 + add Cartography to gate (files 16->17)"*.
 
-> **head-over-memory**: every number below was measured this session against HEAD `3b81112` (and its ancestors). HEAD may move. Re-verify (see §6) before acting.
+> **head-over-memory**: every number below was measured this session against HEAD `2396b94` (and its ancestors). HEAD may move. Re-verify (see §6) before acting.
 
 ---
 
@@ -17,12 +17,12 @@
 
 ## 1. What shipped (two SEPARATE commits, in order)
 ```
-3b81112  fix(gate): refresh M1 golden 680->664 + add Cartography to gate (files 16->17)   [Decision 2]
-c80625c  fix(ontology): drop M2_MetaConcepts_Ref vestiges, rename tools -> ref_tool_links  [Decision 1 / PEPITE-RT-008]
-c5fdefa  fix(World2DProjection): hue legend moved into left panel (CSS follow-up to A+B)     (previous)
+2396b94  fix(gate): refresh M1 golden 680->664 + add Cartography to gate (files 16->17)   [Decision 2]
+05eae24  fix(ontology): drop M2_MetaConcepts_Ref vestiges, rename tools -> ref_tool_links  [Decision 1 / PEPITE-RT-008]
+17c0f12  fix(World2DProjection): hue legend moved into left panel (CSS follow-up to A+B)     (previous)
 ```
-- **Decision 1 (`c80625c`)** — the PEPITE-RT-008 cleanup: removed pre-migration `M2_MetaConcepts_Ref.{jsonld,ttl}` from `ontology/tools/` and `ontology/Ref/`; renamed `ontology/tools/ → ontology/ref_tool_links/` (tool-link `.url`s only); updated scope markers in `tscg_metrics.py` / `verify_migration.py`; added `test_ontology_identity_regression.py`; updated `CLAUDE.md`. Count-neutral on the gate.
-- **Decision 2 (`3b81112`)** — the golden refresh + coverage fix: added `M1_Cartography.jsonld` to `check_M1.py` `M1_FILES` (files 16→17), and `--update-golden` (shacl 680→664) with a documented `_delta_reason`.
+- **Decision 1 (`05eae24`)** — the PEPITE-RT-008 cleanup: removed pre-migration `M2_MetaConcepts_Ref.{jsonld,ttl}` from `ontology/tools/` and `ontology/Ref/`; renamed `ontology/tools/ → ontology/ref_tool_links/` (tool-link `.url`s only); updated scope markers in `tscg_metrics.py` / `verify_migration.py`; added `test_ontology_identity_regression.py`; updated `CLAUDE.md`. Count-neutral on the gate.
+- **Decision 2 (`2396b94`)** — the golden refresh + coverage fix: added `M1_Cartography.jsonld` to `check_M1.py` `M1_FILES` (files 16→17), and `--update-golden` (shacl 680→664) with a documented `_delta_reason`.
 
 Untracked and deliberately left OUT of both commits: `CODE_OF_CONDUCT.md`, `instances/_01_Worksite/2026_09_16/`, `instances/poclets/World2DProjection/static/_docs/`, `.../static/src/W2P_COASTLINE.js`.
 
@@ -40,13 +40,13 @@ Golden `M1` block: `files 17`, `errors 151`, `warnings 3`, `shacl_violations 664
 ---
 
 ## 3. The −16 — localised and PROVEN (corrects the 2026-09-18 hypothesis)
-The prior HandOver guessed `aac3a05` (SHAPE 9 retarget). **That was wrong** — measurement shows the SHAPE-9 retarget is already baked into the golden 680. The real cause is **`c49386c`** (2026-08-05, WS-2/CTX-4): it absolutised the `m1`/`m2`/`m3` `@context` prefixes (relative → canonical `https://…/ontology/…#`) in 10 M1 extensions. **Data-only; no SHACL shape touched.**
+The prior HandOver guessed `af88789` (SHAPE 9 retarget). **That was wrong** — measurement shows the SHAPE-9 retarget is already baked into the golden 680. The real cause is **`dd43b46`** (2026-08-05, WS-2/CTX-4): it absolutised the `m1`/`m2`/`m3` `@context` prefixes (relative → canonical `https://…/ontology/…#`) in 10 M1 extensions. **Data-only; no SHACL shape touched.**
 
 Proof (check_M1 `--shacl` totals):
 ```
-c49386c^ (ef06a01) = 680   (== old golden)
-c49386c            = 664
-HEAD               = 664    (fed2621 Cartography SHACL is +91/-0, count-neutral on the 16 gated files)
+dd43b46^ (20d4a32) = 680   (== old golden)
+dd43b46            = 664
+HEAD               = 664    (908a5c7 Cartography SHACL is +91/-0, count-neutral on the 16 gated files)
 ```
 
 ## 4. Classification — reclassification, NOT a loosening (belt-and-suspenders)
@@ -59,7 +59,7 @@ Per-message histogram (IRIs neutralised), 680 → 664:
 | `FORBIDDEN monoidal operator inside a combo formula` | 109 | 126 | +17 (same nodes, now correctly typed as `m2:DomainConceptCombo` → correct SC-1 constraint fires) |
 | `well-formed signature ≥ 2 args` | 5 | 6 | +1 |
 
-**26 message-lines removed, 18 added → NET −16 gate units.** No shape weakened; the validator bites *more* correctly. Verdict: `--update-golden` was the correct action, and the reason is recorded in the golden `_delta_reason` and in the `3b81112` commit body.
+**26 message-lines removed, 18 added → NET −16 gate units.** No shape weakened; the validator bites *more* correctly. Verdict: `--update-golden` was the correct action, and the reason is recorded in the golden `_delta_reason` and in the `2396b94` commit body.
 
 > Metric note for the future: `shacl_violations` counts **Message-lines + Focus-Node-lines** = **2× actual violations** (so 664 ≡ 332 real violations; the −16 ≡ −8 violations). This is how `check_M1.run_shacl` builds its list — keep it in mind when reasoning about counts.
 
@@ -77,16 +77,16 @@ Per-message histogram (IRIs neutralised), 680 → 664:
 ## 6. Re-verification commands (run FIRST next session)
 ```
 git clone --depth 1 https://github.com/Echopraxium/tscg.git /tmp/tscg && cd /tmp/tscg
-git rev-parse --short HEAD                                   # still 3b81112? else re-measure
+git rev-parse --short HEAD                                   # still 2396b94? else re-measure
 pip install -q --break-system-packages pyshacl rdflib pyld pyoxigraph
 python ontology/cli-tools/run_all_layers.py                  # expect GATE: PASS, M1 17 / 664
-# (to re-confirm the -16 localisation, checkout c49386c^ and c49386c and diff check_M1 --shacl totals)
+# (to re-confirm the -16 localisation, checkout dd43b46^ and dd43b46 and diff check_M1 --shacl totals)
 ```
 
 ---
 
 ## 7. Doctrine reminders
-- HEAD is the only authority; §2–§4 figures are dated `3b81112`.
+- HEAD is the only authority; §2–§4 figures are dated `2396b94`.
 - Never `--update-golden` to turn a red gate green — only to record an understood change (as done here).
 - Keep independent changesets in separate commits.
 - A shrinking SHACL count is either a real repair (→ refresh golden + reason) or a validator that stopped biting (→ fix, don't refresh). This −16 was proven to be the former.

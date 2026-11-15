@@ -11,6 +11,8 @@
 # last good state, with "N/A" and the reason where a generator failed.
 #   - worksite_graph.py --check : depends_on of every worksite.yaml (unknown id, kind, cycle)
 #   - check_laws.js             : no physics outside K.LAWS in the Kit workshops
+#   - attribution trailers      : no "Co-Authored-By: Claude" / "Claude-Session:" in any commit
+#                                 message of the history (CLAUDE.md, Authorship)
 
 name: Build & deploy Compendium
 
@@ -39,6 +41,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0              # the whole history, for the attribution-trailer check
+
+      - name: Commit messages — no Claude attribution trailer (CLAUDE.md, Authorship)
+        run: |
+          bad=$(git log --format='%h %s%n%b' | grep -ciE '^(Co-Authored-By:.*(claude|anthropic)|Claude-Session:)' || true)
+          if [ "$bad" != "0" ]; then
+            echo "::error::$bad attribution trailer line(s) in the history of main:"
+            git log --format='%h %s' -iE --grep='^(Co-Authored-By:.*(claude|anthropic)|Claude-Session:)' | head -20
+            exit 1
+          fi
+          echo "no attribution trailer in $(git rev-list --count HEAD) commits"
 
       - uses: actions/setup-python@v6
         with:

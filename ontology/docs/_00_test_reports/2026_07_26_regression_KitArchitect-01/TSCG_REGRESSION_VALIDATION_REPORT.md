@@ -6,7 +6,7 @@
 - Weakened / unresolved findings: `3`
 
 ## 2. Reproducible runtime context
-- git_commit_hash: `787d9aaa13decb921ee35de8f29f7de6f2017d81`
+- git_commit_hash: `1974e2fcfa1c0e4c88b78b019386fd078f1883f8`
 - api_source_sync_source: `D:\sandbox\tscg\tscg_api_server.py`
 - api_version: `1.1.0`
 - python_version: `3.13.2 (tags/v3.13.2:4f8bb39, Feb  4 2025, 15:23:48) [MSC v.1942 64 bit (AMD64)]`

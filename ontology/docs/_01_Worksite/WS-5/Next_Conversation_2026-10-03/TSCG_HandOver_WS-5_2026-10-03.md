@@ -32,7 +32,7 @@ bottom-right). Edit the `.dot` files, then run `python render_graph.py`.
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: `565009e` on `main`. Confirm with `git log --oneline -8`.
+- **HEAD**: `9f60ff3` on `main`. Confirm with `git log --oneline -8`.
 - **Gate**: `cd ontology/cli-tools && python run_all_layers.py` → `GATE: PASS`.
   M1 151 errors / 1 warning / 688 SHACL; M0 124 / 0 / 22. M3, M2: NOT INSTRUMENTED.
 - **Gauges** (`tscg_metrics.py` 1.4.0): VOC bare keys 3418; CTX-4 0; CTX-5 0; EXT-1 0;
@@ -46,15 +46,15 @@ bottom-right). Edit the `.dot` files, then run `python render_graph.py`.
 
 | Commit | Content |
 |---|---|
-| `4586b26` | WS-2 lot CTX-5 (30 `m3:eagle_eye`/`m3:sphinx_eye` @context terms removed, graph-neutral) + `m1core` → `m1` everywhere live (Michel); skill tscg-tensor-to-structural-grammar-migration: prefixes ABSOLUTE; tscg_metrics 1.4.0 (CTX-4 any relative term IRI, CTX-5 invalid colon terms only); check_M1 1.5.0 (CTX001 stopped requiring the defect); golden M1 warnings 3 → 1 (approved after review) |
-| `da47824` | Golden notes without hard-coded counts; `DEFAULT_GOLDEN` marked as a dated fallback |
-| `bef52f0` | `tscg_generate_filetree.py`: non-ASCII path quoting fixed (`core.quotepath=off`, `-z`); FileTree regenerated |
-| `636a46c` | Compendium: worksite/handover rules before "doc" rules (Project management 14 → 42 files); build skips its own `dist/` (73 phantom entries → 0); footer shows build commit + UTC date; duplicate `ontology/HANDOVER_2026-06-19 (1).md` removed |
-| `fbdc8d6` | This HandOver + dependency graph (PNG, `.dot` sources, `render_graph.py`); `.gitignore` no longer ignores `.py` in worksite folders (Michel) |
-| `7bff66a` | Bootstrap: changelog invariant is `m3:changelog` (`m2:changelog` retired 2026-09-30) |
-| `565009e` | `docs/reboot-kit/`: all ontology files removed (stale copies of M2/M3/M0, dead GenesisSpace/MetaConcepts files, a duplicate that broke the RAG build) — Michel: obsolete and a source of errors; its stale auto-loaded `CLAUDE.md` replaced by a pointer to HEAD / Bootstrap / ReferenceCorpus / root `CLAUDE.md` |
+| `b54b5ae` | WS-2 lot CTX-5 (30 `m3:eagle_eye`/`m3:sphinx_eye` @context terms removed, graph-neutral) + `m1core` → `m1` everywhere live (Michel); skill tscg-tensor-to-structural-grammar-migration: prefixes ABSOLUTE; tscg_metrics 1.4.0 (CTX-4 any relative term IRI, CTX-5 invalid colon terms only); check_M1 1.5.0 (CTX001 stopped requiring the defect); golden M1 warnings 3 → 1 (approved after review) |
+| `df6cd21` | Golden notes without hard-coded counts; `DEFAULT_GOLDEN` marked as a dated fallback |
+| `331a1ec` | `tscg_generate_filetree.py`: non-ASCII path quoting fixed (`core.quotepath=off`, `-z`); FileTree regenerated |
+| `975e30d` | Compendium: worksite/handover rules before "doc" rules (Project management 14 → 42 files); build skips its own `dist/` (73 phantom entries → 0); footer shows build commit + UTC date; duplicate `ontology/HANDOVER_2026-06-19 (1).md` removed |
+| `682bb44` | This HandOver + dependency graph (PNG, `.dot` sources, `render_graph.py`); `.gitignore` no longer ignores `.py` in worksite folders (Michel) |
+| `0288778` | Bootstrap: changelog invariant is `m3:changelog` (`m2:changelog` retired 2026-09-30) |
+| `9f60ff3` | `docs/reboot-kit/`: all ontology files removed (stale copies of M2/M3/M0, dead GenesisSpace/MetaConcepts files, a duplicate that broke the RAG build) — Michel: obsolete and a source of errors; its stale auto-loaded `CLAUDE.md` replaced by a pointer to HEAD / Bootstrap / ReferenceCorpus / root `CLAUDE.md` |
 
-Project Knowledge (2026-10-03): `TSCG_FileTree.md`, `TSCG_ReferenceCorpus_Bootstrap.md`, `TSCG_ReferenceCorpus.md` and `UserGuide.md` re-copied from HEAD `565009e` (`_00_exercise_template.md`, empty, left as is — the Bootstrap says it should not be in the project).
+Project Knowledge (2026-10-03): `TSCG_FileTree.md`, `TSCG_ReferenceCorpus_Bootstrap.md`, `TSCG_ReferenceCorpus.md` and `UserGuide.md` re-copied from HEAD `9f60ff3` (`_00_exercise_template.md`, empty, left as is — the Bootstrap says it should not be in the project).
 
 ### Decisions taken (Michel, 2026-10-03)
 

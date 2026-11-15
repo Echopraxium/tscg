@@ -27,7 +27,7 @@ re-measuring — they are perishable.
 
 ## 3. Fresh session state (perishable — re-verify)
 
-- **HEAD**: `dfac73b` on `main` (measured 2026-09-02) — *treat as unverified; confirm
+- **HEAD**: `94af7e6` on `main` (measured 2026-09-02) — *treat as unverified; confirm
   with `git rev-parse HEAD` on a fresh fetch.*
 - **SC-3 "Facet as an M3 principle" is DONE** — graved, committed, pushed, and
   independently verified on remote HEAD. The Facet mechanism lives in M3; the

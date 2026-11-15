@@ -17,7 +17,7 @@ served as authority by the RAG; the Compendium publishes them too.
 ## Triage
 
 `OntologyDocs_Cleanup_Triage.xlsx` (this folder) — 88 files (outside `_01_Worksite`
-and `_00_test_reports`), measured on HEAD `55497d4`: last commit, live references
+and `_00_test_reports`), measured on HEAD `9211bd4`: last commit, live references
 (index files excluded; `docs/` path required when a name is ambiguous), retired-vocabulary
 markers, Claude's proposal, **Michel's decision** (yellow column). No tool reads a
 specific file of `ontology/docs` by path.
@@ -75,7 +75,7 @@ Gate: not concerned (it reads no file of `ontology/docs`).
 
 **Method** (Michel, 2026-11-01): one file at a time, in the conversation, for the 15 files
 that needed his judgement (6 "À DÉCIDER" + 9 "to confirm"), each re-verified on HEAD
-`796583a` (title, date, citing lines `file:line`, retired-vocabulary markers, options);
+`8a32055` (title, date, citing lines `file:line`, retired-vocabulary markers, options);
 then the 53 with no live reference in five thematic lots. Decisions are in the yellow
 column of `OntologyDocs_Cleanup_Triage.xlsx` (column I: why and which lines).
 

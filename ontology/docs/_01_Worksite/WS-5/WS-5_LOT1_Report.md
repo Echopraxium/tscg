@@ -3,7 +3,7 @@
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-08-08
 **Spec**: `ontology/docs/_01_Worksite/TSCG_OntologyValidator_Worksite_README.md` v0.1.0, §8
-**Authority**: measured against `git show HEAD:<file>`, HEAD = `f0daa1a`
+**Authority**: measured against `git show HEAD:<file>`, HEAD = `02b9ea1`
 **Golden gate**: `check_M1.py` = **16 files | 151 errors | 3 warnings** before and after
 (this lot adds files only; no corpus file is touched).
 
@@ -45,7 +45,7 @@ TOTAL: 0 ERROR | 28 WARNING | 3 INFO
 **The §7 snapshot counts are confirmed stale**, exactly as the spec required the
 tool to check on first run:
 
-| §7 (2026-07-18 snapshot) | HEAD (this tool, f0daa1a) |
+| §7 (2026-07-18 snapshot) | HEAD (this tool, 02b9ea1) |
 |---|---|
 | CTX-1 = 2 (undeclared m3:) | **0** — fixed (Lot A) |
 | CTX-2/3 = 2 (rel+@vocab / bad @base) | **0** — fixed this session |

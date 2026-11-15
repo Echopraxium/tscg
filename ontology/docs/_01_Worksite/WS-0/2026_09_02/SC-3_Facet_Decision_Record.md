@@ -13,7 +13,7 @@ The two *conceptual results* of v1.0.0 §5 (the legitimacy criterion and the axi
 filter) are **retained** — indeed they are what condemns the four-axis model (§1).
 
 **Authority**: corpus facts below were measured at `git show HEAD:<file>` on
-2026-08-28 (HEAD `7da58af`): M3_GenesisGrammar 4.5.0 · M2_GenericConcepts 16.19.0 ·
+2026-08-28 (HEAD `35f308b`): M3_GenesisGrammar 4.5.0 · M2_GenericConcepts 16.19.0 ·
 M0_Common 1.1.0 · M3_GrammarFoundation 2.5.0. Target IRIs collision-free; `skos`
 already in M3 `@context`. Re-measure before trusting any number here.
 

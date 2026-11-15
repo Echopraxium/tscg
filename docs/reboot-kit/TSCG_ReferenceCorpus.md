@@ -1,6 +1,6 @@
 # TSCG — Reference Corpus (Complete)
 
-**Author**: Echopraxium with the collaboration of Claude AI · **Date**: 2026-10-06 (routing tables re-verified on HEAD `d0f2db0`; created 2026-08-11)
+**Author**: Echopraxium with the collaboration of Claude AI · **Date**: 2026-10-06 (routing tables re-verified on HEAD `ffdeade`; created 2026-08-11)
 
 > **This file is a router, not a content store.** It maps *where authority lives*
 > so that live facts are read from HEAD, never recited from the corpus. It carries

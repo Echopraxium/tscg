@@ -1,4 +1,4 @@
-# delta_1 inventory at 5a26560
+# delta_1 inventory at e2e80d2
 
 ## A. git grep hits by area and role
 

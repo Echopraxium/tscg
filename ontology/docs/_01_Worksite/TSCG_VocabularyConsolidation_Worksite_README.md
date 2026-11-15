@@ -7,7 +7,7 @@
 **Date**: 2026-07-22
 **Status**: capture of the 2026-07-22 architecture discussion, for execution
 after Michel's per-block decisions (§5). This is a hand-off, not an edit.
-**Authority**: measured against `git show HEAD` (`5dcd8e9`, 2026-07-21). Every
+**Authority**: measured against `git show HEAD` (`f8bf174`, 2026-07-21). Every
 count below must be re-confirmed by the tool on first run.
 
 ---

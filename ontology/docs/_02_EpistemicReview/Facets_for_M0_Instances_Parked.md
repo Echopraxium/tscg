@@ -3,7 +3,7 @@
 **Author**: Echopraxium with the collaboration of Claude AI
 **Version**: 0.1.0 · **Date**: 2026-11-15
 **Status**: **PARKED** — recorded, not to be touched for now (Michel, 2026-11-15).
-**Measured at**: HEAD `5a26560`.
+**Measured at**: HEAD `e2e80d2`.
 **Origin**: the epistemic-gap feasibility study
 (`ontology/docs/_01_Worksite/WS-15/`), discussion of what remains to
 characterise an M0 instance once the scores are gone.
@@ -17,7 +17,7 @@ instance can be, for example, both "poclet" and "symbolic system grammar": a *de
 instance of the I Ching would carry both, while another I Ching instance would carry
 only "symbolic system grammar", to study it in detail.
 
-## 2. State at HEAD (`5a26560`)
+## 2. State at HEAD (`e2e80d2`)
 
 - Every M0 instance carries `m3:ontologyType` on its `owl:Ontology` node. Values over the
   43 instances found by check_m0: 33 `m3:Poclet`, 4 `m3:TscgTool`,

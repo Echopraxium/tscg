@@ -2,7 +2,7 @@
 
 **Author:** Echopraxium with the collaboration of Claude AI
 **Status:** SCOPING NOTE, draft 0.2.0 (2026-11-15). No ontology file is modified by this note.
-**Facts read at HEAD `39ca12d`** (re-read before relying on them).
+**Facts read at HEAD `3425171`** (re-read before relying on them).
 
 ## Why
 

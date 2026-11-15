@@ -5,7 +5,7 @@
 this session and current. Read it first.
 This handover is the SNAPSHOT of this session.
 
-**Authority**: `git show HEAD:<file>` only. HEAD at close = **`f0daa1a`** (origin/main).
+**Authority**: `git show HEAD:<file>` only. HEAD at close = **`02b9ea1`** (origin/main).
 Re-measure any figure at the next session's start; the map's non-CTX-4 numbers are stale.
 
 ---
@@ -15,31 +15,31 @@ Re-measure any figure at the next session's start; the map's non-CTX-4 numbers a
 Each lot was measured before/after, staged scoped (never `git add -A` except the
 housekeeping lot), and committed alone.
 
-- **`c49386c`** — **WS-2 / CTX-4**: absolutised the relative `m1/m2/m3` `@context`
+- **`dd43b46`** — **WS-2 / CTX-4**: absolutised the relative `m1/m2/m3` `@context`
   prefixes in the **10 M1 extensions** (15 occ). Golden-stable (`check_M1` = 151
   before and after), linter 0 errors, Pellet consistent (electronics + optics).
-- **`ce94045`** — **Template → instance rename**: `M0_POCLET_TEMPLATE.jsonld` →
+- **`43bff41`** — **Template → instance rename**: `M0_POCLET_TEMPLATE.jsonld` →
   `M0_INSTANCE_TEMPLATE.jsonld` (absolute IRIs, `GenesisGrammar`, token
   `POCLET_NAME`→`INSTANCE_NAME`); PowerShell generator **ported to Python**
   (`create_new_instance.py`, auto-detects repo root, validates JSON, fixes the old
   script's hard-coded path + wrong template location); `create_new_poclet.ps1` retired.
-- **`5dfb488`** — **Docs alignment**: 5 usage docs + the preprint aligned to the new
+- **`ba1eb07`** — **Docs alignment**: 5 usage docs + the preprint aligned to the new
   name/token/script; fixed pre-existing stale `_v2` references and the wrong
   `TSCG_Grammar/` path; `files.txt` regenerated via `create_files_URIS.py`. Done with
   a one-shot Python script (`align_docs.py`, run on the user's machine) + manual
   preprint prose edits.
-- **`63b6cdf`** — **Housekeeping**: `_open_cmd_window.bat` → `_00_open_cmd_window.bat`
+- **`ec73b9f`** — **Housekeeping**: `_open_cmd_window.bat` → `_00_open_cmd_window.bat`
   (root + ontology-linter); removed the empty stray file `owl_reasoning_test/python`.
-- **`16c8ace`** — **CTX-4-bis / InstanceSimulations**: the 2 `ontology/InstanceSimulations/*`
+- **`d148db0`** — **CTX-4-bis / InstanceSimulations**: the 2 `ontology/InstanceSimulations/*`
   M0 files — `m3` absolutised (+ `GenesisGrammar`), `m0` self-path corrected to the real
   `.../ontology/InstanceSimulations/…` location.
-- **`0bb062c`** — **CTX-4-bis / 11 poclet m0**: absolutised the `m0` self-prefix of 11
+- **`137649b`** — **CTX-4-bis / 11 poclet m0**: absolutised the `m0` self-prefix of 11
   live M0 instances to their correct git path — fixing Canopy (`Tscg…` folder),
   TvTestPattern (`tv_test_pattern` case), Vco (`M0_Vco`→`M0_VCO`), iching (`Iching` case),
   and Nakamoto (pointed at the wrong file `M0_Poclets.jsonld`). Done with `align_m0.py`
   (Python, on the user's machine — Nakamoto contains `ORIVE`).
-- **`f0daa1a`** — **Worksite map v2.3.0**: closed WS-2/CTX-4 + CTX-4-bis (§2, §5),
-  anchored `Current HEAD: 0bb062c`, logged the M0_Common refactor backlog (§8), added
+- **`02b9ea1`** — **Worksite map v2.3.0**: closed WS-2/CTX-4 + CTX-4-bis (§2, §5),
+  anchored `Current HEAD: 137649b`, logged the M0_Common refactor backlog (§8), added
   the 2.3.0 changelog entry with the ORIVE lesson.
 
 **Net result**: **CTX-4 and CTX-4-bis are closed** — no relative `mN` prefix remains
@@ -142,7 +142,7 @@ in §5.
 
 ## 7. OPENING PACKET FOR NEXT CONVERSATION
 
-- Anchor on **HEAD `f0daa1a`** (re-measure at start).
+- Anchor on **HEAD `02b9ea1`** (re-measure at start).
 - Announce the worksite: **WS-5** (or the M0_Common refactor).
 - The corpus is fetched from HEAD by the assistant; the worksite map is already v2.3.0
   and current — no upload needed unless the project corpus carries an older copy

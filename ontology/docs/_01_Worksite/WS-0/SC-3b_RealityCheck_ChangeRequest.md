@@ -3,7 +3,7 @@
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-10-19
-**Base**: HEAD `fee9ba8` (the 2026-10-18 epistemology patch is not yet on HEAD)
+**Base**: HEAD `be73fa7` (the 2026-10-18 epistemology patch is not yet on HEAD)
 **Origin**: `docs/CoreHypotheses/ModelSupersession.md` §3.5 (proposal) — Michel chose
 **option (a)**: grave optional first, migrate, then make mandatory.
 **Precedent**: SC-3 (`2026_09_02/SC-3_Facet_Decision_Record.md` v2.0.0) — the Facet

@@ -207,7 +207,7 @@ Dependencies: **none** for the core gauges (standard library only).
 
 ---
 
-## 6. Baseline — HEAD `5dcd8e9`, 2026-07-23
+## 6. Baseline — HEAD `f8bf174`, 2026-07-23
 
 26 canonical files.
 

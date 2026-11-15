@@ -4,7 +4,7 @@
 **Date**: 2026-08-08
 **Author**: Echopraxium with the collaboration of Claude AI
 **Project**: TSCG (Transdisciplinary System Construction Game)
-**Current HEAD**: `0bb062c` (origin/main, 2026-08-08).
+**Current HEAD**: `137649b` (origin/main, 2026-08-08).
 **Supersedes**: v2.2.1 (2026-07-30). Folds in the 2026-08-08 session (six lots):
 WS-2/CTX-4 and CTX-4-bis **fully closed** (§2, §5, CHANGELOG); the poclet→instance
 template rename with the Python generator port; the docs alignment lot; the
@@ -74,7 +74,7 @@ already realised. Disambiguation is a backlog item (§8).
 |---:|---|---|
 | ✅ | WS-0 / SC-2 | COMPLETE — committed, pushed origin/main (M2 16.19.0); gauge 43->0; verified 2026-07-30 |
 | 1 | WS-5 / Validator | every item below needs the same measurement primitives; building it first makes them cheap and reproducible. Reinforced by SC-3: its graving is a wide semantic migration, hand-adjudicated without the engine |
-| ✅ | WS-2 / CTX-4 | COMPLETE 2026-08-08 — 10 M1 extensions (`c49386c`, golden-stable 151) + CTX-4-bis: 2 InstanceSimulations (`16c8ace`) and 11 poclet m0 self-prefixes (`0bb062c`). No relative mN prefix remains in the live corpus |
+| ✅ | WS-2 / CTX-4 | COMPLETE 2026-08-08 — 10 M1 extensions (`dd43b46`, golden-stable 151) + CTX-4-bis: 2 InstanceSimulations (`d148db0`) and 11 poclet m0 self-prefixes (`137649b`). No relative mN prefix remains in the live corpus |
 | 4 | WS-0 / SC-6 | DCC006=127 monoidal-operator-in-signature (the bulk); heavy, semantic |
 | 5 | WS-1 / VOC | blocks the M2 graph grammar (SC-11b) |
 | 6 | WS-3 / Gs review | register opened; Michel's decisions, no deadline |
@@ -259,10 +259,10 @@ keys, an order past M1's 11 shapes; hand-writing = a second source of truth).
 - **WS-1 VOC** — bare keys 4281 occ / 1301 distinct; 693 family-A, 303 false friends,
   853 undefined-but-prefixed. Blocks SC-11b.
 - **WS-2 CTX** — CTX-1 fixed (Lot A). **CTX-4 COMPLETE 2026-08-08**: 10 M1 extensions
-  absolutised (`c49386c`, golden-stable 151, linter + Pellet clean); CTX-4-bis
-  absolutised the 2 InstanceSimulations M0 files (`16c8ace`) and the 11 live poclet
+  absolutised (`dd43b46`, golden-stable 151, linter + Pellet clean); CTX-4-bis
+  absolutised the 2 InstanceSimulations M0 files (`d148db0`) and the 11 live poclet
   m0 self-prefixes — fixing Canopy/TvTestPattern/Vco/iching case + Nakamoto wrong-file
-  (`0bb062c`). No relative mN prefix remains in the live corpus. CTX-5 (31) remains.
+  (`137649b`). No relative mN prefix remains in the live corpus. CTX-5 (31) remains.
 - **WS-3 Gs review** — M2_Formulas_Review_with_Gs_Residues.md 1.0.0: pre-Gs cohort
   46/75 recorded before SC-2 erases the marker; 9 carve-outs; isomer classes;
   Gradient `or` debt.
@@ -338,7 +338,7 @@ SC-0 and SC-9 at Michel's convenience.
 ## 8. CROSS-CUTTING BACKLOG (not a worksite)
 
 - **`M0_Poclet#` score/gap @ids → refactor onto `M0_Common.jsonld`** (measured
-  2026-08-08, HEAD `0bb062c`) — **29 poclets, ~293 `@id`** point their score/gap/mean
+  2026-08-08, HEAD `137649b`) — **29 poclets, ~293 `@id`** point their score/gap/mean
   properties at the non-existent namespace `.../ontology/M0_Poclet#` (`scoreA…scoreIm`,
   `epistemicGap`, `mean`), a leftover from the old template. The canonical vocabulary
   **already exists** in `ontology/M0_Common.jsonld` (`.../M0_Common.jsonld#scoreA…`,
@@ -392,7 +392,7 @@ SC-0 and SC-9 at Michel's convenience.
 
 SC-2 shipped; SC-3 design decided (Decision Record 1.0.0); WS-2/CTX-4 + CTX-4-bis
 closed (2026-08-08). Open ONE next worksite in a FRESH conversation anchored on HEAD
-(`0bb062c`):
+(`137649b`):
 
 - **WS-5 (Validator engine)** — recommended. Structural; unblocks cheap per-decision
   measurement for everything below, including the wide SC-3 graving.
@@ -407,12 +407,12 @@ M3/M2/M0 and would be hand-adjudicated without the engine (as SC-3's design was)
 ## CHANGELOG
 
 - **2.3.0** (2026-08-08) — Session of six graved lots, all isolated and HEAD-verified.
-  **WS-2/CTX-4 + CTX-4-bis closed**: 10 M1 extensions absolutised (`c49386c`, golden 151,
+  **WS-2/CTX-4 + CTX-4-bis closed**: 10 M1 extensions absolutised (`dd43b46`, golden 151,
   linter + Pellet clean); poclet→instance template rename with Python generator
-  `create_new_instance.py` and `.ps1` retired (`ce94045`); docs alignment lot incl.
-  stale `_v2` and `TSCG_Grammar` path fixes + `files.txt` regen (`5dfb488`); housekeeping
-  (`63b6cdf`); the 2 InstanceSimulations M0 files (`16c8ace`); the 11 live poclet m0
-  self-prefixes with case/wrong-file fixes (`0bb062c`). §2/§5 mark CTX-4 ✅; §9 drops the
+  `create_new_instance.py` and `.ps1` retired (`43bff41`); docs alignment lot incl.
+  stale `_v2` and `TSCG_Grammar` path fixes + `files.txt` regen (`ba1eb07`); housekeeping
+  (`ec73b9f`); the 2 InstanceSimulations M0 files (`d148db0`); the 11 live poclet m0
+  self-prefixes with case/wrong-file fixes (`137649b`). §2/§5 mark CTX-4 ✅; §9 drops the
   CTX-4 alternative. **New backlog (§8)**: `M0_Poclet#` → `M0_Common.jsonld` refactor
   (29 files / ~293 @ids, with the `mean`→asfidMean/revoiMean open question). Recurring
   operational note: the assistant's file-write path corrupts the literal `ORIVE`→`REVOI`

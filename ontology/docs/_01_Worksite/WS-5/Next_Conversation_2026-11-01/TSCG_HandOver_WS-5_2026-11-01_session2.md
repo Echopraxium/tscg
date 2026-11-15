@@ -24,14 +24,14 @@ stay the reference for what comes after.
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: the commit carrying this HandOver, on top of `3cd89d1`
+- **HEAD**: the commit carrying this HandOver, on top of `db6fda4`
   (M1_CoreConcepts 2.24.0) and the five "Housekeeping ontology/docs round 2" commits.
 - **Gate**: `GATE: PASS` (Linux and Michel's Windows), counts unchanged by today's work.
   **Reasoner**: `M1_CoreConcepts.jsonld` (7 files merged) PASSED (Michel, 2026-11-01).
 - **`ontology/docs/`** (outside `_00_test_reports`, `_01_Worksite`) holds one file:
   `OntologyModeling_Guidelines.md`. 64 files removed, 3 moved next to their instance.
 - **Project Knowledge**: `TSCG_FileTree.md` and `TSCG_ReferenceCorpus.md` reloaded from HEAD
-  `3cd89d1` — reload `TSCG_FileTree.md` again after this HandOver's commit.
+  `db6fda4` — reload `TSCG_FileTree.md` again after this HandOver's commit.
 
 ## 2. First question to Michel
 
@@ -105,7 +105,7 @@ Michel runs the reasoner and reports, before the push. Nothing lost: `git show <
 - **Lot M0** — Debt Overview §5: `M0_NuclearReactorsTypology` (`m1:CriticalityRegime`,
   `m1:SelfSustainingReaction`, 3 strings), `M0_PhaseTransition` (`m2:CriticalityRegime`),
   `M0_Yggdrasil` (`m1:CatastrophicBifurcation`) reference concepts declared nowhere; the
-  former definitions are reachable with `git show 796583a:<path>` (paths in §5).
+  former definitions are reachable with `git show 8a32055:<path>` (paths in §5).
 - **No owner yet** — Debt Overview §5: retired vocabulary in the narrative `.md` of the
   instances, measured: 75 of 140 files, 1605 markers, 1347 `⊗`. No instrument counts it; a
   `⊗` count over `.md` (health map) is a possible instrumentation lot.

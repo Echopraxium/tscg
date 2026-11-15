@@ -5,12 +5,12 @@
 **Kind**: feasibility study (pipeline Phase 0 + Phase 1). **No ontology file is changed.**
 **Worksite id**: **WS-15** (D1, chosen by Michel 2026-11-15). The folder was
 `WS-TBD_EpistemicGap/` until then; dated outputs written before the rename (the
-inventory at `5a26560`) keep the old path as they recorded it.
-**Measured at**: HEAD `5a26560` (2026-11-09), verified with `git log -1` in a fresh clone.
+inventory at `e2e80d2`) keep the old path as they recorded it.
+**Measured at**: HEAD `e2e80d2` (2026-11-09), verified with `git log -1` in a fresh clone.
 
 Everything below that is a number comes from a command run in this session. The
 inventory script is committed next to this note (`delta1_inventory.py`, standard
-library, read-only) and its output at `5a26560` is `delta1_inventory_5a26560.md`.
+library, read-only) and its output at `e2e80d2` is `delta1_inventory_5a26560.md`.
 Everything marked **proposal** is Claude's analysis: Michel decides.
 
 ---
@@ -79,7 +79,7 @@ What this changes below: §2 (the "concept" column now means Korzybski only), §
 
 ## 0. Baseline (Phase 1)
 
-| check | command | result at `5a26560` |
+| check | command | result at `e2e80d2` |
 |---|---|---|
 | acceptance gate | `cd ontology/toolchain && python run_all_layers.py` | `GATE: PASS` |
 | M0 reasoner sweep | `PATH=<jdk-25>/bin:$PATH python run_all_layers.py --reasoner` (Temurin 25.0.1) | 43 files, 2 not passed (`M0_Bmc` FAILED, `M0_Yggdrasil` ERROR) = frozen `M0_REASONER` |
@@ -609,4 +609,4 @@ at M0 first would hide the debt that M3 still asserts.
 | 0.4.0 | 2026-11-15 | Positions 8 (the monoids and the Layer Cake are not a model of reality; M2 concepts are proxies) and 9 (no scores; evaluation belongs to the user and observers). §2b headed by the category error; §2d scope of the whole scoring family (40/43 `M0_Common` nodes, 42/43 instances, M3 role (2) of the primitives); L3/L4 widened; D3/D16 answered; D19–D21 added. Inventory script: section F. |
 | 0.3.0 | 2026-11-15 | Positions 5–7 recorded (Gs is not a feedback loop; the gap ticks CoreHypotheses traps; intersubjective scoring removed too). §2b trap mapping (proposal), §2c intersubjective-scoring inventory (0 uses at HEAD) and its two consequences (Narcissus response, justification of the scores). L1, L6 widened; D14 narrowed; D16–D18 added. |
 | 0.2.0 | 2026-11-15 | Michel's positions recorded (scalar and gap meaningless; Korzybski a foundation; validation heuristics in a human/machine cybernetic loop to invent). §2 recast as "Korzybski only"; Q2-5, Q2-12 and verdict revised; §4 (a) removes concept and measure, (b) reduced to a recording format, (c) = heuristics loop with design inputs; L7 re-scoped; D2 answered, D4/D5 narrowed, D13–D15 added. |
-| 0.1.0 | 2026-11-15 | Draft: Phase 0 + Phase 1 feasibility study at `5a26560`. |
+| 0.1.0 | 2026-11-15 | Draft: Phase 0 + Phase 1 feasibility study at `e2e80d2`. |

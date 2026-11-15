@@ -5,11 +5,11 @@
 ran the checker but discarded its numbers), instrumented it, **reviewed** the real M0 state,
 and **captured the first M0 golden baseline**. The M0 gate now measures and guards M0. Gate
 is GREEN, legitimately.
-**HEAD at close**: the M0-instrumentation commit on top of **`3b81112`** — fill the SHA after
+**HEAD at close**: the M0-instrumentation commit on top of **`2396b94`** — fill the SHA after
 `git commit` (message: *"feat(gate): instrument M0 (parse check_m0 metrics) + baseline the M0
 migration backlog"*).
 
-> **head-over-memory**: every number below was measured this session on HEAD `3b81112` (and
+> **head-over-memory**: every number below was measured this session on HEAD `2396b94` (and
 > re-measured on Michel's machine — identical). HEAD may move; re-verify (§6) before acting.
 
 ---
@@ -24,7 +24,7 @@ migration backlog"*).
 ## 1. What shipped (one commit)
 ```
 <new>    feat(gate): instrument M0 (parse check_m0 metrics) + baseline the M0 migration backlog
-3b81112  fix(gate): refresh M1 golden 680->664 + add Cartography to gate (files 16->17)   (previous)
+2396b94  fix(gate): refresh M1 golden 680->664 + add Cartography to gate (files 16->17)   (previous)
 ```
 Two files:
 - **`ontology/cli-tools/run_all_layers.py`** — `run_m0()` rewritten: it now parses
@@ -117,7 +117,7 @@ cd ontology/cli-tools && python check-M0/check_m0_instances.py && cd ../..   # e
 ---
 
 ## 7. Doctrine reminders
-- HEAD is the only authority; §2–§4 figures are dated `3b81112` + the M0 commit.
+- HEAD is the only authority; §2–§4 figures are dated `2396b94` + the M0 commit.
 - A checker whose numbers are discarded is a layer that is **unmeasured**, not passing — even
   with `status: INSTRUMENTED`. Instrument = parse + compare, not just "run".
 - Baselining a backlog is legitimate (it guards regressions) but must be **loud**: the note

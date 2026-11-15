@@ -3,7 +3,7 @@
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-10-11 (session of 2026-10-10) — v1.1.0
 **Status**: Phase 0 — change request (not started; no file modified)
-**Measured on**: HEAD `7d2cfb1` — re-measure at session start (head-over-memory)
+**Measured on**: HEAD `e45bae0` — re-measure at session start (head-over-memory)
 **Worksite number**: WS-13 (renumbered from the draft "WS-14": the draft "WS-13 — Audit of L"
 was folded into WS-3 as GS-3 / GS-4) — to register in `worksite.yaml`
 **Depends on**: WS-3 GS-3 (`Convergence` carries L) · WS-1 decision B2 · SC-6
@@ -98,7 +98,7 @@ poclet must discriminate wire vs circuit and produced vs occurring; the others a
   occurring), or another factor? (Precedent R4: `Synergy = It × D | _^ / _$` shares its
   Territory core with Event, Trigger and Action.)
 
-## 6. Impact (measured at HEAD `7d2cfb1`; re-measure in Phase 1)
+## 6. Impact (measured at HEAD `e45bae0`; re-measure in Phase 1)
 
 | Change | Files referencing today | Overlap |
 |---|---|---|

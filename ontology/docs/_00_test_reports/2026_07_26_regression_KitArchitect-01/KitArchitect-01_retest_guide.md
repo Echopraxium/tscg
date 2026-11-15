@@ -10,7 +10,7 @@ re-test **from a fresh checkout of the latest `main`**, not by patching your loc
 
 ## Why a fresh checkout (not a patch)
 
-You tested at commit `787d9aa`. Since then the corpus itself advanced several sessions
+You tested at commit `1974e2f`. Since then the corpus itself advanced several sessions
 (CTX-4 absolutisation, template rename, the new WS-5 validator, the worksite YAML) AND
 the API server fixes landed. Patching only the server would test new code against an
 old corpus — you'd re-see data defects that are already closed. A clean checkout removes
@@ -24,7 +24,7 @@ cd tscg-retest
 git log -1 --format="%H %s"
 ```
 
-The HEAD should be at least **`9cc3868`** (or later on `main`). All five confirmed
+The HEAD should be at least **`e88e7b4`** (or later on `main`). All five confirmed
 pépites plus the M0_Poclet# phantom-namespace repair are in by then. If your existing clone is fine, instead:
 `git fetch origin && git reset --hard origin/main` — but a fresh clone is cleaner.
 

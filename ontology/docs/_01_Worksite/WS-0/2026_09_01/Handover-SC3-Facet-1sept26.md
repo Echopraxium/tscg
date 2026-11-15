@@ -42,7 +42,7 @@ always deferred to SC-5).
 
 ---
 
-## 2. HEAD baseline (re-measured 2026-08-28, sha 7da58af)
+## 2. HEAD baseline (re-measured 2026-08-28, sha 35f308b)
 
 | file | version | note |
 |---|---|---|

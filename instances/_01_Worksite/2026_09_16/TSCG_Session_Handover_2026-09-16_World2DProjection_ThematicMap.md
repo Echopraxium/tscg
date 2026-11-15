@@ -22,14 +22,14 @@
 
 ## 1. Committed state
 
-- **HEAD** at hand-off: **`c5fdefa`** — *"fix(World2DProjection): hue legend moved into left panel (CSS follow-up to A+B)"*, on top of **`93144af`** *"feat(World2DProjection): thematic per-zone choropleth (A) + blue geographic globe (B)"*. Confirm current HEAD with `git log -1`.
+- **HEAD** at hand-off: **`17c0f12`** — *"fix(World2DProjection): hue legend moved into left panel (CSS follow-up to A+B)"*, on top of **`dbf1981`** *"feat(World2DProjection): thematic per-zone choropleth (A) + blue geographic globe (B)"*. Confirm current HEAD with `git log -1`.
 - Poclet at `instances/poclets/World2DProjection/`. Simulation under **`static/`** (NOT `_static/` — a stale local copy existed once):
   - `M0_World2DProjection.html` — shell + left controls + two panels + right tabs. Loads, in order: `tscg-shell.js`, **`src/W2P_ZONES.js`**, **`src/W2P_LAKES.js`**, `src/World2DProjection.js`.
   - `src/World2DProjection.js` — the whole engine (5 projections + morph; p5 map; Babylon globe).
   - `src/W2P_ZONES.js` — **473 zones** (287 states / 186 countries). Natural Earth 50m admin-0 + admin-1, simplified 0.15°, exterior rings, dateline-aware, 2-dp. Each zone `{n:name, a:adminCountry, l:level(0 country/1 state), c:[lon,lat] repr-point, p:[ring,…]}`. **Sim data, NOT M0.**
   - `src/W2P_LAKES.js` — **244 major lake rings** (NE 50m lakes). Sim data.
   - `src/World2DProjection.css`, `src/tscg-shell.{css,js}`, `.eslintrc.json`, `_00_serve_poclet-sim.bat`, `M0_World2DProjection_SimulationIssues.md`.
-- **Ontology UNCHANGED**: `M0_World2DProjection.jsonld` was not touched. **M0 gate not required** (the sim is a client of M0). Verified: commit `93144af` changed only sim files + FileTree, no `.jsonld`/`.ttl`.
+- **Ontology UNCHANGED**: `M0_World2DProjection.jsonld` was not touched. **M0 gate not required** (the sim is a client of M0). Verified: commit `dbf1981` changed only sim files + FileTree, no `.jsonld`/`.ttl`.
 - `W2P_COASTLINE.js` is superseded by the zones; it was never git-tracked — delete any local untracked copy.
 
 ---

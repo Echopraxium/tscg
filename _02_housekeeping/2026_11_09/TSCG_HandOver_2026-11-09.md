@@ -5,7 +5,7 @@
 fact below from the repository before relying on it. Supersedes the HandOver of
 2026-11-07 (Kit frictions) for everything listed here.
 
-## 1. State of `main` (all pushed, HEAD `5f68bc4`)
+## 1. State of `main` (all pushed, HEAD `5423635`)
 
 | Commit (title) | Content |
 |---|---|

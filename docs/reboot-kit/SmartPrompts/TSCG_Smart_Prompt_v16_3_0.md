@@ -496,4 +496,4 @@ Key architectural features:
 
 ---
 
-*Smart Prompt v16.3.0 — 2026-07-30. Anchored on HEAD d92ded2. Prior v16.2.0 taught `⊗` as a valid operator; corrected here.*
+*Smart Prompt v16.3.0 — 2026-07-30. Anchored on HEAD b46e2e3. Prior v16.2.0 taught `⊗` as a valid operator; corrected here.*

@@ -28,7 +28,7 @@ for "what next"; keep it for the decision history) and, through it, the 2026-10-
 ## 1. Fresh session state (at handover — re-verify)
 
 - **HEAD**: the commit carrying this HandOver, on top of the "SC-5b preparation complete"
-  docs commit, on top of `76e2943`. Ontologies unchanged since `e9beb47` (Lot SC-5).
+  docs commit, on top of `40e4af9`. Ontologies unchanged since `a02f4de` (Lot SC-5).
 - **Gate**: `GATE: PASS`, counts unchanged since 2026-10-12 (M1 17 / 133 / 1 / 296).
 - Three evenings (10-12 → 10-14) were **design and review only**: no ontology change.
 
@@ -64,7 +64,7 @@ Mathematics (proposed) or a root aligned on OpenAlex field 18 "Decision Sciences
 
 1. **Lot NS-SEP** — one prefix per defining file: `m1:domain:X` → `m1.domains:X`,
    `m1:extension:<ext>:X` → `m1.<ext>:X` (prefix = layer + `.` + file name in lower case;
-   M1_CoreConcepts keeps `m1`). Measured on HEAD `76e2943`: 45 + 1,536 occurrences in
+   M1_CoreConcepts keeps `m1`). Measured on HEAD `40e4af9`: 45 + 1,536 occurrences in
    29 files. Mechanical, gate-verified.
 2. **Lot M0** — `m1:domain` → **`m1:belongsToDomain`** with IRIs in the 44 M0 files (+8 M1
    files, M0 template); delete `m0:subdomains` (7 poclets) and `m0.vco:subdomains`; M0

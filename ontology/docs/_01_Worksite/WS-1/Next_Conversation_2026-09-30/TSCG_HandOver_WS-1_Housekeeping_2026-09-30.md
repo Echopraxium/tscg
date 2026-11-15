@@ -25,7 +25,7 @@ and/or Project Knowledge.
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: `9505d03` on `main` — confirm with `git log --oneline -6`.
+- **HEAD**: `a024c7d` on `main` — confirm with `git log --oneline -6`.
 - **Push path**: this Claude session has **no GitHub write access** to
   `Echopraxium/tscg` (push → HTTP 403). Workflow that worked: Claude commits in its
   clone → `git format-patch` → Michel runs `git am <patch>`, re-runs the gate, then
@@ -39,10 +39,10 @@ and/or Project Knowledge.
 
 | Commit | Content |
 |---|---|
-| `97bde2b` | M2 16.20.0 — `m2:NaryAttribute` sole carrier of multiplicity: `m2:cardinality` + `m2:arity` (non-negative integers, UML notation `3`, `1..*`, `*`); exclusivity read from arity (`1` = exclusive, = cardinality = co-present). `m2:valueRange` on `m2:ValueSpace` (interval notation, decimals allowed, one value per disjoint interval). Companions: M1_CoreConcepts 2.11.0, M1_Chemistry 1.3.0, M1_Photography 1.3.0 |
-| `83a3aa4` | M2 16.21.0 — `m2:hasAttribute` is now a **list of attribute nodes named by `rdfs:label`** (was a map keyed by name → dropped by JSON-LD expansion). `m1:hasAttribute` unified into `m2:hasAttribute`. M1_CoreConcepts 2.12.0 |
-| `30a29a5` | M2 16.22.0 — `hasPolarity.allowedValues` completed; `m2:progress` polarity counters recounted; Polarity ket notation restated in plain terms; lost `≥` restored |
-| `9505d03` | removed `ontology/sparql/M2_Processor.jsonld` (pre-migration vestige) |
+| `c719b02` | M2 16.20.0 — `m2:NaryAttribute` sole carrier of multiplicity: `m2:cardinality` + `m2:arity` (non-negative integers, UML notation `3`, `1..*`, `*`); exclusivity read from arity (`1` = exclusive, = cardinality = co-present). `m2:valueRange` on `m2:ValueSpace` (interval notation, decimals allowed, one value per disjoint interval). Companions: M1_CoreConcepts 2.11.0, M1_Chemistry 1.3.0, M1_Photography 1.3.0 |
+| `23ab333` | M2 16.21.0 — `m2:hasAttribute` is now a **list of attribute nodes named by `rdfs:label`** (was a map keyed by name → dropped by JSON-LD expansion). `m1:hasAttribute` unified into `m2:hasAttribute`. M1_CoreConcepts 2.12.0 |
+| `074e864` | M2 16.22.0 — `hasPolarity.allowedValues` completed; `m2:progress` polarity counters recounted; Polarity ket notation restated in plain terms; lost `≥` restored |
+| `a024c7d` | removed `ontology/sparql/M2_Processor.jsonld` (pre-migration vestige) |
 
 Acceptance script used for these lots: `ontology/cli-tools/verify_multiplicity_lot.py`
 (in Michel's working copy; not committed — decide whether to commit it).

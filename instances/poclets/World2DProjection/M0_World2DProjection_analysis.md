@@ -13,7 +13,7 @@
 
 ---
 
-> **Post-analysis update (2026-09-13) — reconciled with HEAD `5880d883`.**
+> **Post-analysis update (2026-09-13) — reconciled with HEAD `84659c93`.**
 > The Step-2 reasoning below is preserved as written (the Gap *was* real at analysis time);
 > this box records what has since happened.
 >

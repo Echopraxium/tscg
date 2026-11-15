@@ -2,7 +2,7 @@
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-08-09
-**Base**: server v1.1.0 at repo HEAD `d5e81a7`
+**Base**: server v1.1.0 at repo HEAD `b98583a`
 **Tested in a Linux VM**: existing suite 72 → **77 passed** (5 regression tests added).
 
 ## What this lot fixes

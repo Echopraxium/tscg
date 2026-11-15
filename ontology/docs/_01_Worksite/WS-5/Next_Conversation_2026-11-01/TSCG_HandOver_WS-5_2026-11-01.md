@@ -74,7 +74,7 @@ KnowledgeField, MetaConcept, GenesisSpace, ORIVE…) is served as authority.
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: the commit carrying this HandOver update, on top of `df5947d` (housekeeping
+- **HEAD**: the commit carrying this HandOver update, on top of `75e091b` (housekeeping
   round 1); before it: skill 1.3.0, gate 1.6.0 (reasoner reminder), grammar G2 0.3.0
   (hollow comments), lot K0.
 - **Reasoner baseline for K1** (Michel, 2026-11-01, Windows, Java 25):
@@ -93,7 +93,7 @@ KnowledgeField, MetaConcept, GenesisSpace, ORIVE…) is served as authority.
 
 Both properties ARE declared (`owl:ObjectProperty`, M2) — not phantoms. Their VALUES are
 nested objects whose keys are bare: **423 D1 occurrences = 31 % of M2** (eagleView 209,
-sphinxView 214). Measured on HEAD `b502c47`:
+sphinxView 214). Measured on HEAD `608df2f`:
 
 | Key | eagleView (67 nodes) | sphinxView (43 nodes) |
 |---|---|---|

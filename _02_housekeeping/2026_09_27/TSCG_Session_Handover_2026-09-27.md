@@ -13,7 +13,7 @@ into Project Knowledge so the next session auto-loads it.
 ## 1. TL;DR — where we are
 
 Two things shipped to `origin/main` this session (direct push, fast-forward —
-`main` at `83b9ad5` **at handover time**, re-check with `git log`):
+`main` at `896af45` **at handover time**, re-check with `git log`):
 1. **Archive purge** — every `_archives/` folder removed (8 commits, groups A–H).
    Verified: `git ls-files | findstr "_archives/"` returns nothing; live sims
    preserved (`FireTriangle/static/M0_FireTriangle.html` still there).

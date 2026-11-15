@@ -212,7 +212,7 @@ to give `m1:Component` an orientation toward the whole's Attractor was through a
 parent carrying L (combo arguments are named concepts, never primitives — SC-1). None
 carries L cleanly. Investigation shows L is **misallocated** across M2.
 
-**Attested residue (HEAD `7d2cfb1`).**
+**Attested residue (HEAD `e45bae0`).**
 
 `m3:bicephalous:typeL` — label *Localizability*, question *"Converging?"*, definition:
 ordinal discrimination of the convergence direction toward an Attractor by successive
