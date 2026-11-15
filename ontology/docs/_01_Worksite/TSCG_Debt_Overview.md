@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.22.0
+**Version**: 1.22.1
 **Date**: 2026-11-15
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -766,7 +766,7 @@ Epistemological reason: a model is not legitimate to evaluate itself — a mock-
 than the toolkit; evaluation is subjective and belongs to the user and the observers,
 outside the model (`docs/CoreHypotheses/LayerCake_Models_The_Kit.md` §6). Definitions are
 **deprecated** (kept, with the reason); their **uses are deleted**. Study and decisions:
-`ontology/docs/_01_Worksite/WS-TBD_EpistemicGap/` (worksite id still to choose).
+`ontology/docs/_01_Worksite/WS-15/` (worksite WS-15, id chosen by Michel 2026-11-15).
 
 **Done in this lot (M0):**
 - `M0_Common` 1.8.0: 40 nodes `owl:deprecated` (the ten scores, the two means,
@@ -901,6 +901,7 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.22.1 (2026-11-15)** — §8.0h: the scoring-retirement worksite is WS-15 (folder renamed from `WS-TBD_EpistemicGap/`).
 - **1.22.0 (2026-11-15)** — Gate 1.8.0: section PATH_CHECK (`path_check.py`, PC1 naming
   norm, PC2 disk vs git case, PC3 case collisions, PC4 wrong-case references). First
   capture 7 (all PC4), then repaired to 0 — among them the GitHub Pages link

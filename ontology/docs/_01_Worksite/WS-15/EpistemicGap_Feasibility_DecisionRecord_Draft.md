@@ -1,10 +1,11 @@
 # Epistemic gap δ₁ and the scoring family — Feasibility note / Decision Record draft
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.7.0 (draft) · **Date**: 2026-11-15
+**Version**: 0.8.0 (draft) · **Date**: 2026-11-15
 **Kind**: feasibility study (pipeline Phase 0 + Phase 1). **No ontology file is changed.**
-**Worksite id**: not registered. The folder name `WS-TBD_EpistemicGap/` is a
-placeholder; rename it with `git mv` once Michel picks the id (decision D1).
+**Worksite id**: **WS-15** (D1, chosen by Michel 2026-11-15). The folder was
+`WS-TBD_EpistemicGap/` until then; dated outputs written before the rename (the
+inventory at `5a26560`) keep the old path as they recorded it.
 **Measured at**: HEAD `5a26560` (2026-11-09), verified with `git log -1` in a fresh clone.
 
 Everything below that is a number comes from a command run in this session. The
@@ -519,8 +520,8 @@ authority (root `CLAUDE.md`) and is left as written unless Michel decides otherw
 
 ## 7. Decisions for Michel (answer in one batch)
 
-- **D1** — Worksite id and priority. `WS-14` is free in `worksite.yaml` but was the draft
-  name of WS-13 (renumbered 2026-10-11); `WS-15` avoids the confusion.
+- **D1** — *Id answered 2026-11-15*: **WS-15** (WS-14 was taken meanwhile by another
+  worksite). Priority: still open.
 - **D2** — *Answered 2026-11-15*: the scalar measure and the gap itself have no meaning
   (positions 1–2). The evidence of §1–§2 stays as the written record.
 - **D3** — Scope: δ₁ + spectral classes only, or also the focal family (`m0:focalBias`,
@@ -601,6 +602,7 @@ at M0 first would hide the debt that M3 still asserts.
 
 | version | date | change |
 |---|---|---|
+| 0.8.0 | 2026-11-15 | D1 id answered: WS-15; folder renamed from `WS-TBD_EpistemicGap/`. Priority still open. |
 | 0.7.0 | 2026-11-15 | Position 16: method validated (deprecate definitions, delete uses; M0 first); step 1, the M0 lot, done (Debt Overview §8.0h). |
 | 0.6.0 | 2026-11-15 | Positions 13–15: evaluation outside the model (CH4 §6), the IntersubjectiveBenchmark README deleted, validation/refutation heuristics recorded. |
 | 0.5.0 | 2026-11-15 | Positions 10–12: priority = no scores, no δ₁, no δ₂ (a gap too: `focalBias` = revoiMean − asfidMean); `M0_Common` kept as the federating namespace; facets for M0 instances parked in `_02_EpistemicReview/`. D13 and D19 answered. |

@@ -6,7 +6,7 @@
 tool or check is proposed for implementation here.
 **Measured at**: HEAD `5a26560` (the facts in §5).
 **Context**: the retirement of the scores and of the epistemic gap
-(`ontology/docs/_01_Worksite/WS-TBD_EpistemicGap/`, note ≥ 0.5.0).
+(`ontology/docs/_01_Worksite/WS-15/`, note ≥ 0.5.0).
 
 ---
 

@@ -5,7 +5,7 @@
 **Status**: **PARKED** — recorded, not to be touched for now (Michel, 2026-11-15).
 **Measured at**: HEAD `5a26560`.
 **Origin**: the epistemic-gap feasibility study
-(`ontology/docs/_01_Worksite/WS-TBD_EpistemicGap/`), discussion of what remains to
+(`ontology/docs/_01_Worksite/WS-15/`), discussion of what remains to
 characterise an M0 instance once the scores are gone.
 
 ---

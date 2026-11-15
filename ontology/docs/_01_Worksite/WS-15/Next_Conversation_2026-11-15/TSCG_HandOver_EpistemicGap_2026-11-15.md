@@ -2,7 +2,7 @@
 
 **Date**: 2026-11-15 · **Author**: Echopraxium with the collaboration of Claude AI
 **Kind**: HandOver (Smart Prompt v17 §4) — a thin loader, no authoritative framework content.
-**Worksite**: id not chosen yet (folder `ontology/docs/_01_Worksite/WS-TBD_EpistemicGap/`).
+**Worksite**: WS-15 (folder `ontology/docs/_01_Worksite/WS-15/`; was `WS-TBD_EpistemicGap/` until the id was chosen, same day).
 
 ---
 
@@ -13,7 +13,7 @@
 - *(If a new M2/M1 concept is ever proposed: `tscg-m2-candidate-filter`.)*
 
 Then read at HEAD, in this order:
-1. `ontology/docs/_01_Worksite/WS-TBD_EpistemicGap/EpistemicGap_Feasibility_DecisionRecord_Draft.md`
+1. `ontology/docs/_01_Worksite/WS-15/EpistemicGap_Feasibility_DecisionRecord_Draft.md`
    — Michel's positions (numbered), the inventory, the open decisions (§7).
 2. `ontology/docs/_01_Worksite/TSCG_Debt_Overview.md` §8.0h — what step 1 did, what is
    left and how it is measured.
@@ -85,7 +85,7 @@ Recorded in the note (positions 1–16); in short:
    Accretion, Narcissus §2 — D18, Epistemic Residue), READMEs, UserGuide samples.
 5. **Smaller items**: other acronyms in file names (`M0_Bmc`, `M0_Triz`, `M0_Ptoe`… —
    each rename changes the instance IRI); a `pre-commit` hook calling
-   `path_check.py`; the worksite id (D1); move the study under `_02_EpistemicReview`
+   `path_check.py`; the worksite priority (D1; the id is WS-15); move the study under `_02_EpistemicReview`
    or not.
 
 ---

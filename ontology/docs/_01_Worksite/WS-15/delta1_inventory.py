@@ -5,7 +5,7 @@ Author: Echopraxium with the collaboration of Claude AI
 Feasibility study, 2026-11-15. Standard library only; changes no file.
 
 Usage (repo root, clean clone at HEAD):
-    python ontology/docs/_01_Worksite/WS-TBD_EpistemicGap/delta1_inventory.py
+    python ontology/docs/_01_Worksite/WS-15/delta1_inventory.py
 
 Sections printed (Markdown):
   A. git grep hits by area and by role (role from path/extension; see ROLE_RULES)
