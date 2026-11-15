@@ -29,8 +29,13 @@
       match: '^ontology/docs/_01_Worksite/((?![^/]*(?i:hand_?over))[^/]+|WS-0/_00_TSCG_Worksite_Map\.md)$'
       open: true
     # A sub-worksite wins over everything below: its HandOvers go with it.
+    # Nested under the worksite read from the path (Michel, 2026-11-15): WS-0 > SC-3,
+    # WS-5 > SC-5b. The SC part is searched AFTER the WS-n folder, in the rest of the path.
     # (?<![A-Za-z]) keeps "TSCG" from matching; "SC3" and "SC-3b" both match.
-    - folder: "Sub-worksites/SC-{sc}"
+    - folder: "Worksites/WS-{ws}/SC-{sc}"
+      match: '/WS-(?P<ws>\d+)/(?:[^/]*/)*?[^/]*?(?<![A-Za-z])SC-?(?P<sc>\d+[a-z]?)(?![0-9])'
+    # an SC document outside any WS-n folder: kept with the worksites, not lost
+    - folder: "Worksites/Other/SC-{sc}"
       match: '(?<![A-Za-z])SC-?(?P<sc>\d+[a-z]?)(?![0-9])'
     - folder: "HandOvers/WS-{ws}"
       match: '(?i)/WS-(?P<ws>\d+)/.*hand_?over'
