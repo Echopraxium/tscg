@@ -1,7 +1,7 @@
 # Epistemic gap δ₁ and the scoring family — Feasibility note / Decision Record draft
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.4.0 (draft) · **Date**: 2026-11-15
+**Version**: 0.5.0 (draft) · **Date**: 2026-11-15
 **Kind**: feasibility study (pipeline Phase 0 + Phase 1). **No ontology file is changed.**
 **Worksite id**: not registered. The folder name `WS-TBD_EpistemicGap/` is a
 placeholder; rename it with `git mv` once Michel picks the id (decision D1).
@@ -46,6 +46,16 @@ Added later the same day (after reading the Ashby reading of Odin's Wisdom):
    observers of the mock-up — full stop. This retires the whole scoring family, not
    only δ₁ (§2d): the ten scores, the two means, the gap and its classes, the focal
    family, the scoring status, the score justifications.
+10. **Priority** (2026-11-15): no more scores, no epistemic gap, and no third scalar —
+    the focal score δ₂ ("A Third Measure", root `README.md` §88), which is a gap too:
+    `m0:focalBias` = `m0:revoiMean − m0:asfidMean` (its `m0:formula` in `M0_Common`), and
+    δ₂ = `stereopsicDepth × (1 − |focalBias|)`.
+11. **`M0_Common` stays** as the federating namespace, with its generic properties,
+    "until further notice".
+12. **Facets for M0 instances** (an instance both "poclet" and "symbolic system
+    grammar"): not touched now; recorded in
+    `ontology/docs/_02_EpistemicReview/Facets_for_M0_Instances_Parked.md`. Out of the
+    scope of this worksite.
 
 What this changes below: §2 (the "concept" column now means Korzybski only), §4
 (option (a) removes concept and measure; option (c) becomes the heuristics loop),
@@ -520,7 +530,8 @@ authority (root `CLAUDE.md`) and is left as written unless Michel decides otherw
 
 ---
 
-- **D13** — Sequencing: run the removal (L0–L6) first and design (c) afterwards, or
+- **D13** — *Answered 2026-11-15* by position 10: the removal is the priority. Original
+  question kept for the record — Sequencing: run the removal (L0–L6) first and design (c) afterwards, or
   design (c) first so that the pipeline step and the AlignmentLoop criterion are
   replaced in the same move?
 - **D14** — Odin's Wisdom / Stereopsis: what grounds the metaphor once "depth from
@@ -533,8 +544,11 @@ authority (root `CLAUDE.md`) and is left as written unless Michel decides otherw
 
 - **D3** — *Answered 2026-11-15* by position 9: the focal family goes with the scores.
 - **D16** — *Answered 2026-11-15*: no scores at all (position 9).
-- **D19** — `M0_Common` after L3 keeps 3 nodes: keep it as the shared `m0:` namespace hub
-  (WS-10 restated without scores), or fold it?
+- **D19** — *Answered 2026-11-15* (position 11): `M0_Common` stays as the federating
+  namespace with its generic properties, until further notice. Fact to carry into L3:
+  `m0:InstanceProperty` has exactly two subclasses at HEAD, `m0:ScoringProperty` and
+  `m0:FocalProperty`, both retired — it stays as an empty generic superclass (the hook for
+  future shared properties), which its comment should say.
 - **D20** — Wording of the M3 primitive definition once role (2) "evaluation at M0" is
   removed (`MonoidalType_base`, `m3:MonoidalType`, `Fm2` comment, amendment 3, Eagle /
   Sphinx headers).
@@ -574,6 +588,7 @@ at M0 first would hide the debt that M3 still asserts.
 
 | version | date | change |
 |---|---|---|
+| 0.5.0 | 2026-11-15 | Positions 10–12: priority = no scores, no δ₁, no δ₂ (a gap too: `focalBias` = revoiMean − asfidMean); `M0_Common` kept as the federating namespace; facets for M0 instances parked in `_02_EpistemicReview/`. D13 and D19 answered. |
 | 0.4.0 | 2026-11-15 | Positions 8 (the monoids and the Layer Cake are not a model of reality; M2 concepts are proxies) and 9 (no scores; evaluation belongs to the user and observers). §2b headed by the category error; §2d scope of the whole scoring family (40/43 `M0_Common` nodes, 42/43 instances, M3 role (2) of the primitives); L3/L4 widened; D3/D16 answered; D19–D21 added. Inventory script: section F. |
 | 0.3.0 | 2026-11-15 | Positions 5–7 recorded (Gs is not a feedback loop; the gap ticks CoreHypotheses traps; intersubjective scoring removed too). §2b trap mapping (proposal), §2c intersubjective-scoring inventory (0 uses at HEAD) and its two consequences (Narcissus response, justification of the scores). L1, L6 widened; D14 narrowed; D16–D18 added. |
 | 0.2.0 | 2026-11-15 | Michel's positions recorded (scalar and gap meaningless; Korzybski a foundation; validation heuristics in a human/machine cybernetic loop to invent). §2 recast as "Korzybski only"; Q2-5, Q2-12 and verdict revised; §4 (a) removes concept and measure, (b) reduced to a recording format, (c) = heuristics loop with design inputs; L7 re-scoped; D2 answered, D4/D5 narrowed, D13–D15 added. |
