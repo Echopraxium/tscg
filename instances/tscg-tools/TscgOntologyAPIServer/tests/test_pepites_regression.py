@@ -54,7 +54,7 @@ def test_active_corpus_includes_live_files():
         "D:/x/ontology/M2_GenericConcepts.jsonld",
         "D:/x/ontology/M1_CoreConcepts.jsonld",
         "D:/x/ontology/M1_extensions/biology/M1_Biology.jsonld",
-        "D:/x/instances/systemic-frameworks/vsm/M0_VSM.jsonld",
+        "D:/x/instances/systemic-frameworks/Vsm/M0_VSM.jsonld",
     ]
     for p in included:
         assert srv._in_active_corpus(p) is True, p

@@ -70,7 +70,7 @@ const POCLETS_REGISTRY = [
     asfid:    { A:0.90, S:0.80, F:0.70, I:0.80, D:0.90, mean:0.82 },
     revoi:    { R:0.90, E:0.80, V:0.70, O:0.90, I:0.80, mean:0.86 },
     delta:    0.04,
-    path:     'instances/poclets/raas/sim',
+    path:     'instances/poclets/Raas/sim',
     version:  '1.0.0',
     status:   'PLANNED',
     desc:     'Hormonal cascade regulating blood pressure. First poclet demonstrating complete 5D ASFID coverage.'
@@ -115,7 +115,7 @@ const POCLETS_REGISTRY = [
     asfid:    { A:0.85, S:0.90, F:0.75, I:0.90, D:0.80, mean:0.84 },
     revoi:    { R:0.85, E:0.65, V:0.60, O:0.75, I:0.80, mean:0.73 },
     delta:    0.11,
-    path:     'instances/poclets/yggdrasil/sim',
+    path:     'instances/poclets/Yggdrasil/sim',
     version:  '2.0.0',
     status:   'PLANNED',
     desc:     'Norse cosmology: 7-pole multipolar network (9 worlds) with Ragnarök CatastrophicBifurcation. M1_Mythology.jsonld.'
