@@ -194,6 +194,8 @@ details.fold.flash>summary{box-shadow:0 0 0 2px var(--accent) inset;transition:b
 .fold>summary:hover{background:var(--accent-soft)}
 .fold .fold{margin-left:16px}
 .fold>.rows{margin-left:16px}
+.fold>.reghead{margin:10px 0 2px 16px;font-size:12.5px;color:var(--muted)}
+.row.reg .p a{color:var(--accent)}.row.reg .t>a{color:inherit}
 .fold.old>summary{font-weight:400;font-size:13px;color:var(--muted)}
 
 /* ── Editor-style tab bar ── */
@@ -545,10 +547,24 @@ function leafRows(n){
   return [...byName.values()].map(v=>`<div class="rows">${docRow(v[0])}</div>`+(v.length>1?
     `<details class="fold old"${query?" open":""}><summary><span class="n">Older versions</span><span class="c">${v.length-1}</span></summary><div class="rows">${v.slice(1).map(docRow).join("")}</div></details>`:"")).join("");
 }
+/* Registry items of a worksite (items with a `path` in worksite.yaml, e.g. WS-16
+   Sub-projects in progress; Michel, 2026-11-15): shown first under the worksite's folder,
+   one row each, linking the folder and the `start` files that exist. */
+function registryRows(key){
+  const m=key.match(/^Project management\|Worksites\/(WS-\d+)$/); if(!m) return "";
+  const R=(DATA.wsreg||{})[m[1]]; if(!R||!R.length) return "";
+  const rows=R.filter(r=>!query||matchTxt(r.id+" "+r.title+" "+r.path)).map(r=>{
+    const starts=r.start.map(s=>s.path?`<a href="${s.dir?TREE:BLOB}${encodeURI(s.path)}" target="_blank" rel="noopener">${esc(s.label)}</a>`:esc(s.label)).join(" · ");
+    const head=r.exists?`<a href="${TREE}${encodeURI(r.path)}" target="_blank" rel="noopener">${esc(r.title)}</a>`:esc(r.title);
+    return `<div class="row reg"><span class="t">${head}<span class="p">${esc(r.path)}${starts?` — start: ${starts}`:""}</span></span>
+      <span class="tags"><span class="tag">${esc(r.id)}</span><span class="tag">${esc(r.status)}</span></span></div>`;}).join("");
+  return rows?`<div class="reghead">Sub-projects (${R.length}) — from <code>worksite.yaml</code></div><div class="rows">${rows}</div>`:"";
+}
 function foldHtml(n,key){
   const open=query?true:(key in foldState?foldState[key]:n.opts.has("open"));
   const kids=[...n.kids.values()].sort((a,b)=>a.rank-b.rank||natural(a.name,b.name));
-  return `<details class="fold" data-k="${esc(key)}"${open?" open":""}><summary><span class="n">${esc(n.name)}</span><span class="c">${treeCount(n)}</span></summary>${kids.map(k=>foldHtml(k,key+"/"+k.name)).join("")}${leafRows(n)}</details>`;
+  const reg=registryRows(key), regN=reg?((DATA.wsreg||{})[key.split("/").pop()]||[]).length:0;
+  return `<details class="fold" data-k="${esc(key)}"${open?" open":""}><summary><span class="n">${esc(n.name)}</span><span class="c">${treeCount(n)+regN}</span></summary>${reg}${kids.map(k=>foldHtml(k,key+"/"+k.name)).join("")}${leafRows(n)}</details>`;
 }
 function docsTreeHtml(sec,ds){
   const t=folderTree(ds);

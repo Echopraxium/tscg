@@ -284,6 +284,39 @@ def run_worksite_graph(root, outdir):
         return {"status": "ok", "svg": WORKSITE_GRAPH_FILE,
                 "width": int(m.group(1)) if m else 940, "height": int(m.group(2)) if m else 900}
 
+def worksite_registries(root):
+    """Items of a worksite that carry a `path` (a registry, e.g. WS-16 Sub-projects in
+    progress, added 2026-11-15): shown under that worksite's folder in Project management,
+    with a link to the folder and to each `start` file that exists. Read from worksite.yaml
+    through worksite_report.load(); a failure only hides the registry."""
+    import sys
+    try:
+        sys.path.insert(0, os.path.join(root, "ontology", "toolchain"))
+        import worksite_report
+        doc = worksite_report.load()
+    except Exception as e:
+        print(f"  worksite registries: unavailable ({e})")
+        return {}
+    out = {}
+    for ws in doc.get("worksites", []):
+        rows = []
+        for it in ws.get("items") or []:
+            path = (it.get("path") or "").strip().strip("/")
+            if not path:
+                continue
+            start = []
+            for tok in [t.strip() for t in str(it.get("start") or "").split(",") if t.strip()]:
+                cand = [tok] if "/" in tok else []
+                cand.append(path + "/" + tok)
+                hit = next((c.rstrip("/") for c in cand if " " not in tok and os.path.exists(os.path.join(root, c))), None)
+                start.append({"label": tok, "path": hit, "dir": bool(hit and os.path.isdir(os.path.join(root, hit)))})
+            rows.append({"id": it.get("id"), "title": it.get("title", ""), "status": it.get("status", ""),
+                         "path": path, "exists": os.path.isdir(os.path.join(root, path)), "start": start})
+        if rows:
+            out[ws["id"]] = rows
+    print(f"  worksite registries: {', '.join(f'{k} ({len(v)})' for k, v in out.items()) or 'none'}")
+    return out
+
 def build_stamp(root):
     """Commit + UTC date of this build, shown in the footer so a stale page is visible
     at a glance (added 2026-10-03). CI: GITHUB_SHA; local: git rev-parse HEAD."""
@@ -344,7 +377,8 @@ def main():
     assign_folders(docs,load_folder_rules(os.path.join(os.path.dirname(os.path.abspath(a.template)),FOLDERS_FILE)))
     health=run_health_map(a.root,a.out)
     wsgraph=run_worksite_graph(a.root,a.out)
-    data=json.dumps({"subjects":subjects,"docs":docs,"build":build_stamp(a.root),"health":health,"wsgraph":wsgraph},ensure_ascii=False)
+    wsreg=worksite_registries(a.root)
+    data=json.dumps({"subjects":subjects,"docs":docs,"build":build_stamp(a.root),"health":health,"wsgraph":wsgraph,"wsreg":wsreg},ensure_ascii=False)
     html=read(a.template)
     if '"@@DATA@@"' not in html:
         raise SystemExit("template missing the \"@@DATA@@\" placeholder")
