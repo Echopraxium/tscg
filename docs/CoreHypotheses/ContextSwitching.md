@@ -683,8 +683,7 @@ yet, and incommensurability suggests there may never be a complete one.
 
 **Comparing contexts without a privileged outside.** If no context is "the real one",
 contexts are compared by what they let one do. How that judgment is made, and by whom,
-is the question `MultisubjectiveScoreEvaluationProtocol.md` begins to answer for scores;
-for contexts it remains open.
+remains open; for a model, evaluation is outside it (`LayerCake_Models_The_Kit.md` §6).
 
 **The clinical side.** Section 7 borrows a structure from clinical psychiatry and claims
 nothing about it. Whether the switching view has anything to offer there is not this
@@ -747,5 +746,5 @@ note (1988). *Behind the Curve* (documentary, 2018).
 **TSCG internal.** `TerritoryMap_Dichotomy.md`; `LayerCake_Models_The_Kit.md`;
 `_00_TSCG_as_StereoscopicGlasses.md`; `_01_Narcissus_and_Icarus_as_Safeguards.md`;
 `The_Epistemic_Residue.md`; `ModelSupersession.md`;
-`MultisubjectiveScoreEvaluationProtocol.md`; `_00_UserGuide/UserGuide.md`;
+`_00_UserGuide/UserGuide.md`;
 `ontology/docs/_01_Worksite/WS-0/2026_09_02/SC-3_Facet_Decision_Record.md`.

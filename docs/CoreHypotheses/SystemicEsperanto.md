@@ -308,9 +308,9 @@ constructed language used by enthusiasts. The risk for TSCG is similar:
 remaining a specialist framework used by a small community without
 achieving the transdisciplinary reach it claims to enable.
 
-The response to this risk is the Credibility Accretion process documented
-in `CredibilityAccretion_Process.md`: structural coherence visible to early
-adopters, followed by progressive multi-cook consensus building.
+The response to this risk is left open. The Credibility Accretion process once
+proposed here was retired on 2026-11-15 with the scores: evaluation is outside the
+model (`LayerCake_Models_The_Kit.md` §6).
 
 ---
 

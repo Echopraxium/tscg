@@ -1,7 +1,7 @@
 # Core Hypotheses — Suggested Reading Order
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Date**: 2026-10-19
+**Date**: 2026-10-19 · **Updated**: 2026-11-16 (§4 retired)
 **Location**: `docs/CoreHypotheses/README.md`
 
 The documents in this folder are not independent: several use notions that
@@ -40,11 +40,10 @@ not established results.
 
 ## 4. Measuring and trusting
 
-| # | Document | Introduces | Assumes |
-|---|---|---|---|
-| 8 | `ScoringSystem.md` | δ₁ (epistemic gap) and δ₂ (focal score) in detail | 3 |
-| 9 | `MultisubjectiveScoreEvaluationProtocol.md` | How scores are produced by several evaluators; defeasibility | 8 |
-| 10 | `CredibilityAccretion_Process.md` | How credibility grows from converging evaluations | 9, 2 |
+Retired 2026-11-15. Positions 8 (`ScoringSystem.md`), 9
+(`MultisubjectiveScoreEvaluationProtocol.md`) and 10 (`CredibilityAccretion_Process.md`)
+are deleted with the scores: a model is not legitimate to evaluate itself; evaluation is
+outside the model (`LayerCake_Models_The_Kit.md` §6). The numbers are not reused.
 
 ## 5. Guard-rails and epistemology
 
@@ -52,7 +51,7 @@ not established results.
 |---|---|---|---|
 | 11 | `OntologicalOverfitting.md` | The anti-pattern of adding pieces the Territory never asked for | 3, 4 |
 | 12 | `The_Epistemic_Residue.md` | The residue a model does not absorb, *before* its verdict; its four fates | 2, 3, 4, 7, 11 |
-| 13 | `ModelSupersession.md` | The paradigm shift *after* the verdict, as recorded by the history of culture — a context switch made by a whole community | 6, 7, 9, 10, 12 |
+| 13 | `ModelSupersession.md` | The paradigm shift *after* the verdict, as recorded by the history of culture — a context switch made by a whole community | 6, 7, 12 |
 
 12 and 13 are companions: read them in that order. 7 is the prerequisite of both.
 7 and 12 also answer each other: `ContextSwitching.md` uses the notion of residue
@@ -64,7 +63,7 @@ criteria begins. 7 can be read without 12; 12 reads better after 7.
 
 | # | Document | Introduces | Assumes |
 |---|---|---|---|
-| 14 | `Archetypes_as_CrossCultural_Artifacts.md` | Jungian archetypes as a source of structural hypotheses | 3, 4, 9, 10 |
+| 14 | `Archetypes_as_CrossCultural_Artifacts.md` | Jungian archetypes as a source of structural hypotheses | 3, 4 |
 | 15 | `EpistemicPivot.md` | One object, many ways in: modes of access and readers' prisms around a fixed object; what is invariant, what each mode loses; where the regress stops. A rediscovery and synthesis of published ideas, no innovation claimed | 3, 4, 7 |
 
 ---

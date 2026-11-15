@@ -6,7 +6,7 @@
 **Framework**: TSCG (Transdisciplinary System Construction Game) v16.0.0+  
 **Status**: Position Statement — epistemological self-assessment  
 **Location**: `docs/CoreHypotheses/Narcissus_and_Icarus_as_Safeguards.md`  
-**See also**: `docs/CoreHypotheses/CredibilityAccretion_Process.md`
+**See also**: `docs/CoreHypotheses/LayerCake_Models_The_Kit.md` §6 (evaluation is outside the model)
 
 ---
 
@@ -107,9 +107,11 @@ have length."*
 
 ### The Response
 
-The Multisubjective Score Evaluation Protocol (`MultisubjectiveScoreEvaluationProtocol.md`)
-and Credibility Accretion Process (`CredibilityAccretion_Process.md`)
-document the architectural responses:
+*Note (2026-11-15): the two documents that held these responses
+(`MultisubjectiveScoreEvaluationProtocol.md`, `CredibilityAccretion_Process.md`) are
+deleted with the scores — evaluation is outside the model (`LayerCake_Models_The_Kit.md`
+§6). The list below is what they proposed, kept until this section is rewritten
+(decision D18, worksite WS-15):*
 
 - `objectivityLevel` declared explicitly: currently `Subjective`
 - `scoringHistory` designed for multi-cook convergence measurement (ICC)

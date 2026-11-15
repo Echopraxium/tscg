@@ -8,7 +8,7 @@
 **Home**: `docs/CoreHypotheses/` (guardrail corpus), not `ontology/`
 **Status**: SCOPED — awaiting Michel's go to draft; nothing sealed
 **Sibling notes it must not merely restate**: `_00_TSCG_as_StereoscopicGlasses.md`,
-`TerritoryMap_Dichotomy.md`, `MultisubjectiveScoreEvaluationProtocol.md`,
+`TerritoryMap_Dichotomy.md`,
 `FitnessRazor.md`, `_01_Narcissus_and_Icarus_as_Safeguards.md`
 
 ---
@@ -193,7 +193,7 @@ note's first line, not its footnote.
 
 - Pull the **real text** of the sibling notes from the repo (`git HEAD`), not from
   memory, before writing — to run the irreducibility test against
-  `StereoscopicGlasses` / `TerritoryMap_Dichotomy` / `MultisubjectiveScoreEvaluationProtocol`.
+  `StereoscopicGlasses` / `TerritoryMap_Dichotomy`.
 - Draft `docs/CoreHypotheses/Until_Further_Notice_SelfImprovement_Commitment.md`
   under the standard admission discipline (irreducible · transdisciplinary · survives
   external test before sealing).
@@ -213,6 +213,6 @@ note's first line, not its footnote.
    - Debt-vs-Overfitting razor (from EpistemicResidue) = attested vs fabricated residue
    - ~~TSCG as ModelSupersession meta-instance of itself~~ — EXCLUDED (Michel, 2026-10-17; see §6)
    - GUARD: process-value must still ship falsifiable handles (Risk 2)
-   - Admission test before sealing: irreducible vs StereoscopicGlasses / TerritoryMap /
-     MultisubjectiveScoreEvaluationProtocol — confirm EXTERNALLY
+   - Admission test before sealing: irreducible vs StereoscopicGlasses / TerritoryMap —
+     confirm EXTERNALLY
 ```

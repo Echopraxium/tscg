@@ -7,8 +7,7 @@
 **Status**: Core Hypothesis — exploratory, with explicit epistemic caution  
 **Location**: `docs/CoreHypotheses/Archetypes_as_CrossCultural_Artifacts.md`  
 **See also**: `ontology/M1_extensions/mythology/M1_Mythology.jsonld`,
-`docs/CoreHypotheses/SystemicEsperanto.md`,
-`docs/CoreHypotheses/CredibilityAccretion_Process.md`
+`docs/CoreHypotheses/SystemicEsperanto.md`
 
 ---
 

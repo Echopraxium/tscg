@@ -94,7 +94,7 @@ Beyond the Map/Territory *gap* (δ₁), TSCG defines an optional second score, �
 | **δ₁** (epistemic gap) | Map/Territory *alignment* | *How far apart?* |
 | **δ₂** (focal score) | Map/Territory *fusion sharpness* | *How in-focus?* |
 
-δ₂ is **optional and conditional** — it applies only to instances that mobilize at least one *stereopsic* GenericConcept. Its full definition (the Stereopsis grammar Gs, the TKSL primitives, focal classes from Emmetropic to Astigmatic, and the exact formulas) lives in **[Scoring System](docs/CoreHypotheses/ScoringSystem.md)** — deliberately kept out of this overview.
+δ₂ is **optional and conditional** — it applies only to instances that mobilize at least one *stereopsic* GenericConcept. *Note (2026-11-15): the scores are retired and their definition document (`ScoringSystem.md`) is deleted — a model is not legitimate to evaluate itself; evaluation is outside the model ([CH4 §6](docs/CoreHypotheses/LayerCake_Models_The_Kit.md)). This section is still to be rewritten.*
 
 ---
 
@@ -242,7 +242,7 @@ Want to model a system with TSCG? Follow the **bat's cycle**:
    - **δ₁** — the epistemic gap between ASFID and REVOI means.
      Small δ₁ (**Coherent**) means Map and Territory agree; large δ₁ (**Enigmatic**) flags a mismatch to investigate.
    - **δ₂** *(optional)* — the focal score, when stereopsic concepts apply.
-   - Exact formulas, spectral classes and focal classes: see **[Scoring System](docs/CoreHypotheses/ScoringSystem.md)**.
+   - *Note (2026-11-15): scores and gaps are retired, evaluation is outside the model ([CH4 §6](docs/CoreHypotheses/LayerCake_Models_The_Kit.md)); this step is still to be rewritten.*
 
 ### 4. **Correct your flight (Refine the model)**
    - Use the gap to identify mismatches
@@ -300,7 +300,7 @@ tscg/
 │   └── verify_migration/              # Post-migration validation
 │
 ├── docs/
-│   ├── CoreHypotheses/                # Theoretical foundation (+ ScoringSystem.md)
+│   ├── CoreHypotheses/                # Theoretical foundation
 │   └── methodology/                   # Poclet Analysis Methodology
 │
 └── index.html                         # Live gallery (auto-generated)
@@ -338,7 +338,6 @@ AI-powered corpus analysis — multi-backend LLM (Gemini Free Tier default | Oll
 - **[User Guide](_00_UserGuide/UserGuide.md)** — *Start here.* The complete hands-on journey for newcomers: install the repo, set up Claude, and build your first Poclet or TscgTool, with worked exercises under [`_00_UserGuide/exercises/`](_00_UserGuide/exercises/)
 - **[M3 Bicephalous Architecture](ontology/docs/M3_OdinsWisdom_README.md)** — Philosophical foundation
 - **[Structural Grammar Foundation](ontology/docs/Structural_Grammar_Foundation.md)** — Lambek calculus formalism
-- **[Scoring System](docs/CoreHypotheses/ScoringSystem.md)** — δ₁, δ₂/EFS, TKSL primitives, spectral & focal classes
 - **[UX Controls Catalog](ontology/InstanceSimulations/M0_InstanceSimulation_UXControls_README.md)** — Reusable simulation UI patterns
 
 **Research article (v4.0 submission pending):**

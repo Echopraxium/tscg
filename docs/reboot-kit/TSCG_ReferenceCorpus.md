@@ -119,7 +119,7 @@ Some folders are CamelCase (`FireTriangle`, `Triz`), others lowercase (`vsm`,
 
 ---
 
-## Durable corpus index (the 25 kept `.md`)
+## Durable corpus index (the kept `.md`)
 
 What remains in project knowledge after cleanup — durable *rationale*, no live structure.
 
@@ -128,9 +128,8 @@ What remains in project knowledge after cleanup — durable *rationale*, no live
 `poclet_terminology.md`.
 
 **Epistemology & philosophy**: `TerritoryMap_Dichotomy.md`, `_00_TSCG_as_StereoscopicGlasses.md`,
-`_01_Narcissus_and_Icarus_as_Safeguards.md`, `CredibilityAccretion_Process.md`,
-`Archetypes_as_CrossCultural_Artifacts.md`, `LegoTechnic_Modularity.md`, `SystemicEsperanto.md`,
-`MultisubjectiveScoreEvaluationProtocol.md`.
+`_01_Narcissus_and_Icarus_as_Safeguards.md`,
+`Archetypes_as_CrossCultural_Artifacts.md`, `LegoTechnic_Modularity.md`, `SystemicEsperanto.md`.
 
 **Ontology READMEs (rationale kept — read HEAD for structure)**: `M3_GrammarFoundation_README.md`,
 `M2_GenericConcepts_README.md`, `M1_CoreConcepts_README.md`, `M3_GenesisGrammar_README.md`,

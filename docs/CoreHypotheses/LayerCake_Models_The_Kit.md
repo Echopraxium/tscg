@@ -8,7 +8,6 @@
 **See also**:
 - `docs/CoreHypotheses/TerritoryMap_Dichotomy.md`
 - `docs/CoreHypotheses/SystemicEsperanto.md`
-- `docs/CoreHypotheses/CredibilityAccretion_Process.md` (§6, *An Internal, Ontology-Driven Architecture*)
 - `docs/CoreHypotheses/ModelSupersession.md` — the epistemological postulate; paradigms as M0 objects
 - `docs/CoreHypotheses/OntologicalOverfitting.md`
 - `ontology/StructuralGrammar/Structural_Grammar_Foundation.md`

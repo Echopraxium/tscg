@@ -15,8 +15,6 @@
 - `docs/CoreHypotheses/TerritoryMap_Dichotomy.md` — the Map is never the Territory
 - `docs/CoreHypotheses/The_Epistemic_Residue.md` — the residue *before* its verdict
 - `docs/CoreHypotheses/_01_Narcissus_and_Icarus_as_Safeguards.md`
-- `docs/CoreHypotheses/CredibilityAccretion_Process.md`
-- `docs/CoreHypotheses/MultisubjectiveScoreEvaluationProtocol.md`
 - `ontology/docs/_01_Worksite/WS-8/Until_Further_Notice_WorksiteEntry.md`
 - `ontology/docs/_01_Worksite/WS-0/SC-3b_RealityCheck_ChangeRequest.md` (withdrawn — a documented dead end)
 - `instances/poclets/PlateTectonics/M0_PlateTectonics.jsonld`
@@ -808,7 +806,6 @@ A new document earns its place only if it is not a restatement of an existing on
 | `LayerCake_Models_The_Kit.md` (CH4) | M3–M1 describe the kit; M0 is a scale model | Consistent with it: the type is M0, its two combos compose from M2 concepts already on HEAD, no new M2 concept |
 | `ContextSwitching.md` | Every paradigm has its turtle; declared criteria; switches made by one person, willing and reversible | Its consequence at the scale of communities: switches recorded by history, collective and mostly one-way; the four relations read as switches kept open, partly open, closed, re-opened (Section 5.5). This document assumes it and does not restate it |
 | `The_Epistemic_Residue.md` | The residue *before* its verdict; four fates | The shift *after* the verdict, on record. Same episode, other tense |
-| `CredibilityAccretion_Process.md` / `MultisubjectiveScoreEvaluationProtocol.md` | Credibility grows from converging evaluations *within* TSCG | Consensus recorded *outside* TSCG, by historiography. Different arbiter |
 | `WS-8/Until_Further_Notice_WorksiteEntry.md` | TSCG's own commitment to revisability | Revisability of *other* paradigms, carried by the open consensus period. Its §6 — TSCG as a meta-instance of itself — is excluded: TSCG can be neither self-validated nor self-refuted |
 | `OntologicalOverfitting.md` | Do not add pieces the Territory never asked for | The pieces added — one type, two combos — are each paid by the seeds; the M2 candidate filter is run at graving. The one piece that was not paid for, a facet for paradigms, was withdrawn (Section 11) |
 
@@ -956,8 +953,7 @@ in Amber*, 1970). I. Asimov, the *Foundation* series — psychohistory. W. Gibso
 
 **TSCG internal.** `ContextSwitching.md`; `LayerCake_Models_The_Kit.md`;
 `TerritoryMap_Dichotomy.md`; `The_Epistemic_Residue.md`;
-`_01_Narcissus_and_Icarus_as_Safeguards.md`; `CredibilityAccretion_Process.md`;
-`MultisubjectiveScoreEvaluationProtocol.md`; `OntologicalOverfitting.md`;
+`_01_Narcissus_and_Icarus_as_Safeguards.md`; `OntologicalOverfitting.md`;
 `_00_TSCG_as_StereoscopicGlasses.md`;
 `ontology/docs/_01_Worksite/WS-8/Until_Further_Notice_WorksiteEntry.md`;
 `ontology/docs/_01_Worksite/WS-0/SC-3b_RealityCheck_ChangeRequest.md` (withdrawn);

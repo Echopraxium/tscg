@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1735 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1752 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -35,6 +35,15 @@
     - **tscg-triskelevm-debug/**
       - SKILL.md
   - settings.local.json
+- **.githooks/**
+  - .gitignore
+  - applypatch-msg
+  - check-author.sh
+  - check-trailers.sh
+  - commit-msg
+  - pre-applypatch
+  - pre-commit
+  - README.md
 - **.github/**
   - **workflows/**
     - pages.yml
@@ -130,6 +139,8 @@
     - TSCG_Session_Handover_2026-11-07_Kit_Frictions.md
   - **2026_11_09/**
     - TSCG_HandOver_2026-11-09.md
+  - **2026_11_15/**
+    - TSCG_HandOver_2026-11-15_evening.md
 - **_03_SerendipCrates/**
   - **EpistemologyMaquette/**
     - CRATE.md
@@ -176,15 +187,12 @@
     - _01_Narcissus_and_Icarus_as_Safeguards.md
     - Archetypes_as_CrossCultural_Artifacts.md
     - ContextSwitching.md
-    - CredibilityAccretion_Process.md
     - EpistemicPivot.md
     - LayerCake_Models_The_Kit.md
     - LegoTechnic_Modularity.md
     - ModelSupersession.md
-    - MultisubjectiveScoreEvaluationProtocol.md
     - OntologicalOverfitting.md
     - README.md
-    - ScoringSystem.md
     - SystemicEsperanto.md
     - TerritoryMap_Dichotomy.md
     - The_Epistemic_Residue.md
@@ -1558,8 +1566,6 @@
     - i18n.js
     - icons.js
     - panel.js
-    - sim.js
-    - synoptic.js
     - tscg-kit.css
     - tutorial.js
   - **oiseau/**
@@ -1568,12 +1574,42 @@
     - workshop.js
   - **tools/**
     - bundle.js
+    - check_laws.js
   - **tournesol/**
     - index.html
     - index.src.html
     - workshop.js
+  - ENGINE_SCOPE.md
   - index.html
   - README.md
+- **lib/**
+  - **simulation/**
+    - **FourLegs/**
+      - _00_pipeline_from_patterns.txt
+      - _00_question_pipeline.txt
+      - _open_cmd_window.bat
+      - color_synthesis_sim.py
+      - complex_chemical_synapse_sim.py
+      - exposure_triangle_sim.py
+      - fire_triangle_sim.py
+      - four_stroke_engine_sim.py
+      - phase_transition_sim.py
+      - photo_sample.jpg
+      - poclet_parser.py
+      - README.md
+      - requirements.txt
+      - setup_notes.txt
+      - tpack_sim.py
+      - transistor_sim.py
+    - **ThreeLegs/**
+      - **engine/**
+        - sim.js
+      - **synoptics/**
+        - synoptic.js
+      - README.md
+    - **TwoLegs/**
+      - README.md
+    - README.md
 - **migration_backups/** _(collapsed, 86 entries)_
 - **ontology/**
   - **docs/**
@@ -1643,6 +1679,12 @@
       - **WS-13/**
         - WS-13_Phase0_Addendum_A_Interface.md
         - WS-13_Phase0_Structural_Core.md
+      - **WS-14/**
+        - **Next_Conversation_2026-11-15/**
+          - TSCG_HandOver_WS-14_2026-11-15.md
+        - worksite.yaml
+        - WS-14_SIM-13_M1_SimulationEngine_Scoping.md
+        - WS-14_Simulation_Convergence.md
       - **WS-15/**
         - **Next_Conversation_2026-11-15/**
           - TSCG_HandOver_EpistemicGap_2026-11-15.md
@@ -1863,6 +1905,7 @@
     - tscg_metrics_README.md
     - tscg_paths.py
     - verify_session_2026-07-18.bat
+    - worksite_graph.py
     - worksite_report.py
   - **TSCG_InstanceGrammar/**
     - _00_open_cmd_window.bat
@@ -2020,22 +2063,6 @@
       - TSCG_Complete_File_List.txt
       - TSCG_RAG_Segmentation_Guide.md
       - TSCG_RAG_Standalone_README.md
-    - **simulation-engine/**
-      - _00_pipeline_from_patterns.txt
-      - _00_question_pipeline.txt
-      - _open_cmd_window.bat
-      - color_synthesis_sim.py
-      - complex_chemical_synapse_sim.py
-      - exposure_triangle_sim.py
-      - fire_triangle_sim.py
-      - four_stroke_engine_sim.py
-      - phase_transition_sim.py
-      - photo_sample.jpg
-      - poclet_parser.py
-      - requirements.txt
-      - setup_notes.txt
-      - tpack_sim.py
-      - transistor_sim.py
     - **tests/**
       - __init__.py
       - test_facades.py

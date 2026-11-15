@@ -368,7 +368,7 @@ SC-0 and SC-9 at Michel's convenience.
   execution, false of evaluation. Add Phase 0.5 (name candidacy). WS-4 §8.
 - **δ₁ provenance**: ~17 scalar m0:epistemicGap (snapshot-measured), only 2 with a
   provenance marker; precision exceeds provenance; SpectralClass derives from them;
-  MultisubjectiveScoreEvaluationProtocol exists but was not followed. Needs a
+  MultisubjectiveScoreEvaluationProtocol existed but was not followed (deleted 2026-11-15 with the scores, WS-15). Needs a
   provenance field, not better numbers. (HEAD path of M0 poclets not located this
   session.)
 - **Layered-architectures poclet** (candidate): m3:SystemicFramework instance
