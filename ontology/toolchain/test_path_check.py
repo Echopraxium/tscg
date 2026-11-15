@@ -27,7 +27,7 @@ FAILURES = []
 
 # The wrong-case fixtures are assembled at run time: written out literally, they would
 # be wrong-case references in a tracked file, and PC4 would (rightly) count them.
-LOW, LOW_Y, UP = "v" + "co", "y" + "ggdrasil", "M0_" + "VCO"
+LOW, LOW_Y, UP = "z" + "eta", "y" + "ggdrasil", "M0_" + "ZETA"
 
 
 def check(name, got, exp):
@@ -46,11 +46,11 @@ def make(root: Path, paths, text=None):
 
 def main() -> int:
     # PC1 — naming norm
-    files = [f"instances/poclets/{LOW}/M0_Vco.jsonld", "instances/poclets/Vco2/M0_Vco2.jsonld",
+    files = [f"instances/poclets/{LOW}/M0_Zeta.jsonld", "instances/poclets/Zeta2/M0_Zeta2.jsonld",
              "instances/poclets/_00_template/x.md", "instances/tscg-tools/tool/a.py",
              "instances/_01_Worksite/note.md", "docs/lower/x.md"]
     check("PC1 lowercase instance folders", len(pc.pc1_naming(files)), 2)
-    check("PC1 clean", len(pc.pc1_naming(["instances/poclets/Vco/M0_Vco.jsonld"])), 0)
+    check("PC1 clean", len(pc.pc1_naming(["instances/poclets/Zeta/M0_Zeta.jsonld"])), 0)
 
     # PC3 — case collisions (a file pair and a folder pair)
     check("PC3 file + folder collisions",
@@ -70,19 +70,19 @@ def main() -> int:
             ["instances/poclets/Gone/M0_Gone.jsonld"], root)), 0)
 
         # PC4 — references with a wrong case
-        tracked = ["instances/poclets/Vco/sim/index.html", "instances/poclets/Vco/M0_Vco.jsonld",
+        tracked = ["instances/poclets/Zeta/sim/index.html", "instances/poclets/Zeta/M0_Zeta.jsonld",
                    "docs/a.md", "ontology/Ref/old.md", "instances/x_backups/b.md"]
         texts = {
             "docs/a.md": (f"see instances/poclets/{LOW}/sim and "
-                          f"https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/Vco/{UP}.jsonld#x "
+                          f"https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/Zeta/{UP}.jsonld#x "
                           f"and https://echopraxium.github.io/tscg/instances/poclets/{LOW}/sim/index.html "
-                          "and instances/poclets/Vco/sim (ok) and instances/poclets/Nowhere/x.md (unknown)"),
+                          "and instances/poclets/Zeta/sim (ok) and instances/poclets/Nowhere/x.md (unknown)"),
             "ontology/Ref/old.md": f"instances/poclets/{LOW}/sim",       # history: skipped
             "instances/x_backups/b.md": f"instances/poclets/{LOW}/sim",  # backup: skipped
         }
         make(root, tracked, texts)
         check("PC4 three wrong-case references, history skipped", len(pc.pc4_refs(tracked, root)), 3)
-        (root / "docs/a.md").write_text("instances/poclets/Vco/sim and instances/poclets/Vco/M0_Vco.jsonld",
+        (root / "docs/a.md").write_text("instances/poclets/Zeta/sim and instances/poclets/Zeta/M0_Zeta.jsonld",
                                         encoding="utf-8")
         check("PC4 clean", len(pc.pc4_refs(tracked, root)), 0)
 

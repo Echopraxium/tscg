@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1720 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1730 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -460,7 +460,7 @@
       - _open_cmd_window.bat
       - M0_FourStrokeEngine.jsonld
       - M0_FourStrokeEngine_README.md
-    - **kidneys/**
+    - **Kidneys/**
       - M0_Kidneys.jsonld
       - M0_Kidneys_README.md
       - M0_Kidneys_README.pdf
@@ -640,10 +640,10 @@
         - Simple_mode_0_0_32.gif
       - M0_QRCodeToPocketCity.jsonld
       - M0_QRCodeToPocketCity_README.md
-    - **raas/**
+    - **Raas/**
       - M0_RAAS.jsonld
-      - M0_raas_README.md
-      - M0_raas_README.pdf
+      - M0_RAAS_README.md
+      - M0_RAAS_README.pdf
     - **Theremin/**
       - **_static/**
         - **docs/**
@@ -682,12 +682,12 @@
       - M0_Thermostat.jsonld
       - M0_Thermostat_analysis.md
       - M0_Thermostat_README.md
-    - **tpack/**
+    - **Tpack/**
       - _00_Run_Simulation.bat
       - _00_setup_notes.txt
       - _open_cmd_window.bat
       - M0_TPACK.jsonld
-      - M0_tpack_README.md
+      - M0_TPACK_README.md
       - requirements.txt
       - tpack_sim.py
       - TPACK_Simulation.png
@@ -744,8 +744,8 @@
         - VCO_Simulation.png
       - **static/**
         - M0_VCO.html
-        - M0_Vco_README.md
-      - M0_Vco.jsonld
+        - M0_VCO_README.md
+      - M0_VCO.jsonld
       - M0_VCO_README.md
       - VCO_Simulation_README.md
     - **World2DProjection/**
@@ -764,7 +764,7 @@
       - M0_World2DProjection.jsonld
       - M0_World2DProjection_analysis.md
       - M0_World2DProjection_README.md
-    - **yggdrasil/**
+    - **Yggdrasil/**
       - CatastrophicBifurcation_M1_Analysis.md
       - Heimdall_Interface_Constraint_Analysis.md
       - Loki_As_Representation_Transformer.md
@@ -780,7 +780,7 @@
     - POCLET_CREATION_GUIDE.md
     - Select Map Projections.url
   - **symbolic-system-grammars/**
-    - **iching/**
+    - **Iching/**
       - M0_IChing.jsonld
       - M0_IChing_README.md
     - **TriskeleToolchain/**
@@ -1378,7 +1378,7 @@
       - M0_Triz_Examples.jsonld
       - M0_Triz_README.md
       - Triz_Description.md
-    - **vsm/**
+    - **Vsm/**
       - **_sim/** _(collapsed, 2 entries)_
       - M0_VSM.jsonld
       - M0_VSM_Prerequisites_Analysis.md
@@ -1685,6 +1685,10 @@
         - Until_Further_Notice_WorksiteEntry.md
       - **WS-9/**
         - worksite.yaml
+      - **WS-TBD_EpistemicGap/**
+        - delta1_inventory.py
+        - delta1_inventory_5a26560.md
+        - EpistemicGap_Feasibility_DecisionRecord_Draft.md
       - _00_open_cmd_window.bat
       - _open_cmd_window.bat
       - TSCG_Debt_Overview.md
@@ -1692,6 +1696,9 @@
       - TSCG_OntologyValidator_Worksite_README.md
       - TSCG_VocabularyConsolidation_Worksite_README.md
       - worksite.yaml
+    - **_02_EpistemicReview/**
+      - Facets_for_M0_Instances_Parked.md
+      - MockupValidation_Heuristics_Draft.md
     - OntologyModeling_Guidelines.md
   - **InstanceSimulations/**
     - M0_InstanceSimulation_UXControls.jsonld
@@ -1770,7 +1777,6 @@
     - Structural_Grammar_Foundation.md
     - Structural_Grammar_Foundation_README.md
     - StructuralGrammar_MonoidalOperators_README.md
-    - TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md
     - TSCG_Mathematical_Legitimacy_Summary.md
     - TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md
   - **toolchain/**
@@ -1778,6 +1784,7 @@
       - check_m0_instances.py
       - M0_Instances_Schema_shacl.ttl
       - migrate_m0_to_v1_5.py
+      - test_check_m0_c16.py
     - **check-M1/**
       - _open_cmd_window.bat
       - after_publicid.txt
@@ -1788,6 +1795,8 @@
     - **check-M2/**
       - M2_MonoidalFormula_Schema_shacl.ttl
     - **grammars/**
+      - Fm2_notation.ebnf
+      - fm2_notation.py
       - M3_Structural_Schema_shacl.ttl
     - **ontology-linter/**
       - _00_open_cmd_window.bat
@@ -1824,6 +1833,7 @@
         - shacl_runner.py
       - **tests/**
         - test_doc.py
+        - test_fm2_notation.py
         - test_m1_combo_punning.py
         - test_m1_domains.py
         - test_shacl_runner.py
@@ -1835,9 +1845,11 @@
     - golden_values.json
     - modernize_m0.py
     - modernize_m0_README.md
+    - path_check.py
     - README.md
     - requirements.txt
     - run_all_layers.py
+    - test_path_check.py
     - tscg_layercake_health_map.py
     - tscg_metrics.py
     - tscg_metrics_README.md
