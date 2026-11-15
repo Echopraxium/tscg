@@ -5,6 +5,12 @@
 # The build reads from HEAD and writes only to dist/ — it never modifies source files.
 # (Classification lives in the RULES of cli_tools/compendium/annotate_compendium.py:
 #  edit a rule locally, review, commit. CI must not write back to source.)
+#
+# Job `checks` (2026-11-15, WS-14): checks that can fail, run in parallel with the build.
+# A failure turns the run red but never blocks the deployment: the site still shows the
+# last good state, with "N/A" and the reason where a generator failed.
+#   - worksite_graph.py --check : depends_on of every worksite.yaml (unknown id, kind, cycle)
+#   - check_laws.js             : no physics outside K.LAWS in the Kit workshops
 
 name: Build & deploy Compendium
 
@@ -29,6 +35,29 @@ concurrency:
 
 # Action versions: all on the node24 runtime (Node 20 runners deprecated, 2026-10-22).
 jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML (worksite.yaml loader)
+        run: python -m pip install "PyYAML>=6.0"
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - name: Worksites dependency graph — depends_on integrity
+        working-directory: ontology/toolchain
+        run: python worksite_graph.py --check
+
+      - name: Kit — no law recomputed outside K.LAWS
+        run: node kit/tools/check_laws.js
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -38,14 +67,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install the toolchain Python packages (LayerCake Health Map)
+      - name: Install the toolchain Python packages (LayerCake Health Map, worksites graph)
         run: python -m pip install -r ontology/toolchain/requirements.txt
 
       - uses: actions/setup-node@v5      # the simulation-gallery generator is Node (no deps)
         with:
           node-version: "22"
 
-      - name: Build the Compendium (+ simulation gallery)
+      - name: Build the Compendium (+ simulation gallery, health map, worksites dependency graph)
         run: |
           python cli_tools/compendium/build_compendium.py . \
             --template cli_tools/compendium/compendium_template.html \
