@@ -556,9 +556,13 @@ function renderDocs(sec){
 function renderProject(){
   const ds=DATA.docs.filter(d=>inAud(d)&&d.section==="Project management").filter(d=>matchTxt(d.title,d.path));
   const wip=DATA.subjects.filter(inAud).filter(s=>s.mode==="under-construction").filter(s=>matchTxt(s.title,s.name));
+  // the worksites folder right under the graph (Michel, 2026-11-15), then the rest as before
+  const isWs=d=>(d.folder||"").split("/")[0]==="Worksites";
+  const wsDocs=ds.filter(isWs), other=ds.filter(d=>!isWs(d));
   let html=renderWorksiteGraph();
+  if(wsDocs.length) html+=docsTreeHtml("Project management",wsDocs);
   if(wip.length) html+=`<section class="group"><h2><span>Instances under construction</span><span>${wip.length}</span></h2><div class="cards">${wip.sort((a,b)=>a.title.localeCompare(b.title)).map(subjectCard).join("")}</div></section>`;
-  if(ds.length) html+=docsTreeHtml("Project management",ds);
+  if(other.length) html+=docsTreeHtml("Project management",other);
   return html||`<p class="empty">Nothing here at this level.</p>`;
 }
 
