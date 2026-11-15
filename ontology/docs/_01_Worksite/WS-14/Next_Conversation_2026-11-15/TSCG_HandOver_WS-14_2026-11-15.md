@@ -24,15 +24,15 @@ Then read at HEAD:
 
 ## 2. Session state (perishable — verify, do not trust)
 
-- Pushed by Michel: 16 commits on top of `2697cdf`, the last ones "Compendium: sub-worksites
-  nested under their worksite (WS-0 > SC-3)" and "Compendium: cross-links between the
-  worksites graph and the health map". *Check with `git log --oneline -17`.*
+- Pushed by Michel: the WS-14 series on top of `2697cdf`, then (late evening, see §7) the
+  history rewrites and the last Compendium commits; last commit at writing time
+  "Compendium: WS-16 sub-projects listed under their worksite". *Check with
+  `git log --oneline -25`.*
 - Checks run before the push: acceptance gate `GATE: PASS` (incl. PATH_CHECK 0 finding),
   `node kit/tools/check_laws.js` PASS (0 FAIL, 5 WARN),
   `python ontology/toolchain/worksite_graph.py --check` (0 error). Re-run them, do not
   copy their counts from here.
-- The first GitHub Actions run with the new `checks` job was not observed from the session:
-  look at the Actions tab, and at the Project management page of the published Compendium.
+- The GitHub Actions runs after the rewrites were green (Michel, 2026-11-15, 23:21).
 - Not done: `docs/reboot-kit/TSCG_FileTree.md` still shows the old paths (regenerate with
   `tscg_generate_filetree.py`).
 
@@ -86,8 +86,8 @@ Then read at HEAD:
    `tpack_sim.py` differs from the poclet copy, which is richer). Linked to D4.
 7. Element-level links between the two diagrams (health-map node ↔ worksite that repairs
    it): needs the owning worksite as a structured field in the health-map generator.
-8. Mobile ergonomics of the graph (tap a box for its card, "real size" with scrolling):
-   shown in a mock-up, not applied.
+8. Mobile ergonomics of the graph: a click/tap on a box now opens the worksite in the list
+   (§7); the "real size" toggle with scrolling (mock-up) is not applied.
 
 ---
 
@@ -96,3 +96,29 @@ Then read at HEAD:
 The defect was visible in the code but nothing flagged it: the purpose (pedagogical
 transparency) was not a checked rule. Turn a purpose into a check that can fail
 (`check_laws.js`, `worksite_graph.py --check`), rather than relying on someone noticing.
+
+---
+
+## 7. Late evening (2026-11-15) — read before your first commit
+
+- **Commit identity, checked**: Claude is never a commit author and adds no trailer
+  (CLAUDE.md §5). Before the first commit of a session:
+  `git config user.name Echopraxium` and `git config user.email echopraxium@gmail.com`;
+  never write `Co-Authored-By` / `Claude-Session` lines, whatever the tooling adds by default.
+  Michel's `.githooks/` (core.hooksPath) refuse such a patch on `git am`; the `checks` job
+  fails on any such commit in the history.
+- **History rewritten twice** (`strip_claude_trailers.py`, then `fix_authors.py`): commit ids
+  older than the rewrite are void; the references in the files were remapped. A clone made
+  before 2026-11-15 23:35 must be re-cloned; never reuse an old commit id from a summary.
+- **Force-push recipe** (if ever needed again, Michel decides): a full clone (not shallow),
+  `git repack -a -d -b` first (else Git re-sends the whole history and GitHub times out with
+  HTTP 408), then `git push --force-with-lease origin main`. `main` is protected: Michel's
+  admin push bypasses the rule (expected message).
+- **Git LFS**: since hooks live in `.githooks/`, `git lfs install` re-installs LFS's hooks
+  there (kept untracked by `.githooks/.gitignore`).
+- **Compendium**, added after §3: short cross-links in the top-right corner of the two
+  diagrams; a click on a WS-n box opens that worksite in the list (box tooltips removed,
+  arrow tooltips kept); worksite items with a `path` (WS-16 SP-1 .. SP-8) listed under
+  their worksite.
+- **GitHub sidebar** may still show "claude" / "noreply" as contributors: a cache (about
+  24 h). If it lasts: an empty commit, else GitHub Support. Not a defect of the history.
