@@ -1,7 +1,7 @@
 # Validating a mock-up — three facets and their heuristics (draft for reflection)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.2.0 (draft) · **Date**: 2026-11-15
+**Version**: 0.3.0 (draft) · **Date**: 2026-11-16
 **Status**: **DRAFT** — meant to start a reflection, not to be graved. No ontology,
 tool or check is proposed for implementation here.
 **Measured at**: HEAD `ee07f1a` (the facts in §5).
@@ -131,7 +131,43 @@ First observations (proposal):
   concepts; `ContextSwitching.md` §11 ("a switch should say what it loses", "a switch
   can manufacture a correspondence") gives two more.
 
-## 7. Open questions (for Michel)
+## 7. Leads: the human/AI duo as a cybernetic system (Michel, 2026-11-16)
+
+Michel's lead: in the human/AI duo that builds TSCG and its mock-ups, **the AI plays
+the role of Odin** as described in `ontology/M3_OdinsWisdom_README.md` — a guide who
+reads the Map, locates and raises warnings, never an evaluator. **The human decides**
+and is the legitimate evaluator, outside the model (`docs/CoreHypotheses/LayerCake_Models_The_Kit.md` §6).
+
+Observations (proposal):
+- **The eye in the well.** An AI language model has access only to Maps — texts about
+  the world, the corpus, the files at HEAD — never to the Territory. The human keeps
+  the eye on the world. Read this way the myth states the AI's limit, not its wisdom.
+- **Two planes, not to be confused.** In M3, Odin is a *figure inside the model* (the
+  place of the observer in the description). The AI is an *agent outside the model*
+  (it reads and writes the files) that can **play** that role in practice — as a tool
+  or a human co-modeller could.
+- **What already does this at HEAD.** The gate (`run_all_layers.py`) and
+  `path_check.py` raise warnings, never decide; `head-over-memory` asks every stated
+  fact to come from HEAD; `CLAUDE.md` §5 keeps semantics with Michel and makes the
+  human the only author of the commits.
+
+Heuristic leads for the duo (questions, open list):
+- **Where does the warning come from?** From the Map (a rule, a check, a source read at
+  HEAD), or from the AI's own guess? A warning without a source is a hunch and is
+  marked as one.
+- **Who decided?** Every decision of meaning, wording or modelling is the human's; the
+  trace says so.
+- **Did the duo look at the Territory?** The AI reads only Maps: a validation by the
+  duo needs at least one look by the human at the original (the Reality Check).
+- **Narcissus for two.** Is the AI echoing the human's position back? An echo is not a
+  confirmation: disagreement and honest negative results are what the guide is for.
+- **Reflexive trap.** The AI drafts heuristics for the duo it belongs to; the human
+  validates them.
+
+Possible test bench: the paused instance *RequisiteVarietyDuo* (human/AI duo), knowing
+the reflexive trap (decision D15 of the WS-15 record); Q9.
+
+## 8. Open questions (for Michel)
 
 - **Q1 — The word "facet".** Keep "validation facets" as a working name in prose only,
   or choose another word (aspects, lenses, viewpoints) so that it is never read as an
@@ -152,10 +188,13 @@ First observations (proposal):
   Reality Check complete)?
 - **Q8 — Toolkit feedback.** Where are kit-level failures collected, so that they become
   improvement leads (the Debt Overview, a worksite, `_03_SerendipCrates`)?
+- **Q9 — The duo.** Is the human/AI duo itself a mock-up (an M0 instance, e.g.
+  *RequisiteVarietyDuo*), or only a practice described in the method?
 
 ## Changelog
 
 | version | date | change |
 |---|---|---|
+| 0.3.0 | 2026-11-16 | §7 leads: the human/AI duo as a cybernetic system (the AI plays Odin's role — guide, warnings — the human decides and evaluates; the eye in the well; two planes; heuristic leads); open questions renumbered §8; Q9. |
 | 0.2.0 | 2026-11-15 | Evaluation outside the model (now in CH4 §6); §6 validation *and refutation* heuristics for mock-ups and for the Toolkit (need recorded); Q7, Q8. |
 | 0.1.0 | 2026-11-15 | First draft: starting points, the three facets (Learning, Realism, Reality Check), heuristic questions, a minimal recording proposal, facts at HEAD (observer field, withdrawn SC-3b "RealityCheck", the M3 meaning of "facet"), six open questions. |
