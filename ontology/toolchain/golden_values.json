@@ -106,18 +106,15 @@
     "note": "MIGRATION BACKLOG, measured not blessed: v1.5 namespace/imports cluster C02/C03/C07/C09, SHACL C15, tensor remnants C12. The frozen values are the counts above; per-instance detail: check_m0_instances.py --json. Lower them ONLY by repairing instances (CheckM0 repair campaign), never by loosening a check. Metric mapping: errors = sum of non-SHACL check failures; shacl_violations = C15.",
     "_previous": {
       "files": 43,
-      "errors": 117,
+      "errors": 112,
       "warnings": 0,
       "shacl_violations": 19
     },
     "_delta": {
-      "errors": "117 -> 112",
-      "engine.D1": "6364 -> 6273",
-      "engine.G5": "129 -> 123",
-      "engine.G8": "1162 -> 1123"
+      "engine.G6": "1 -> 0"
     },
-    "_delta_reason": "Scoring family retired, M0 lot (2026-11-15, decided by Michel: the scores, the gaps and the classes are deprecated; epistemological reason: a model is not legitimate to evaluate itself — CH4 LayerCake_Models_The_Kit.md §6). DATA REPAIRED BY DELETION, not a loosened check: (1) the 40 scoring-family nodes of M0_Common are owl:deprecated (definitions kept, with the reason in rdfs:comment); (2) every use of them was deleted from the 42 instances concerned (347 JSON members, the last one the emptied m0:scoringJustification of Bmc; incl. the @context coercions, the 9 malformed m0:epistemicGap objects, the typed literals, the string enums); (3) C10 (score bare numerics, 2) and C11 (enum IRIs, 3) are retired with the terms they checked — their 5 failures were all on deleted values (Counterpoint C11; VSM, IChing C10+C11) — and are REPLACED by the stricter C16 (any use of a deprecated M0_Common term = FAIL; the deprecated set is read from M0_Common; negative tests: check-M0/test_check_m0_c16.py), at 0. errors 117 -> 112 = -2 C10 -3 C11. Engine: D1 6364 -> 6273, G5 129 -> 123, G8 1162 -> 1123 — all on keys inside the deleted members (bare keys of the gap objects, phantom m0:<term> predicates of misbound files); per-key comparison against HEAD ee07f1a: NO finding rose. The ad hoc score encodings that are NOT uses of M0_Common terms (A_score objects, asfidState, numbers inside asfid/revoi analyses, local m0.<inst>:…Score) remain: next step, measured by ontology/docs/_01_Worksite/WS-15/delta1_inventory.py section F.",
-    "_updated": "2026-11-15",
+    "_delta_reason": "Lot E2 of the Ontology Encoding Review (WS-15 SF-7), option A decided by Michel 2026-11-16: engine G6 1 -> 0. The only M0 G6 finding was dcterms:documentation (not a DCMI term) in M0_ColorSynthesis and M0_HSL_Additive; its 7 uses were DELETED (they repeated the adjacent rdfs:seeAlso), not remapped: G5, G8 and D1 unchanged, so the defect disappeared rather than moved. Reasoner sweep: unchanged (M0_REASONER), both files PASSED.",
+    "_updated": "2026-11-16",
     "files": 43,
     "errors": 112,
     "warnings": 0,
@@ -135,7 +132,7 @@
       "C15": 19
     },
     "engine": {
-      "errors": 1292,
+      "errors": 1291,
       "warnings": 6315,
       "by_code": {
         "AXIS-2": 10,
@@ -145,7 +142,6 @@
         "D5": 6,
         "D7": 28,
         "G5": 123,
-        "G6": 1,
         "G8": 1123
       }
     },

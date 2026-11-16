@@ -26,17 +26,12 @@
       "rdfs:comment": "Perceptual additive color synthesis using Hue, Saturation, Lightness channels. Alternative representation of RGB space organized around perceptual dimensions. HSL is bijective transformation of RGB - same Territory (color perception), different Map (cylindrical vs cubic coordinates).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-17",
-      "owl:versionInfo": "1.4.0",
+      "owl:versionInfo": "1.5.0",
       "m1:domain": "Optics / Color Science",
       "m0:pocletType": "Composite (Specialized)",
       "m0:partOfFederation": {
         "@id": "m0:ColorSynthesisFederated",
-        "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/ColorSynthesis/M0_ColorSynthesis_Federated.jsonld",
-        "dcterms:documentation": {
-          "@id": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/ColorSynthesis/M0_ColorSynthesis_Federated.jsonld",
-          "dcterms:format": "application/ld+json",
-          "dcterms:type": "Ontology"
-        }
+        "rdfs:seeAlso": { "@id": "https://github.com/Echopraxium/tscg/blob/main/instances/poclets/ColorSynthesis/M0_ColorSynthesis.jsonld" }
       },
       "m0:principle": "Additive Synthesis (Perceptual Representation)",
       "m0:physicalBasis": "Same as RGB - electromagnetic wave superposition, represented in perceptual coordinates",
@@ -455,21 +450,11 @@
       "rdfs:seeAlso": [
         {
           "@id": "m0:ColorSynthesisFederated",
-          "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/ColorSynthesis/M0_ColorSynthesis_Federated.jsonld",
-          "dcterms:documentation": {
-            "@id": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/ColorSynthesis/M0_ColorSynthesis_Federated.jsonld",
-            "dcterms:format": "application/ld+json",
-            "dcterms:type": "Ontology"
-          }
+          "rdfs:seeAlso": { "@id": "https://github.com/Echopraxium/tscg/blob/main/instances/poclets/ColorSynthesis/M0_ColorSynthesis.jsonld" }
         },
         {
           "@id": "m0:RGB_Additive",
-          "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/ColorSynthesis/M0_RGB_Additive.jsonld",
-          "dcterms:documentation": {
-            "@id": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/ColorSynthesis/M0_RGB_Additive.jsonld",
-            "dcterms:format": "application/ld+json",
-            "dcterms:type": "Ontology"
-          },
+          "rdfs:seeAlso": { "@id": "https://github.com/Echopraxium/tscg/blob/main/instances/poclets/ColorSynthesis/M0_RGB_Additive.jsonld" },
           "note": "HSL is bijective transformation of RGB"
         }
       ],
@@ -478,8 +463,13 @@
         "Joblove, G. H., & Greenberg, D. (1978). Color spaces for computer graphics. SIGGRAPH",
         "W3C CSS Color Module Level 3 (HSL specification)"
       ],
-      "dcterms:modified": "2026-11-08",
+      "dcterms:modified": "2026-11-16",
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.5.0",
+          "dcterms:date": "2026-11-16",
+          "adms:versionNotes": "Lot E2 of the Ontology Encoding Review (WS-15 SF-7), option A chosen by Michel 2026-11-16: dcterms:documentation removed (3 occurrence(s)); it is not a DCMI term (a phantom predicate) and repeated the adjacent rdfs:seeAlso. Those rdfs:seeAlso now point to the right files (instances/poclets/ColorSynthesis/, not ontology/poclets/; M0_ColorSynthesis_Federated.jsonld does not exist: M0_ColorSynthesis.jsonld) and are written as IRIs ({\"@id\": ...}), no longer as string literals. Out of scope (WS-10): the m0:color_synthesis prefix still names the missing _Federated file."
+        },
         {
           "owl:versionInfo": "1.4.0",
           "dcterms:date": "2026-11-08",
@@ -489,11 +479,6 @@
           "owl:versionInfo": "1.3.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 1 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.2.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
         }
       ],
       "owl:imports": [
