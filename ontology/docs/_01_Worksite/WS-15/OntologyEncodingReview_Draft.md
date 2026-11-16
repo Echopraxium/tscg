@@ -1,4 +1,4 @@
-# Ontology Encoding Review — draft 0.1.0
+# Ontology Encoding Review — draft 0.2.0
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-11-16
@@ -67,7 +67,8 @@ against the cited text before any change.
 
 | # | Finding | Where (count) | Severity | Options (Michel decides) |
 |---|---|---|---|---|
-| E1 | `skos:broader` and `skos:related` point to the same concept. SKOS integrity condition S27: `skos:related` is disjoint with `skos:broaderTransitive`. | `M3_GrammarFoundation.jsonld`: `m3:GenesisExtension` → `m3:Genesis`, `m3:TransDisclet` → `m3:Poclet` (2) | error | drop `skos:related` where `skos:broader` holds |
+| E1 | `skos:related` to a concept that is in the concept's (transitive) hierarchy. SKOS integrity condition: `skos:related` is disjoint with `skos:broaderTransitive` (numbered S25 in the 2008 working draft that was checked; number in the 2009 Recommendation to verify). | `M3_GrammarFoundation.jsonld`: `m3:GenesisExtension` → `m3:Genesis`; `m3:TransDisclet` → `m3:Poclet` and → `m3:DomainExtension` (ancestor through `m3:Poclet`) (3; draft 0.1.0 counted 2, missing the transitive case) | error | **DONE 2026-11-16** (Michel): the three `skos:related` removed, `skos:broader` kept (read on the child: an extension is a specialization). M3_GrammarFoundation 2.19.0; gate PASS, unchanged counts; reasoner PASSED |
+| E1b | 9 of the 11 concepts of `m3:TscgOntologyTypeScheme` have a `skos:broader` and are still `skos:topConceptOf` the scheme (all 11 are listed in `skos:hasTopConcept`). Not a formal SKOS violation; a quality issue that qSKOS reports ("top concept having broader concepts"). Only `m3:Genesis` and `m3:TscgTool` have no parent. | `M3_GrammarFoundation.jsonld` (9) | deviation | **deferred** (Michel, 2026-11-16), linked to a question of meaning: the `skos:broader` chain Genesis → GenericConcepts → DomainExtension → Poclet → TransDisclet follows the layer order (M3 → M0), i.e. "is built on" rather than "is a kind of" |
 | E2 | `dcterms:documentation` is not a DCMI term (no such property in the `dcterms:` namespace). Its links also point to `ontology/poclets/ColorSynthesis/…`, a folder that does not exist (the files are under `instances/poclets/ColorSynthesis/`). | `M0_ColorSynthesis.jsonld` (7) | error | `rdfs:seeAlso` or `dcterms:hasPart` / `dcterms:references`, path fixed |
 | D1 | `dcterms:creator` with a plain string. DCMI gives `dcterms:creator` the range `dcterms:Agent` (a resource, not a literal); `dc:creator` (elements 1.1) is the literal-friendly variant. | almost every file (273) | deviation | (a) keep, and record the choice; (b) switch to `dc:creator`; (c) one agent node `Echopraxium` referenced by IRI. (a) costs nothing; (c) is the cleanest |
 | D2 | `schema:value` inside `skos:example` nodes. In schema.org, `value` is the value of a `QuantitativeValue` / `PropertyValue`, not an example text. | `M2_GenericConcepts` (9), `M1_Chemistry` (5), `M3_GrammarFoundation` (1) | deviation | plain strings in `skos:example` (as in the 200+ other uses), or `rdf:value` |

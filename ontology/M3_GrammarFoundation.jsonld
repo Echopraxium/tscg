@@ -16,9 +16,9 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.18.0",
+      "owl:versionInfo": "2.19.0",
       "dcterms:created": "2026-05-12",
-      "dcterms:modified": "2026-11-08",
+      "dcterms:modified": "2026-11-16",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Grammar Foundation",
       "dcterms:description": "Apex ontology of the TSCG hierarchy — it imports nothing, and every other TSCG ontology depends on it. It defines the mathematical foundation — the commutative Lambek calculus (Lambek 1958, commutative variant) and free commutative monoidal categories (MacLane 1963) — with the three operators × (Gt), + (Gm) and | (Gs), precedence × > + > |; the abstract classes M3Grammar and MonoidalType; the TSCG type system hierarchy (𝕋₀ → 𝕄₀); the intersubjective benchmark properties; and the vocabulary shared by every layer (m3:changelog, m3:ontologyType and its scheme, m3:metaphoricLabel). The operators are monoidal products, not algebraic tensor products: no metric, no Hilbert space, no scalar multiplication. Imported by M3_EagleEye, M3_SphinxEye, M3_OdinsWisdom and M3_GenesisGrammar.",
@@ -54,6 +54,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.19.0",
+          "dcterms:date": "2026-11-16",
+          "adms:versionNotes": "Lot E1 of the Ontology Encoding Review (WS-15 SF-7), decision Michel 2026-11-16: in m3:TscgOntologyTypeScheme, skos:related removed where it contradicted the hierarchy (SKOS Reference: skos:related is disjoint with skos:broaderTransitive). m3:GenesisExtension loses related m3:Genesis (its broader); m3:TransDisclet loses related m3:Poclet (its broader) and related m3:DomainExtension (broader of m3:Poclet, hence in its transitive hierarchy). skos:broader unchanged: it is read on the child (m3:Genesis is broader than m3:GenesisExtension; an extension is a specialization). Deferred, Michel's call: 9 concepts with a skos:broader are still skos:topConceptOf the scheme."
+        },
+        {
           "owl:versionInfo": "2.18.0",
           "dcterms:date": "2026-11-08",
           "adms:versionNotes": "m3:grammar_foundation:Fm2: the argument block { properties: [...], constraints: [...] } added to the definition of the signature (Michel, 2026-11-08; resolves D11). Grammar: ontology/toolchain/grammars/Fm2_notation.ebnf."
@@ -82,11 +87,6 @@
           "owl:versionInfo": "2.13.0",
           "dcterms:date": "2026-10-10",
           "adms:versionNotes": "ONE ROLE, ONE PROPERTY — batch 1 (Michel, 2026-10-10): the owl:Ontology header keeps dcterms:description only; the former rdfs:comment, a paraphrase, is merged into it and removed. Fixed on the way: 'six indexed operators (×, +, |)' (three operators); the ⊗ symbol of the old comment (forbidden); the list of importers (M3_BicephalousPerspective added by lot (A))."
-        },
-        {
-          "owl:versionInfo": "2.12.0",
-          "dcterms:date": "2026-10-08",
-          "adms:versionNotes": "WS-5 DEBT LOT (A), decision Michel 2026-10-08 (Debt Overview §8.0): m3:ontologyType, m3:TscgOntologyType, m3:TscgOntologyTypeScheme and its 11 concepts are now DECLARED here, in the apex (moved from M3_GenesisGrammar, which imports the other M3 files: using the property there was a level crossing). IRIs unchanged. Split (option c): the descriptive blocks of SystemicFramework, SymbolicSystemGrammar, TscgTool, TransDisclet (bare keys) stay in M3_GenesisGrammar on the same @id until WS-1/B2 declares them, so that @vocab owl# here does not mint them as owl: terms. Texts of m3:Genesis (2 files) and m3:GenesisExtension (three perspectives: Territory, Map, Stereopsis) rewritten. New m3:metaphoricLabel (annotation). This file typed m3:Genesis. m3:metaphoricLabel values: Eagle Eye, Sphinx Eye, Odin's Wisdom (the three lenses, Debt Overview §8.0b). m3:expectedCount removed from all 11 concepts of the scheme (read by no tool; duplicated the 'Exactly N… Closed set' scope notes) — Michel, 2026-10-10. Formalism named precisely (Michel, 2026-10-10): the COMMUTATIVE Lambek calculus — Lambek's 1958 calculus is non-commutative; the three TSCG operators ×, +, | are commutative on the types of their monoid, primitive or derived. Precedence unchanged: × (Gt) > + (Gm) > | (Gs)."
         }
       ],
       "three_alphabets": {
@@ -960,9 +960,6 @@
       "skos:broader": {
         "@id": "m3:Genesis"
       },
-      "skos:related": {
-        "@id": "m3:Genesis"
-      },
       "rdfs:subClassOf": {
         "@id": "m3:TscgOntologyType"
       }
@@ -1327,14 +1324,6 @@
       "skos:broader": {
         "@id": "m3:Poclet"
       },
-      "skos:related": [
-        {
-          "@id": "m3:Poclet"
-        },
-        {
-          "@id": "m3:DomainExtension"
-        }
-      ],
       "rdfs:subClassOf": {
         "@id": "m3:TscgOntologyType"
       }
