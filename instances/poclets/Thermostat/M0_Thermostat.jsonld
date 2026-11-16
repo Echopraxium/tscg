@@ -20,9 +20,10 @@
       "@type": "owl:Ontology",
       "rdfs:label": "Thermostat (studio flat, F1)",
       "rdfs:comment": "A one-room flat heated by a heater and a radiator, losing heat through its wall and window to the outside, and kept near a set point by a wall thermostat with hysteresis (on/off control). The minimal technical negative feedback loop: the room never rests on the set point but oscillates in a sawtooth between the two edges of the hysteresis band. First TSCG Kit workshop to go through the instance pipeline: its playable scale model (Synoptic, Panel, Scale model, Curves) is the simulation of this poclet.",
-      "owl:versionInfo": "1.2.0",
-      "dcterms:modified": "2026-11-08",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "owl:versionInfo": "1.3.0",
+      "dcterms:modified": "2026-11-16",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "dcterms:created": "2026-11-07",
       "owl:imports": [
         {
@@ -51,6 +52,11 @@
       "skos:note": "Scores. Territory: F and D are highest (two explicit heat and information flows; exponential relaxations, a limit cycle and a radiator delay). It is lowest: the command is one bit and the measurement a single temperature. Map: R and V are highest (the block diagram exists as a playable model whose curves can be checked against the physics); Im is lowest because three concepts needed to type it are missing or misfit in the framework (gaps G1-G3).",
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.3.0",
+          "dcterms:date": "2026-11-16",
+          "adms:versionNotes": "Lot D1 of the Ontology Encoding Review (WS-15 SF-7), decided by Michel 2026-11-16: dcterms:creator is now an IRI, <https://github.com/Echopraxium> (a dcterms:Agent declared in the apex), as DCMI recommends; the collaboration is kept, separately, as dcterms:contributor \"Claude AI (Anthropic)\" (1 node(s))."
+        },
+        {
           "owl:versionInfo": "1.2.0",
           "dcterms:date": "2026-11-08",
           "adms:versionNotes": "The ASFID/REVOI scores and their means are typed xsd:float in @context, as in M0_FireTriangle: written as JSON numbers they expanded to xsd:double, outside the xsd:float range declared in M0_Common (Pellet: inconsistent, revoiMean)."
@@ -59,11 +65,6 @@
           "owl:versionInfo": "1.1.0",
           "dcterms:date": "2026-11-08",
           "adms:versionNotes": "Gap G2 closed: the wall thermostat is typed m1:Hysteresis = Fm2(Threshold, Memory) (M1_CoreConcepts 2.25.0) instead of m2:Threshold + m2:Memory."
-        },
-        {
-          "owl:versionInfo": "1.0.0",
-          "dcterms:date": "2026-11-07",
-          "adms:versionNotes": "Creation from the TSCG Kit workshop kit/thermostat (Kit 0.9.2), pipeline steps 1-3; gaps G1-G3 recorded in the validation section."
         }
       ],
       "m0.thermostat:completeness": {

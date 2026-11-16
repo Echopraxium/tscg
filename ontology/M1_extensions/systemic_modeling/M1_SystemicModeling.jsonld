@@ -20,9 +20,10 @@
       "rdfs:comment": "Domain-specific concepts for innovation methodologies and systematic problem-solving. Hosts 40 TRIZ inventive principles as concrete instances, plus framework components (contradiction matrices, inventivity levels, technical parameters).",
       "dcterms:title": "TSCG M1 Innovation — TRIZ Principles and Innovation Frameworks",
       "dcterms:description": "Extension of TSCG framework with TRIZ-specific concepts: 40 inventive principles as instances of TrizPrinciple class, plus systematic innovation components. Serves as M1 foundation for innovation-focused SystemicFramework instances.",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "dcterms:created": "2026-04-20",
-      "owl:versionInfo": "1.9.0",
+      "owl:versionInfo": "1.10.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -40,6 +41,11 @@
       ],
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.10.0",
+          "dcterms:date": "2026-11-16",
+          "adms:versionNotes": "Lot D1 of the Ontology Encoding Review (WS-15 SF-7), decided by Michel 2026-11-16: dcterms:creator is now an IRI, <https://github.com/Echopraxium> (a dcterms:Agent declared in the apex), as DCMI recommends; the collaboration is kept, separately, as dcterms:contributor \"Claude AI (Anthropic)\" (3 node(s))."
+        },
+        {
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-10-12",
           "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12): domains are classes rdfs:subClassOf m1:Domain, never individuals. m1:extension:systemic_modeling:SystemicModeling created ⊑ m1:Domain. m2:KnowledgeField / m1:KnowledgeFieldGenericCombo are obsolete (declared nowhere); the KnowledgeField-only keys m2:knowledgeFieldRole, m2:derivedFrom (now rdfs:subClassOf) dropped; m2:qualifier text kept as skos:definition. Obsolete KnowledgeField vocabulary purged from the live text (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain). m2:knowledgeField (obsolete, declared nowhere) renamed m1:domain on 1 class(es): an owl:AnnotationProperty whose value is the IRI of the domain class."
@@ -48,14 +54,9 @@
           "owl:versionInfo": "1.8.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 7 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
-        },
-        {
-          "owl:versionInfo": "1.7.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 7 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
         }
       ],
-      "dcterms:modified": "2026-10-12"
+      "dcterms:modified": "2026-11-16"
     },
     {
       "@id": "m1:extension:systemic_modeling:SystemicModeling",
@@ -66,7 +67,8 @@
       "rdfs:label": "Systemic Modeling",
       "rdfs:comment": "The Systemic Modeling domain: the knowledge domain this M1 extension specialises M2 GenericConcepts for.",
       "dcterms:created": "2026-10-12",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:extension:systemic_modeling:TrizPrinciple",
@@ -83,7 +85,8 @@
         "m2:mobilizes (GenericConcepts used)"
       ],
       "dcterms:created": "2026-04-20",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "m1:structuralGrammarFormula": "Fm1m2(SystemicModeling, A × St × It × D | R + V)"
     },
     {

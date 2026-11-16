@@ -27,10 +27,11 @@
       "@type": "owl:Ontology",
       "dcterms:title": "TSCG M1 Core Concepts Ontology",
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-11-08",
-      "owl:versionInfo": "2.26.0",
+      "dcterms:modified": "2026-11-16",
+      "owl:versionInfo": "2.27.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -256,6 +257,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.27.0",
+          "dcterms:date": "2026-11-16",
+          "adms:versionNotes": "Lot D1 of the Ontology Encoding Review (WS-15 SF-7), decided by Michel 2026-11-16: dcterms:creator is now an IRI, <https://github.com/Echopraxium> (a dcterms:Agent declared in the apex), as DCMI recommends; the collaboration is kept, separately, as dcterms:contributor \"Claude AI (Anthropic)\" (22 node(s))."
+        },
+        {
           "owl:versionInfo": "2.26.0",
           "dcterms:date": "2026-11-08",
           "adms:versionNotes": "Fm2 notation (Michel, 2026-11-08; D11 resolved): the guards leave the formulas. m1:Oscillator = Fm2(Component, Process, Trajectory { properties: [shape: Circular, final: true] }); m1:ButterflyEffect = Fm2(Amplification, Trajectory { properties: [shape: Chaotic, final: true] }) (scalar λ > 0 deleted); m1:LocalActivationLateralInhibition = Fm2(Amplification, Regulation { constraints: [range(Amplification.F) << range(F)] }); m1:CascadeAmplification = Fm2(Cascade, Amplification) (scalar gain_per_stage > 1 deleted). The attribute of m2:Trajectory is 'shape' (the old guards said trajectoryShape, a name that exists nowhere). m1:Processor keeps '| V + R' (a monoidal suffix, SC-6)."
@@ -264,11 +270,6 @@
           "owl:versionInfo": "2.25.0",
           "dcterms:date": "2026-11-08",
           "adms:versionNotes": "NEW m1:Hysteresis = Fm2(Threshold, Memory), dual polarity (Michel, 2026-11-08; gap G2 of the Thermostat poclet, TSCG Kit friction log). Passed tscg-m2-candidate-filter: decomposable (emergent dead band and bistability), so M1, not M2. No restriction on Threshold: its value threshold_behavior=Hysteretic already means a memory effect, and Memory is the other argument. The fiche uses only properties required by SHAPE 9 or declared terms (skos:example, dcterms:*); polarity is stated in rdfs:comment because M1 has no declared polarity property (m1:hasPolarity is a phantom)."
-        },
-        {
-          "owl:versionInfo": "2.24.0",
-          "dcterms:date": "2026-11-01",
-          "adms:versionNotes": "ontology/docs housekeeping round 2 (Michel, 2026-11-01). rdfs:seeAlso of the ontology node repointed from the obsolete ontology/docs/TSCG_M1_Architecture.md (January design note, now removed) to the live M1_CoreConcepts_README.md, and written as an IRI ({\"@id\": ...}, resolved against @base) instead of a plain string, as in M2_GenericConcepts. No class or property changed."
         }
       ]
     },
@@ -288,7 +289,8 @@
       ],
       "skos:scopeNote": "Property defined at M1 level but applicable to M0 instances (owl:Ontology nodes in M0_*.jsonld files). This is architecturally correct as M1 provides vocabulary for describing M0 instances.",
       "dcterms:created": "2026-04-28",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:instanceCount",
@@ -300,7 +302,8 @@
       "skos:definition": "Count of the M0 instances a knowledge domain currently references. Intended to equal the number of m1:instanceExamples entries once the per-domain counters are reconciled (see M1_Domains changelog).",
       "skos:scopeNote": "Replaces m1:pocletCount. Validated by DomainShape in the M1 SHACL grammar.",
       "dcterms:created": "2026-09-09",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:instanceExamples",
@@ -312,7 +315,8 @@
       "skos:definition": "The concrete M0 instances that exemplify a knowledge domain. Multi-valued (an array of instance identifiers such as 'M0_FireTriangle', 'M0_World2DProjection').",
       "skos:scopeNote": "Replaces m1:pocletExamples. Validated by DomainShape in the M1 SHACL grammar.",
       "dcterms:created": "2026-09-09",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:CoreConcept",
@@ -342,7 +346,8 @@
       "rdfs:label": "Domain",
       "rdfs:comment": "A disciplinary knowledge domain (biology, electronics, education, ...) in which M2 GenericConcepts are specialised by an M1 extension. A domain is a CLASS, never an individual (SC-5, 2026-10-12): each M1 extension declares its domain class m1:extension:<ext>:<Name> rdfs:subClassOf m1:Domain; domains without an extension are classes m1:domain:<Name> in M1_Domains.jsonld. A subdomain is a subclass of one or more domains (multiple inheritance = intersection); DCC010 reads the whole hierarchy under m1:Domain. Declared 2026-10-11 (lot C1b).",
       "dcterms:created": "2026-10-11",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:domain",
@@ -350,7 +355,8 @@
       "rdfs:label": "domain",
       "rdfs:comment": "The domain(s) a concept or an instance belongs to: IRIs of domain classes (rdfs:subClassOf m1:Domain), never strings. An annotation, so that an M1 class or an M0 individual can point to a domain class without punning it (SC-5, Michel 2026-10-12). Carried by the M1 classes of several extensions; on M0 instances its values are still free strings today (M0 lot pending: Debt Overview 8.0f).",
       "dcterms:created": "2026-10-12",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:relatedDomains",
@@ -358,7 +364,8 @@
       "rdfs:label": "related domains",
       "rdfs:comment": "Non-hierarchical 'see also' link from a domain class to other domain classes (values: IRIs of m1:Domain subclasses). An annotation, not an object property: domains are classes, and an object property between classes would pun them as individuals (SC-5, 2026-10-12). Hierarchy (subdomains) is expressed by rdfs:subClassOf, never by this property.",
       "dcterms:created": "2026-10-12",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:GenericMechanism",
@@ -455,7 +462,8 @@
         "promotion": "Proposed M2 candidate if validated across 3+ additional domains"
       },
       "dcterms:created": "2026-01-22",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:CyclicTension",
@@ -513,7 +521,8 @@
         "promotion": "Candidate for M2 if validated across 2+ additional poclets"
       },
       "dcterms:created": "2026-01-22",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:Cascade",
@@ -584,7 +593,8 @@
       },
       "m1:migrationNote": "Migrated from m2:Cascade (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "m2:hasAttribute": [
         {
           "rdfs:label": "trajectoryShape",
@@ -733,7 +743,8 @@
       },
       "m1:migrationNote": "Migrated from m2:Oscillator (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "m2:hasAttribute": [
         {
           "rdfs:label": "frequency",
@@ -998,7 +1009,8 @@
       },
       "m1:migrationNote": "Migrated from m2:Processor (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "m2:hasAttribute": [
         {
           "rdfs:label": "Input",
@@ -1144,7 +1156,8 @@
       },
       "m1:migrationNote": "Migrated from m2:LocalActivationLateralInhibition (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "m1:sharedDimensions": {
         "F_Flow": "Shared by both parents - spatial transport (diffusion, propagation, conduction) is the mechanism that creates range asymmetry",
         "A_Attractor": "Regulation contributes A (target equilibrium); the emergent attractor is the spatial pattern itself"
@@ -1253,7 +1266,8 @@
       },
       "m1:migrationNote": "Migrated from m2:ButterflyEffect (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "m1:sharedDimensions": {
         "D_Dynamics": "Shared by both parents - temporal evolution is the mechanism of divergence; λ > 0 characterizes the rate of information loss",
         "F_Flow": "Shared by both parents - the flow of perturbation through state space determines divergence geometry"
@@ -1344,7 +1358,8 @@
       },
       "m1:migrationNote": "Migrated from m2:Propagation (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "m2:hasAttribute": [
         {
           "rdfs:label": "propagationRegime",
@@ -1483,7 +1498,8 @@
       },
       "m1:migrationNote": "Migrated from m2:Narration (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "m2:hasAttribute": [
         {
           "rdfs:label": "narrativeTopology",
@@ -1645,7 +1661,8 @@
       },
       "m1:migrationNote": "New concept v2.0.0 — not migrated from M2 (discovered during Trophic Pyramid analysis)",
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:CascadeAmplification",
@@ -1688,7 +1705,8 @@
       },
       "m1:migrationNote": "New concept v2.0.0 — not migrated from M2",
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:Hysteresis",
@@ -1709,7 +1727,8 @@
         "Economics — unemployment hysteresis"
       ],
       "dcterms:created": "2026-11-08",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:Permeability",
@@ -1813,7 +1832,8 @@
       },
       "m1:migrationNote": "New concept v2.5.0 — discovered during transport phenomena analysis session (viscosity/conductivity/diffusion). Validated as M1_CoreConcepts combo after failing M2 atomicity test (reducible to Fm2(Channel, Interface, Gradient)).",
       "dcterms:created": "2026-06-23",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:TopologicalDefect",
@@ -1862,7 +1882,8 @@
       },
       "m1:migrationNote": "Migrated from m2:TopologicalDefect (M2 Combo family) to M1_CoreConcepts v2.5.0 — 2026-06-23. Migration rationale: M2 purity constraint requires concepts accessible without domain expertise. TopologicalDefect requires topological knowledge (winding numbers, order parameter fields) — this limits its transdisciplinary accessibility at the M2 level. Pattern remains valid and well-validated across ≥7 domains.",
       "dcterms:created": "2026-06-23",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m1:ConstraintBalance",
@@ -1947,7 +1968,8 @@
       },
       "m1:migrationNote": "New concept v2.6.0 — discovered during transport phenomena + Ontological Overfitting analysis session (2026-06-23). Instance of new m2:TriadicBalance.",
       "dcterms:created": "2026-06-23",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     }
   ]
 }

@@ -278,7 +278,9 @@ QRCodeToPocketCity, otherwise clean, has `m3:eagle_eye`, `m3:sphinx_eye`,
 - Add `schema` (`https://schema.org/`) only if a `schema:` term is used.
 
 **Mandatory JSON-LD content (owl:Ontology node):**
-1. Metadata: `rdfs:label`, `rdfs:comment`, `dcterms:created`, `dcterms:creator`,
+1. Metadata: `rdfs:label`, `rdfs:comment`, `dcterms:created`,
+   `dcterms:creator` = `{ "@id": "https://github.com/Echopraxium" }` (an IRI, not a string — lot D1, 2026-11-16),
+   `dcterms:contributor` = `"Claude AI (Anthropic)"`,
    `owl:versionInfo`, and **`m3:changelog`** — a list of entries
    `{ "owl:versionInfo": …, "dcterms:date": …, "adms:versionNotes": … }`
    (newest first, 3 kept). `m2:changelog` is FORBIDDEN (check_m0 C14, SHACL).

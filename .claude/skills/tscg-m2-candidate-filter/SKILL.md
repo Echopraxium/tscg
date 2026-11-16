@@ -302,7 +302,8 @@ Minimum required fields:
   "m2:transdisciplinaryValidation": "<same rule: no bare sub-keys>",
   "m2:hasExample": ["<domain> — <instance>", "..."],
   "dcterms:created": "<YYYY-MM-DD>",
-  "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+  "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+  "dcterms:contributor": "Claude AI (Anthropic)"
 }
 ```
 
@@ -329,7 +330,8 @@ Minimum required fields:
   "m1:emergentProperty": "<what the combo produces that parents don't>",
   "m1:transdisciplinaryValidation": "<no bare sub-keys, see the rule above>",
   "dcterms:created": "<YYYY-MM-DD>",
-  "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+  "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+  "dcterms:contributor": "Claude AI (Anthropic)"
 }
 ```
 

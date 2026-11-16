@@ -58,7 +58,9 @@ python run_all_layers.py                    # must end with GATE: PASS
 ### Ontology files
 - Layer prefix in file names: `M3_`, `M2_`, `M1_`, `M0_`.
 - No comments in `.jsonld` files.
-- Authorship: `"Echopraxium with the collaboration of Claude AI"`.
+- Authorship in ontology metadata: `dcterms:creator` = `{ "@id": "https://github.com/Echopraxium" }` (an IRI) and
+  `dcterms:contributor` = `"Claude AI (Anthropic)"` (lot D1, 2026-11-16). In prose, READMEs and
+  code headers: "Echopraxium with the collaboration of Claude AI".
 - Changelog: `m3:changelog` on the `owl:Ontology` node (never `m2:changelog`), entries
   `{owl:versionInfo, dcterms:date, adms:versionNotes}`, newest first.
 - Ontology type: `m3:ontologyType` only.

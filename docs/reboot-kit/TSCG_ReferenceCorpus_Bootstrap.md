@@ -166,7 +166,10 @@ Atom-level subscripts disambiguate: `St`/`Ss` (Structure vs Symbol),
 `It`/`Im` (Information vs Interoperability).
 
 **File conventions (all `.jsonld`).**
-- `dcterms:creator` = `"Echopraxium with the collaboration of Claude AI"`
+- `dcterms:creator` = `{ "@id": "https://github.com/Echopraxium" }` — an IRI, as DCMI recommends (lot D1, Michel 2026-11-16);
+  `dcterms:contributor` = `"Claude AI (Anthropic)"`. Both declared once in the apex
+  (`M3_GrammarFoundation`). In prose and code headers the authorship line stays
+  "Echopraxium with the collaboration of Claude AI".
 - Generated files in **English**; conversation in **French**
 - Base URI: `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/`
   (source sometimes writes `ttps` — always read `https`)

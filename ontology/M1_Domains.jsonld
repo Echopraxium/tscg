@@ -18,14 +18,20 @@
       "@type": "owl:Ontology",
       "rdfs:label": "TSCG Knowledge Domains Registry",
       "rdfs:comment": "Centralized, evolving registry of knowledge domains identified through TSCG instance corpus analysis. Each domain entry documents subdomains, related domains, and instance usage statistics. Domains are M1-level concepts (disciplinary extensions) that bridge M2 transdisciplinary GenericConcepts and M0 concrete instances.",
-      "owl:versionInfo": "1.9.0",
+      "owl:versionInfo": "1.10.0",
       "dcterms:created": "2026-04-18",
-      "dcterms:modified": "2026-10-22",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:modified": "2026-11-16",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.10.0",
+          "dcterms:date": "2026-11-16",
+          "adms:versionNotes": "Lot D1 of the Ontology Encoding Review (WS-15 SF-7), decided by Michel 2026-11-16: dcterms:creator is now an IRI, <https://github.com/Echopraxium> (a dcterms:Agent declared in the apex), as DCMI recommends; the collaboration is kept, separately, as dcterms:contributor \"Claude AI (Anthropic)\" (1 node(s))."
+        },
         {
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-10-22",
@@ -35,11 +41,6 @@
           "owl:versionInfo": "1.8.0",
           "dcterms:date": "2026-10-12",
           "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12). Domains are CLASSES, rdfs:subClassOf m1:Domain (declared in M1_CoreConcepts), not individuals typed m1:Domain. The 12 entries that have an M1 extension (Biology, BusinessModeling, Cartography, Chemistry, Economics, Education, Electronics, Geology, Mythology, Optics, Photography, Physics) are removed from this registry: the extension's own domain class (m1:extension:<ext>:<Name>) is the domain, and it now carries the entry's data (comment when the extension's was the obsolete 'Knowledge Field' text, definition, subdomains, relatedDomains, instance data). The other 10 entries (Ecology, Engineering, ComputerScience, MusicTheory, GameTheory, Television, Neurobiology, SystemsTheory, Philosophy, Blockchain) are classes m1:domain:<Name> ⊑ m1:Domain. m1:relatedDomains re-pointed to the extension classes; it is an owl:AnnotationProperty (M1_CoreConcepts). m1:ext dropped (the domain class lives in its extension). Pending (Debt Overview §8.0f): m1:subdomains -> subdomain classes (lot SC-5b, then the property is deleted: inferred by rdfs:subClassOf); m1:instanceCount / m1:instanceExamples / header counts -> inferred from M0 instances once their m1:domain values are domain IRIs (M0 lot). Dangling relatedDomains targets: m1:domain:Mathematics (5), m1:domain:Anthropology (1)."
-        },
-        {
-          "owl:versionInfo": "1.7.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m1:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m1:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "m1:domainCount": 22,

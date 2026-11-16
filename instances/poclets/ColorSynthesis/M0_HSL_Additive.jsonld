@@ -24,9 +24,10 @@
       },
       "rdfs:label": "HSL Additive Color Synthesis",
       "rdfs:comment": "Perceptual additive color synthesis using Hue, Saturation, Lightness channels. Alternative representation of RGB space organized around perceptual dimensions. HSL is bijective transformation of RGB - same Territory (color perception), different Map (cylindrical vs cubic coordinates).",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "dcterms:created": "2026-01-17",
-      "owl:versionInfo": "1.5.0",
+      "owl:versionInfo": "1.6.0",
       "m1:domain": "Optics / Color Science",
       "m0:pocletType": "Composite (Specialized)",
       "m0:partOfFederation": {
@@ -466,6 +467,11 @@
       "dcterms:modified": "2026-11-16",
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.6.0",
+          "dcterms:date": "2026-11-16",
+          "adms:versionNotes": "Lot D1 of the Ontology Encoding Review (WS-15 SF-7), decided by Michel 2026-11-16: dcterms:creator is now an IRI, <https://github.com/Echopraxium> (a dcterms:Agent declared in the apex), as DCMI recommends; the collaboration is kept, separately, as dcterms:contributor \"Claude AI (Anthropic)\" (1 node(s))."
+        },
+        {
           "owl:versionInfo": "1.5.0",
           "dcterms:date": "2026-11-16",
           "adms:versionNotes": "Lot E2 of the Ontology Encoding Review (WS-15 SF-7), option A chosen by Michel 2026-11-16: dcterms:documentation removed (3 occurrence(s)); it is not a DCMI term (a phantom predicate) and repeated the adjacent rdfs:seeAlso. Those rdfs:seeAlso now point to the right files (instances/poclets/ColorSynthesis/, not ontology/poclets/; M0_ColorSynthesis_Federated.jsonld does not exist: M0_ColorSynthesis.jsonld) and are written as IRIs ({\"@id\": ...}), no longer as string literals. Out of scope (WS-10): the m0:color_synthesis prefix still names the missing _Federated file."
@@ -474,11 +480,6 @@
           "owl:versionInfo": "1.4.0",
           "dcterms:date": "2026-11-08",
           "adms:versionNotes": "M0 reasoner campaign (2026-11-08). 1 score property (m0:epistemicGap) typed xsd:float in @context: written as JSON numbers (or numeric strings) they expanded to xsd:double (or xsd:string), outside the xsd:float range declared in M0_Common (reasoner: inconsistent); \"rdf:type\": \"m0:Poclet\" deleted: a plain string (a literal, not a class; the reasoner stopped on it) redundant with m3:ontologyType m3:Poclet; m0:Poclet is declared nowhere."
-        },
-        {
-          "owl:versionInfo": "1.3.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 1 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "owl:imports": [

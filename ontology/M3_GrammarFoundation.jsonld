@@ -16,10 +16,11 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.19.0",
+      "owl:versionInfo": "2.20.0",
       "dcterms:created": "2026-05-12",
       "dcterms:modified": "2026-11-16",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "dcterms:title": "TSCG M3 Grammar Foundation",
       "dcterms:description": "Apex ontology of the TSCG hierarchy — it imports nothing, and every other TSCG ontology depends on it. It defines the mathematical foundation — the commutative Lambek calculus (Lambek 1958, commutative variant) and free commutative monoidal categories (MacLane 1963) — with the three operators × (Gt), + (Gm) and | (Gs), precedence × > + > |; the abstract classes M3Grammar and MonoidalType; the TSCG type system hierarchy (𝕋₀ → 𝕄₀); the intersubjective benchmark properties; and the vocabulary shared by every layer (m3:changelog, m3:ontologyType and its scheme, m3:metaphoricLabel). The operators are monoidal products, not algebraic tensor products: no metric, no Hilbert space, no scalar multiplication. Imported by M3_EagleEye, M3_SphinxEye, M3_OdinsWisdom and M3_GenesisGrammar.",
       "rdfs:label": "M3 Grammar Foundation — TSCG Apex Ontology",
@@ -54,6 +55,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.20.0",
+          "dcterms:date": "2026-11-16",
+          "adms:versionNotes": "Lot D1 of the Ontology Encoding Review (WS-15 SF-7), decided by Michel 2026-11-16: dcterms:creator is now an IRI, <https://github.com/Echopraxium> (a dcterms:Agent declared in the apex), as DCMI recommends; the collaboration is kept, separately, as dcterms:contributor \"Claude AI (Anthropic)\" (4 node(s)). Declared here (ExternalVocabularyPolicy, RULE 1): dcterms:contributor (owl:AnnotationProperty), dcterms:Agent (owl:Class) and the agent <https://github.com/Echopraxium> (owl:NamedIndividual, dcterms:Agent); RULE 2: its example removed (it cited the former literal use of dcterms:creator)."
+        },
+        {
           "owl:versionInfo": "2.19.0",
           "dcterms:date": "2026-11-16",
           "adms:versionNotes": "Lot E1 of the Ontology Encoding Review (WS-15 SF-7), decision Michel 2026-11-16: in m3:TscgOntologyTypeScheme, skos:related removed where it contradicted the hierarchy (SKOS Reference: skos:related is disjoint with skos:broaderTransitive). m3:GenesisExtension loses related m3:Genesis (its broader); m3:TransDisclet loses related m3:Poclet (its broader) and related m3:DomainExtension (broader of m3:Poclet, hence in its transitive hierarchy). skos:broader unchanged: it is read on the child (m3:Genesis is broader than m3:GenesisExtension; an extension is a specialization). Deferred, Michel's call: 9 concepts with a skos:broader are still skos:topConceptOf the scheme."
@@ -82,11 +88,6 @@
           "owl:versionInfo": "2.14.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "ONE ROLE, ONE PROPERTY — batch 2 (Michel, 2026-10-10/11): the 11 concepts of m3:TscgOntologyTypeScheme and the scheme keep skos:definition only (the rdfs:comment, a paraphrase, merged into it and removed; structural grammar 0.2.0 G2 accepts skos:definition for a skos:Concept). skos:scopeNote without counts that go stale ('~16 validated poclets', '~6 active domain extensions', '72+ metaconcepts'). skos:example lists real files: invented names replaced (M0_TscgExplorer → M0_TscgOntologyExplorer, M0_TRIZ/M0_VSD/… → M0_Triz, M0_VSM, M0_Bmc), M0_Tarot removed, not-yet-built instances marked '(planned)'. Also fixed: 'Homeostasis = A×S×F' (HEAD: A × St × F | L; formulas are no longer copied), '5D structural composition', 'metaconcept' → GenericConcept; TPACK no longer cited as a SystemicFramework (a pedagogical method, typed Poclet)."
-        },
-        {
-          "owl:versionInfo": "2.13.0",
-          "dcterms:date": "2026-10-10",
-          "adms:versionNotes": "ONE ROLE, ONE PROPERTY — batch 1 (Michel, 2026-10-10): the owl:Ontology header keeps dcterms:description only; the former rdfs:comment, a paraphrase, is merged into it and removed. Fixed on the way: 'six indexed operators (×, +, |)' (three operators); the ⊗ symbol of the old comment (forbidden); the list of importers (M3_BicephalousPerspective added by lot (A))."
         }
       ],
       "three_alphabets": {
@@ -417,7 +418,7 @@
       "@id": "m3:grammar_foundation:ExternalVocabularyPolicy",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "External vocabulary policy",
-      "rdfs:comment": "How the TSCG corpus uses terms from external vocabularies. RULE 1 — every external term used anywhere in the Layer Cake (M3, M2, M1, M0) is DECLARED ONCE, here in the apex, with its OWL type and rdfs:isDefinedBy pointing to its source vocabulary; lower layers reach these declarations through the intra-Layer-Cake owl:imports chain. RULE 2 — external vocabularies are NEVER brought in by owl:imports: DCMI Terms, ADMS and schema.org type their terms as plain rdf:Property with range/domain axioms (e.g. dcterms:creator range dcterms:Agent) that conflict with the corpus' literal usage, and SKOS defines itself as an OWL Full ontology; importing them would push the corpus out of OWL 2 DL, whereas a local declaration keeps the official IRI (full interoperability) with a DL-safe typing chosen by TSCG. RULE 3 — the OWL 2 reserved vocabulary (IRIs with the rdf:, rdfs:, xsd: and owl: prefixes) is NOT declared, except the built-in annotation properties listed in OWL 2 Structural Specification §5.5 (rdfs:label, rdfs:comment, rdfs:seeAlso, rdfs:isDefinedBy, owl:deprecated, owl:versionInfo, owl:priorVersion, owl:backwardCompatibleWith, owl:incompatibleWith), which are declared below when used. §5.1-§5.6 state that other reserved IRIs MUST NOT identify classes, properties or individuals in an OWL 2 DL ontology: the axiom vocabulary (rdf:type, rdfs:subClassOf, rdfs:subPropertyOf, rdfs:domain, rdfs:range, owl:imports, owl:inverseOf, owl:oneOf, owl:equivalentClass, the owl:Class / owl:*Property / owl:Ontology / owl:NamedIndividual types, …) is the language itself, explicitly defined by the OWL 2 and RDF specifications, not an implicit term. Consequently rdf:value (reserved, not a built-in annotation property) is not used; schema:value is used instead.",
+      "rdfs:comment": "How the TSCG corpus uses terms from external vocabularies. RULE 1 — every external term used anywhere in the Layer Cake (M3, M2, M1, M0) is DECLARED ONCE, here in the apex, with its OWL type and rdfs:isDefinedBy pointing to its source vocabulary; lower layers reach these declarations through the intra-Layer-Cake owl:imports chain. RULE 2 — external vocabularies are NEVER brought in by owl:imports: DCMI Terms, ADMS and schema.org type their terms as plain rdf:Property with range/domain axioms that do not always match the corpus' usage, and SKOS defines itself as an OWL Full ontology; importing them would push the corpus out of OWL 2 DL, whereas a local declaration keeps the official IRI (full interoperability) with a DL-safe typing chosen by TSCG. RULE 3 — the OWL 2 reserved vocabulary (IRIs with the rdf:, rdfs:, xsd: and owl: prefixes) is NOT declared, except the built-in annotation properties listed in OWL 2 Structural Specification §5.5 (rdfs:label, rdfs:comment, rdfs:seeAlso, rdfs:isDefinedBy, owl:deprecated, owl:versionInfo, owl:priorVersion, owl:backwardCompatibleWith, owl:incompatibleWith), which are declared below when used. §5.1-§5.6 state that other reserved IRIs MUST NOT identify classes, properties or individuals in an OWL 2 DL ontology: the axiom vocabulary (rdf:type, rdfs:subClassOf, rdfs:subPropertyOf, rdfs:domain, rdfs:range, owl:imports, owl:inverseOf, owl:oneOf, owl:equivalentClass, the owl:Class / owl:*Property / owl:Ontology / owl:NamedIndividual types, …) is the language itself, explicitly defined by the OWL 2 and RDF specifications, not an implicit term. Consequently rdf:value (reserved, not a built-in annotation property) is not used; schema:value is used instead.",
       "skos:note": "DECISIONS (Michel, 2026-09-30, WS-1 lot 1h). Principle: everything must be interpretable by an RDF parser, no implicit term. D1: built-in annotation properties declared, reserved axiom vocabulary documented here and not declared (declaring it would leave OWL 2 DL and make reasoner results unreliable). D2: SKOS terms keep the typing published in the official SKOS RDF (semantic relations owl:ObjectProperty, skos:related also owl:SymmetricProperty, skos:notation owl:DatatypeProperty, notes and labels owl:AnnotationProperty, skos:Concept / skos:ConceptScheme owl:Class), with the official rdfs:subPropertyOf links restricted to terms the corpus uses; DCMI, ADMS and schema.org terms are owl:AnnotationProperty. D3: schema.org is ACCEPTED as an external vocabulary, used only where it fills a gap left by DCMI and SKOS, each term checked by meaning and typing, never by name. Accepted external vocabularies: DCMI Terms, SKOS, ADMS, schema.org. Measured by tscg_metrics.py gauges EXT-1 (standard term used but undeclared here, target 0) and EXT-2 (non-term in a standard namespace, target 0).",
       "dcterms:created": "2026-09-30"
     },
@@ -479,6 +480,32 @@
         "@id": "dcterms:date"
       },
       "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "dcterms:contributor",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "dcterms:created": "2026-11-16"
+    },
+    {
+      "@id": "dcterms:Agent",
+      "@type": "owl:Class",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "dcterms:created": "2026-11-16"
+    },
+    {
+      "@id": "https://github.com/Echopraxium",
+      "@type": [
+        "owl:NamedIndividual",
+        "dcterms:Agent"
+      ],
+      "rdfs:label": "Echopraxium",
+      "rdfs:comment": "The author of TSCG (GitHub account Echopraxium), the value of dcterms:creator on every TSCG ontology and node. Decided by Michel on 2026-11-16 (Ontology Encoding Review, finding D1): DCMI recommends identifying the creator with a URI rather than a literal. The collaboration with Claude is recorded separately, as dcterms:contributor \"Claude AI (Anthropic)\".",
+      "dcterms:created": "2026-11-16"
     },
     {
       "@id": "dcterms:creator",
@@ -834,7 +861,8 @@
       },
       "dcterms:created": "2026-01-27",
       "dcterms:modified": "2026-01-27",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "skos:editorialNote": "Defined in M3 (Genesis Space) because it is a foundational metamodel property needed by all layers. M3 has no dependencies, ensuring m3:ontologyCategory is always available without creating circular dependencies.",
       "skos:changeNote": "v3.3.0: Renamed from m3:ontologyCategory to m3:ontologyType for clarity. Range changed from m3:OntologyCategoryScheme (incorrect — was the ConceptScheme, not a concept) to m3:TscgOntologyType (correct — the abstract class).",
       "skos:example": [
@@ -853,7 +881,8 @@
         "@id": "m3:TscgOntologyTypeScheme"
       },
       "dcterms:created": "2026-02-19",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)"
     },
     {
       "@id": "m3:TscgOntologyTypeScheme",
@@ -861,7 +890,8 @@
       "rdfs:label": "TSCG Ontology Type Scheme",
       "skos:definition": "Controlled vocabulary of the eleven architectural types of TSCG ontologies, from the foundational grammar (Genesis) to concrete instances (Poclet, TransDisclet…). Each type is both an owl:Class, subclass of m3:TscgOntologyType (for reasoning), and a skos:Concept of this scheme (for vocabulary navigation). An ontology declares exactly one type with m3:ontologyType on its owl:Ontology node.",
       "dcterms:created": "2026-01-27",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "skos:hasTopConcept": [
         {
           "@id": "m3:Genesis"

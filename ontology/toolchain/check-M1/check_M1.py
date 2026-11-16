@@ -112,7 +112,8 @@ HDR  = lambda t: clr("1",  t)
 
 # ── Constants ──────────────────────────────────────────────────────────────────
 ONTOLOGY_BASE   = "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
-EXPECTED_CREATOR = "Echopraxium with the collaboration of Claude AI"
+EXPECTED_CREATOR = {"@id": "https://github.com/Echopraxium"}   # lot D1, 2026-11-16: an IRI (DCMI recommends a URI)
+EXPECTED_CONTRIBUTOR = "Claude AI (Anthropic)"
 GENESIS_GRAMMAR  = "M3_GenesisGrammar.jsonld"
 GENESIS_SPACE    = "M3_GenesisSpace.jsonld"         # FORBIDDEN (old name)
 
@@ -366,7 +367,12 @@ class M1Checker:
         if creator != EXPECTED_CREATOR:
             self.issues.append(Issue("ERROR", "ONT002",
                 f"dcterms:creator incorrect: '{creator}'",
-                fix=f"Set to '{EXPECTED_CREATOR}'", auto_fixable=True))
+                fix=f"Set to {EXPECTED_CREATOR}", auto_fixable=True))
+        contributor = ont.get("dcterms:contributor", "")
+        if contributor != EXPECTED_CONTRIBUTOR:
+            self.issues.append(Issue("ERROR", "ONT002",
+                f"dcterms:contributor incorrect: '{contributor}'",
+                fix=f"Set to '{EXPECTED_CONTRIBUTOR}'", auto_fixable=True))
 
         # Created date format
         created = ont.get("dcterms:created", "")
@@ -865,7 +871,10 @@ class M1Checker:
         for node in graph:
             if node.get("@type") == "owl:Ontology":
                 if node.get("dcterms:creator") != EXPECTED_CREATOR:
-                    node["dcterms:creator"] = EXPECTED_CREATOR
+                    node["dcterms:creator"] = dict(EXPECTED_CREATOR)
+                    changed = True
+                if node.get("dcterms:contributor") != EXPECTED_CONTRIBUTOR:
+                    node["dcterms:contributor"] = EXPECTED_CONTRIBUTOR
                     changed = True
         if changed:
             self.modified = True

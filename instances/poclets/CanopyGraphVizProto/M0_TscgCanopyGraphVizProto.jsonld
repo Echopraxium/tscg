@@ -29,10 +29,11 @@
       },
       "rdfs:label": "TscgCanopyGraphVizProto",
       "rdfs:comment": "Serverless HTML prototype of an egocentric 3D graph visualiser. The observer stands INSIDE the graph at its barycentre and looks outward: nodes are celestial bodies, relations are constellations. A first-person 'jetpack' flies the observer along the gaze, so the same view continuously spans an interior vantage (inside the graph) and, by backing far enough out, an exterior one (the classic outside view); a right-click teleports the observer onto any node. Rendering is driven by a declarative STYLESHEET that is simultaneously the machine encoding and the on-screen legend, so the visualisation is itself a small representation ontology configured to the graph's semantics. This is the PROTOTYPE stage (single-file, BabylonJS from CDN, no server, no build); the mature ElectronJS tool is projected separately as TscgCanopyGraphViz (m3:TscgTool).",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
+      "dcterms:contributor": "Claude AI (Anthropic)",
       "dcterms:created": "2026-07-27",
-      "dcterms:modified": "2026-11-08",
-      "owl:versionInfo": "0.4.0",
+      "dcterms:modified": "2026-11-16",
+      "owl:versionInfo": "0.5.0",
       "m1:domain": "TSCG",
       "m0.tscgCanopyGraphVizProto:pocletType": "ToolPrototype",
       "m0.tscgCanopyGraphVizProto:phenomenon": "Egocentric navigation of a graph/ontology from a mobile viewpoint, unifying interior (barycentre) and exterior vantages, with a stylesheet that binds representation to graph semantics.",
@@ -176,6 +177,11 @@
       "m0.tscgCanopyGraphVizProto:summary": "A serverless prototype proposing egocentric, jetpack-navigated graph visualisation with a stylesheet that is at once encoding and legend — offered as a way to explore graph visualisation, not as a finished tool.",
       "m3:changelog": [
         {
+          "owl:versionInfo": "0.5.0",
+          "dcterms:date": "2026-11-16",
+          "adms:versionNotes": "Lot D1 of the Ontology Encoding Review (WS-15 SF-7), decided by Michel 2026-11-16: dcterms:creator is now an IRI, <https://github.com/Echopraxium> (a dcterms:Agent declared in the apex), as DCMI recommends; the collaboration is kept, separately, as dcterms:contributor \"Claude AI (Anthropic)\" (1 node(s))."
+        },
+        {
           "owl:versionInfo": "0.4.0",
           "dcterms:date": "2026-11-08",
           "adms:versionNotes": "M0 reasoner campaign (2026-11-08). 3 score properties (m0:asfidMean, m0:revoiMean, m0:epistemicGap) typed xsd:float in @context: written as JSON numbers (or numeric strings) they expanded to xsd:double (or xsd:string), outside the xsd:float range declared in M0_Common (reasoner: inconsistent)."
@@ -184,11 +190,6 @@
           "owl:versionInfo": "0.3.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "0.2.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
         }
       ],
       "m1:simulationTitle": "Canopy — egocentric graph star-map (prototype)",
