@@ -1,7 +1,7 @@
 # Epistemic gap δ₁ and the scoring family — Feasibility note / Decision Record draft
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.8.0 (draft) · **Date**: 2026-11-15
+**Version**: 0.9.0 (draft) · **Date**: 2026-11-16
 **Kind**: feasibility study (pipeline Phase 0 + Phase 1). **No ontology file is changed.**
 **Worksite id**: **WS-15** (D1, chosen by Michel 2026-11-15). The folder was
 `WS-TBD_EpistemicGap/` until then; dated outputs written before the rename (the
@@ -571,8 +571,9 @@ authority (root `CLAUDE.md`) and is left as written unless Michel decides otherw
   PROV-O (option b) then has no use inside TSCG.
 - **D17** — `defeasibilityStatus`: removed with the benchmark, or kept as a general
   statement that every TSCG model is provisional?
-- **D18** — Narcissus document: rewrite §2 now (naming the heuristics loop as the
-  intended successor), or after (c) is designed?
+- **D18** — *Answered 2026-11-16*: rewritten now, with Michel's wording
+  (`docs/CoreHypotheses/_01_Narcissus_and_Icarus_as_Safeguards.md` §2: evaluation taken
+  out of the model; SHACL and the refutation heuristics stay).
 
 ## 8. Go / no-go (recommendation)
 
@@ -602,6 +603,7 @@ at M0 first would hide the debt that M3 still asserts.
 
 | version | date | change |
 |---|---|---|
+| 0.9.0 | 2026-11-16 | D18 answered: Narcissus §2 rewritten. |
 | 0.8.0 | 2026-11-15 | D1 id answered: WS-15; folder renamed from `WS-TBD_EpistemicGap/`. Priority still open. |
 | 0.7.0 | 2026-11-15 | Position 16: method validated (deprecate definitions, delete uses; M0 first); step 1, the M0 lot, done (Debt Overview §8.0h). |
 | 0.6.0 | 2026-11-15 | Positions 13–15: evaluation outside the model (CH4 §6), the IntersubjectiveBenchmark README deleted, validation/refutation heuristics recorded. |
