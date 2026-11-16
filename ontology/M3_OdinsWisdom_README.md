@@ -11,9 +11,10 @@
 
 ## 🎯 Role
 
-**M3_Stereopsis** is the **reification of stereopsis** — the formal algebraic
-structure that emerges from the mutual enrichment loop (Φ/Ψ) between Territory
-Grammar Gt (Eagle Eye) and Map Grammar Gm (Sphinx Eye).
+**M3_OdinsWisdom (Gs, Stereopsis)** is the **reification of stereopsis** — the
+formal algebraic structure that emerges from the two passages between Territory
+Grammar Gt (Eagle Eye) and Map Grammar Gm (Sphinx Eye): **observation** Φ
+(Territory → Map) and **interpretation** Ψ (Map → Territory).
 
 ```
 Stereopsis = the depth perception born from binocular fusion
