@@ -41,7 +41,6 @@ docs/papers/inputs/
   00_M3_Cyclops_Correction_Summary.md
   00_M3_Philosophical_Basis_Sketch.jsonld
   00_Map_Territory_v1.2_Update_Summary.md
-  00_TSCG_M3_Bicephalous_Architecture.md
   00_TSCG_Map_Territory_Theoretical_Foundation.md
   M2_v7.2.0_Summary.md
   M2_v8.0.0_Update_Guide.md
@@ -218,7 +217,7 @@ Watchdog terminologique : actif
 - Spectre de F : F=0 (Stase) → F_potential → F_crit → F_active → ∞
 - F comme dimension morphique : F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3)
 - Ajouter nouveaux types ontologiques : `m3:TransDisclet`, `m3:Enigma`
-- Exploiter `00_TSCG_M3_Bicephalous_Architecture.md` et `00_Map_Territory_v1.2_Update_Summary.md`
+- Exploiter `00_Map_Territory_v1.2_Update_Summary.md`
 
 #### Section GenericConcepts M2
 - Mentionner les 75 concepts atomiques (9 familles) en v15.10.1
@@ -356,7 +355,6 @@ FINALISATION
 
 | Fichier | Contenu probable | Section(s) cible(s) |
 |---------|-----------------|---------------------|
-| `00_TSCG_M3_Bicephalous_Architecture.md` | Architecture Eagle Eye / Sphinx Eye | §2, §3 M3 |
 | `00_TSCG_Map_Territory_Theoretical_Foundation.md` | Fondements philosophiques Korzybski | §1 Introduction |
 | `00_Map_Territory_v1.2_Update_Summary.md` | Feedback loop Σ, Φ, Ψ | §2 Architecture |
 | `00_M3_Cyclops_Correction_Summary.md` | Corrections "Bicephalous Cyclops" | §1.3 |

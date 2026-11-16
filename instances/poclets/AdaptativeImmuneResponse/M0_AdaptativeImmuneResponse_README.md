@@ -289,7 +289,6 @@ Interpretation: This is a **well-characterized biological system** with decades 
 - M2_GenericConcepts.jsonld v14.1.0
 - M1_Biology.jsonld (domain extension)
 - TSCG_Map_Territory_Theoretical_Foundation.md
-- Bicephalous_Integration_Guide.md
 
 ---
 

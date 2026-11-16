@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1752 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1750 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -197,7 +197,6 @@
     - TerritoryMap_Dichotomy.md
     - The_Epistemic_Residue.md
   - **methodology/**
-    - Bicephalous_Integration_Guide.md
     - Standard_Referencing_Pattern.md
   - **Orchestration/**
     - Multi-Conversation_Orchestration_Guide.md
@@ -206,7 +205,6 @@
       - 00_M3_Cyclops_Correction_Summary.md
       - 00_M3_Philosophical_Basis_Sketch.jsonld
       - 00_Map_Territory_v1.2_Update_Summary.md
-      - 00_TSCG_M3_Bicephalous_Architecture.md
       - 00_TSCG_Map_Territory_Theoretical_Foundation.md
       - deepseek_markdown_20260324_8860c7.md
       - M2_v7.2.0_Summary.md
