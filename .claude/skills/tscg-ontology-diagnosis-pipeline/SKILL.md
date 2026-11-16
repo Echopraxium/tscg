@@ -70,6 +70,11 @@ description: >
   `origin/main`. Since 1.7.0 `--reasoner` also runs the reasoner on EVERY M0 instance and
   compares with the frozen section `M0_REASONER` (count AND names of the files not PASSED;
   opt-in, minutes, Java >= 25; without Java 25 it says RUNNER FAILED, never passed).
+  Since 1.9.0 `--reasoner` also reasons every ontology file outside `instances/` (M3, M2,
+  M1, M1 extensions, `M0_Common`) changed since `origin/main`
+  (one not PASSED fails the gate), and the REASONER block lists only the changed files
+  this run did not reason — with `--reasoner` and Java 25 it says nothing is left to run
+  by hand.
 - `validator/tscg_validator.py` — the validation engine: `--doc` (document plane
   D1–D7: bare keys, `@vocab`, changelog, strict JSON-LD expansion…), `--ext`
   (cross-file G1b/G5/G6 and **G8 phantom predicates**: a TSCG predicate used but declared
@@ -265,8 +270,10 @@ pip install --break-system-packages owlready2
 PATH=$J:$PATH python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file <file>
 ```
 1. Whenever a lot changes an ontology file (M3/M2/M1, M1 extensions, M0 instances),
-   **Claude runs the reasoner itself** on each changed file, and on a lot that touches M0
-   or `M0_Common` runs the sweep `run_all_layers.py --reasoner`.
+   **Claude runs the reasoner itself**: `run_all_layers.py --reasoner` covers every M0
+   instance and every changed ontology file outside `instances/` (M3, M2, M1, M1
+   extensions, `M0_Common`) in one run (gate 1.9.0); the REASONER block then says nothing
+   is left to run by hand.
 2. **Baseline before blame**: on a FAILED, run the same file at HEAD (`git stash` or
    `git checkout <base> -- <file>`) before attributing the failure to the lot. An
    inconsistency already present at HEAD is reported as pre-existing, with its cause.
@@ -557,7 +564,7 @@ python ontology_linter.py ontology/ --format markdown --output report.md
 ### Reasoner Configuration
 ```bash
 python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file ontology/M2_GenericConcepts.jsonld
-cd ontology/toolchain && python run_all_layers.py --reasoner     # the M0 sweep (Java >= 25)
+cd ontology/toolchain && python run_all_layers.py --reasoner     # M0 sweep + changed files outside instances/ (Java >= 25)
 ```
 
 ### SHACL Configuration
@@ -730,9 +737,10 @@ This skill **breaks the Ouroboros** by:
 
 **Status:** Active skill
 
-**Version:** 1.4.0
+**Version:** 1.5.0
 
-**Last Updated:** 2026-11-08 (1.4.0: Claude runs the reasoner in the VM with Java 25 —
+**Last Updated:** 2026-11-16 (1.5.0: gate 1.9.0 — `--reasoner` also reasons the changed
+ontology files outside instances/ (M3, M2, M1, M0_Common); the REASONER block lists only the files not reasoned in the run. 1.4.0, 2026-11-08: Claude runs the reasoner in the VM with Java 25 —
 install recipe, baseline-before-blame, Pellet explain recipe —, Michel confirms before
 the push; gate `--reasoner` M0 sweep; known causes of M0 inconsistency; Fm2 notation
 tools. 1.3.0, 2026-11-01: Michel runs the reasoner himself, Claude asks and

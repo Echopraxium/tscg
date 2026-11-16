@@ -56,6 +56,19 @@ USAGE
                                              # (use ONLY after a deliberate fix — it rewrites
                                              #  golden_values.json and records the delta)
     python run_all_layers.py --reasoner      # + the OWL reasoner on EVERY M0 instance (1.7.0)
+                                             #   and on every ontology file outside instances/
+                                             #   changed since origin/main (1.9.0)
+
+THE REASONER ON CHANGED FILES (1.9.0, 2026-11-16)
+-------------------------------------------------
+Until 1.8.0, --reasoner covered the M0 instances only, and the REASONER reminder listed
+every changed ontology file even when the sweep had just reasoned it: the gate looked
+as if it ran the reasoner everywhere, then asked Michel to run it by hand. Since 1.9.0,
+--reasoner also runs it on each governed ontology file outside instances/ (M3, M2, M1,
+M1 extensions, M0_Common) changed since origin/main; such a file not PASSED fails the gate (no frozen reference: a changed
+ontology file must be consistent — check the same file at origin/main before blaming
+the lot). The reminder lists only the files this run did NOT reason, and says so when
+nothing is left to run by hand.
 
 PATH_CHECK (1.8.0, 2026-11-15)
 ------------------------------
@@ -96,7 +109,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, TOOLCHAIN_DIR, verify_layout  # noqa: E402
 import path_check  # noqa: E402
 
-__version__ = "1.8.0"   # 2026-11-15: PATH_CHECK, reasoner file list from git; 1.7.0 M0 reasoner sweep; 1.6.0 reasoner reminder; 1.5.0 K0 engine plane, G8
+__version__ = "1.9.0"   # 2026-11-16: --reasoner also on the changed files outside instances/, reminder lists only the files not reasoned; 1.8.0 2026-11-15: PATH_CHECK, reasoner file list from git; 1.7.0 M0 reasoner sweep; 1.6.0 reasoner reminder; 1.5.0 K0 engine plane, G8
 
 GOLDEN_FILE = TOOLCHAIN_DIR / "golden_values.json"
 
@@ -495,22 +508,33 @@ def changed_ontology_files() -> list | None:
     return sorted({p for p in out.splitlines() if gov.match(p) and (REPO_ROOT / p).exists()})
 
 
-def reasoner_reminder() -> None:
-    """Michel, 2026-11-01: the gate must ASK him to run the reasoner himself. The OWL
-    reasoner (owlready2's bundled Jena) needs Java 25 and does not run everywhere — in
-    particular not in Claude's cloud VM — so it is not a gate counter; it is a step a
-    human runs and reports. This reminder never changes the gate's verdict."""
-    files = changed_ontology_files()
+def reasoner_reminder(covered: dict | None = None) -> None:
+    """Michel, 2026-11-01: the gate must ASK him to run the reasoner himself on the
+    ontology files changed by the lot. The reasoner needs Java 25. 1.9.0: `covered` holds
+    the files --reasoner already reasoned in this run (path -> status); only the others
+    are listed. This reminder never changes the gate's verdict."""
+    covered = covered or {}
+    changed = changed_ontology_files()
+    files = None if changed is None else [p for p in changed if p not in covered]
     print("\n" + "-" * 62)
     if files is None:
         print(f"  {C_WARN}REASONER — could not tell which ontology files changed (git). "
               f"Michel: if this lot touched an ontology file, run the reasoner on it.{C_END}")
-    elif not files:
+    elif not changed:
         print(f"  {C_DIM}REASONER — no ontology file changed since origin/main: nothing "
               f"to reason.{C_END}")
+    elif not files:
+        bad = sum(v != "PASSED" for p, v in covered.items() if p in changed)
+        colour = C_OK if not bad else C_BAD
+        print(f"  {colour}REASONER — the {len(changed)} ontology file(s) changed since origin/main "
+              f"were all reasoned by --reasoner in this run ({len(changed) - bad} PASSED, "
+              f"{bad} not PASSED: see the two reasoner sections above). Nothing to run by "
+              f"hand.{C_END}")
     else:
-        print(f"  {C_WARN}REASONER — Michel, please run it yourself before pushing "
-              f"({len(files)} ontology file(s) changed since origin/main):{C_END}")
+        print(f"  {C_WARN}REASONER — Michel, please run it before pushing "
+              f"({len(files)} of {len(changed)} changed ontology file(s) not reasoned in this run):{C_END}")
+        print(f"  {C_DIM}   Either all at once: python ontology/toolchain/run_all_layers.py --reasoner"
+              f"   — or one by one:{C_END}")
         for p in files:
             print(f"     python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file {p}")
         print(f"  {C_DIM}   Expected: consistent, no unsatisfiable class. Report the result in "
@@ -529,14 +553,13 @@ def java_major() -> int | None:
     return int(m.group(1)) if m else None
 
 
-def run_m0_reasoner(workers: int = 6) -> dict:
+def run_m0_reasoner(workers: int = 6) -> tuple:
     """The OWL reasoner on every M0 file. Status per file: PASSED, FAILED (inconsistent
     or unsatisfiable class), or ERROR (the reasoner could not run on it)."""
     major = java_major()
     if major is None or major < 25:
         return {"_error": f"not run: Java {major or 'absent'} — the reasoner needs Java >= 25 "
-                          f"(owlready2's bundled Jena). Not run is never 'passed'."}
-    script = TOOLCHAIN_DIR / "owl_reasoning_test" / "owl_reasoning_test.py"
+                          f"(owlready2's bundled Jena). Not run is never 'passed'."}, {}
     # 1.8.0: the file list comes from git, so the frozen names are the names git tracks.
     # Listing the DISK (rglob) froze "yggdrasil" on Linux and found "Yggdrasil" on
     # Windows: the same file reported twice under two names (2026-11-15).
@@ -548,29 +571,69 @@ def run_m0_reasoner(workers: int = 6) -> dict:
     except RuntimeError:
         files = sorted(str(p.relative_to(REPO_ROOT)).replace(os.sep, "/")
                        for p in (REPO_ROOT / "instances").rglob("M0_*.jsonld"))
-    from concurrent.futures import ThreadPoolExecutor
-
-    def one(rel):
-        try:
-            p = subprocess.run([sys.executable, str(script), "--file", rel], cwd=REPO_ROOT,
-                               capture_output=True, text=True, env=_utf8_env(),
-                               encoding="utf-8", errors="replace", timeout=600)
-            out = p.stdout + p.stderr
-        except subprocess.TimeoutExpired:
-            return rel, "ERROR"
-        if "Status" in out and "PASSED" in out.split("Status", 1)[1][:120]:
-            return rel, "PASSED"
-        if "Status" in out and "FAILED" in out.split("Status", 1)[1][:120]:
-            return rel, "FAILED"
-        return rel, "ERROR"
-
-    with ThreadPoolExecutor(max_workers=workers) as ex:
-        status = dict(ex.map(one, files))
+    status = reason_files(files, workers)
     bad = {k: v for k, v in sorted(status.items()) if v != "PASSED"}
-    return {"files": len(files), "not_passed": len(bad),
-            "failed": sum(v == "FAILED" for v in bad.values()),
-            "error": sum(v == "ERROR" for v in bad.values()),
-            "files_not_passed": bad}
+    summary = {"files": len(files), "not_passed": len(bad),
+               "failed": sum(v == "FAILED" for v in bad.values()),
+               "error": sum(v == "ERROR" for v in bad.values()),
+               "files_not_passed": bad}
+    return summary, status
+
+
+def reason_one(rel: str) -> tuple:
+    """owl_reasoning_test.py on one file: PASSED, FAILED (inconsistent or unsatisfiable
+    class) or ERROR (the reasoner could not run on it)."""
+    script = TOOLCHAIN_DIR / "owl_reasoning_test" / "owl_reasoning_test.py"
+    try:
+        p = subprocess.run([sys.executable, str(script), "--file", rel], cwd=REPO_ROOT,
+                           capture_output=True, text=True, env=_utf8_env(),
+                           encoding="utf-8", errors="replace", timeout=600)
+        out = p.stdout + p.stderr
+    except subprocess.TimeoutExpired:
+        return rel, "ERROR"
+    if "Status" in out and "PASSED" in out.split("Status", 1)[1][:120]:
+        return rel, "PASSED"
+    if "Status" in out and "FAILED" in out.split("Status", 1)[1][:120]:
+        return rel, "FAILED"
+    return rel, "ERROR"
+
+
+def reason_files(files: list, workers: int = 6) -> dict:
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        return dict(ex.map(reason_one, files))
+
+
+def run_changed_reasoner() -> dict:
+    """1.9.0: the reasoner on the governed ontology files changed since origin/main outside
+    instances/ (M3, M2, M1, M1 extensions, M0_Common): the M0 instances are the sweep's. Java checked by the caller (run_m0_reasoner)."""
+    changed = changed_ontology_files() or []
+    return reason_files([p for p in changed if not p.startswith("instances/")])
+
+
+def compare_changed_reasoner(status: dict | None) -> bool:
+    print("\n── Changed files outside instances/ (--reasoner) " + "─" * 14)
+    if status is None:
+        print(f"  {C_DIM}[--] not run (add --reasoner).{C_END}")
+        return True
+    if "_error" in status:
+        print(f"  {C_BAD}[{M_BAD}] RUNNER FAILED{C_END} — {status['_error']}")
+        return False
+    if not status:
+        print(f"  {C_DIM}[--] no ontology file outside instances/ changed since origin/main.{C_END}")
+        return True
+    ok = True
+    for k, v in sorted(status.items()):
+        if v == "PASSED":
+            print(f"  {C_OK}[{M_OK}] PASSED{C_END} {k}")
+        else:
+            ok = False
+            print(f"  {C_BAD}[{M_BAD}] {v:<6}{C_END} {k}")
+    if not ok:
+        print(f"  {C_DIM}A changed ontology file must be consistent. Baseline before blame: "
+              f"run the same file at origin/main (git stash) — a failure already there is "
+              f"pre-existing, not this lot's.{C_END}")
+    return ok
 
 
 def compare_reasoner(actual: dict | None, golden: dict) -> bool:
@@ -614,7 +677,8 @@ def main() -> int:
     ap.add_argument("--update-golden", action="store_true",
                     help="accept the CURRENT counts as the new reference (deliberate fixes only)")
     ap.add_argument("--reasoner", action="store_true",
-                    help="also run the OWL reasoner on every M0 instance (Java >= 25, minutes)")
+                    help="also run the OWL reasoner on every M0 instance and on the ontology "
+                         "files outside instances/ changed since origin/main (Java >= 25, minutes)")
     args = ap.parse_args()
 
     print("=" * 62)
@@ -671,8 +735,16 @@ def main() -> int:
             print(f"\n  findings ({len(fs)}):")
             for code, where, what in fs:
                 print(f"     [{code}] {where}: {what}")
-    reasoner = run_m0_reasoner() if args.reasoner else None
+    reasoner, covered, changed_status = None, {}, None
+    if args.reasoner:
+        reasoner, covered = run_m0_reasoner()
+        if "_error" not in reasoner:
+            changed_status = run_changed_reasoner()
+            covered = {**covered, **changed_status}
+        else:
+            changed_status = {"_error": reasoner["_error"]}
     ok &= compare_reasoner(reasoner, golden)
+    ok &= compare_changed_reasoner(changed_status)
 
     if args.update_golden:
         # ⚠ Capture EVERY tracked counter, not a hand-written subset. On 2026-07-14 this
@@ -720,14 +792,14 @@ def main() -> int:
                       f"{reasoner['files']} not PASSED. WRITE DOWN WHY, in the commit message.{C_END}")
         golden["_measured"] = f"{date.today()}, real repository (--update-golden)"
         save_golden(golden)
-        reasoner_reminder()
+        reasoner_reminder(covered)
         print(f"\n{C_WARN}[!!] Golden values REWRITTEN → {GOLDEN_FILE}{C_END}")
         print(f"   {C_DIM}The previous values are kept under '_previous'. Commit this file: "
               f"a lowered reference must be a reviewable, deliberate act — never a side "
               f"effect.{C_END}")
         return 0
 
-    reasoner_reminder()
+    reasoner_reminder(covered)
     print("\n" + "=" * 62)
     if ok:
         print(f"  {C_OK}GATE: PASS{C_END} — counts match the reference.")
