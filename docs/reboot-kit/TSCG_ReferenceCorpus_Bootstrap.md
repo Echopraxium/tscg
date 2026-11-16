@@ -112,10 +112,12 @@ M3 has three perspectives, named in three coexisting terminology contexts
   do not enumerate here).
 The epistemological vocabulary (Territory, Map, Stereopsis) is close to second-order
 cybernetics: the observer is part of the description (von Foerster; Maturana & Varela).
-There is one Stereopsis (Gs), the composition of the two views. Inside the model, Odin
-is the figure of the second-order observer — a guide who locates, reads the Map and
-raises warnings, never an evaluator. The legitimate evaluator is the human outside the
-model, who decides: the user of the kit and the observers of the mock-up
+There is one Stereopsis (Gs), the composition of the two views — the instrument.
+Inside the model, Odin is a second-order map — a map that holds the place of the
+observer — and acts as a co-driver: he locates, reads the Map and raises warnings,
+never an evaluator. The second-order observer proper is the human outside the model,
+who decides and is the legitimate evaluator: the user of the kit and the observers of
+the mock-up
 (`docs/CoreHypotheses/LayerCake_Models_The_Kit.md` §6; `ontology/M3_OdinsWisdom_README.md`).
 S and I exist in several monoids: in prose they are ALWAYS suffixed — `St`/`Ss`,
 `It`/`Im` — and so are the acronyms (`AStFItD`, `REVOIm`, `TKSsL`). Identifiers

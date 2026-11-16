@@ -291,13 +291,15 @@ wisdom is not sharper sight but knowing that his sight is partial, and what it
 cost. This is the stance of the **second-order observer** (von Foerster;
 Maturana & Varela): the observer is part of the description.
 
-There is **one Stereopsis** (Gs), the composition of the two views. Two roles
-must not be confused:
+There is **one Stereopsis** (Gs), the composition of the two views — the
+instrument. Two roles must not be confused:
 
-- **Inside the model, Odin is the figure of the second-order observer** — a
-  guide. Like a navigator or a GPS, he locates, reads the Map and raises
-  warnings (*refuel*, *storm ahead*). He never decides and never evaluates.
-- **Outside the model, the user decides** — with the observers of the mock-up,
+- **Inside the model, Odin is a second-order map** — a map that holds the place
+  of the observer — and acts as a co-driver, a guide. Like a navigator or a
+  GPS, he locates, reads the Map and raises warnings (*refuel*, *storm
+  ahead*). He never decides and never evaluates.
+- **Outside the model, the user is the second-order observer proper and
+  decides** — with the observers of the mock-up,
   at least one of them human. Facing the Territory, the user reacts to the
   unforeseen, may overrule the Map, and negotiates the best trajectory. The
   user is the only legitimate evaluator

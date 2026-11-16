@@ -1,7 +1,7 @@
 # Validating a mock-up — three facets and their heuristics (draft for reflection)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.3.0 (draft) · **Date**: 2026-11-16
+**Version**: 0.3.1 (draft) · **Date**: 2026-11-16
 **Status**: **DRAFT** — meant to start a reflection, not to be graved. No ontology,
 tool or check is proposed for implementation here.
 **Measured at**: HEAD `ee07f1a` (the facts in §5).
@@ -142,8 +142,8 @@ Observations (proposal):
 - **The eye in the well.** An AI language model has access only to Maps — texts about
   the world, the corpus, the files at HEAD — never to the Territory. The human keeps
   the eye on the world. Read this way the myth states the AI's limit, not its wisdom.
-- **Two planes, not to be confused.** In M3, Odin is a *figure inside the model* (the
-  place of the observer in the description). The AI is an *agent outside the model*
+- **Two planes, not to be confused.** In M3, Odin is a *second-order map inside the
+  model* (a map that holds the place of the observer). The AI is an *agent outside the model*
   (it reads and writes the files) that can **play** that role in practice — as a tool
   or a human co-modeller could.
 - **What already does this at HEAD.** The gate (`run_all_layers.py`) and
@@ -195,6 +195,7 @@ the reflexive trap (decision D15 of the WS-15 record); Q9.
 
 | version | date | change |
 |---|---|---|
+| 0.3.1 | 2026-11-16 | §7: Odin is a second-order map inside the model (was "a figure"). |
 | 0.3.0 | 2026-11-16 | §7 leads: the human/AI duo as a cybernetic system (the AI plays Odin's role — guide, warnings — the human decides and evaluates; the eye in the well; two planes; heuristic leads); open questions renumbered §8; Q9. |
 | 0.2.0 | 2026-11-15 | Evaluation outside the model (now in CH4 §6); §6 validation *and refutation* heuristics for mock-ups and for the Toolkit (need recorded); Q7, Q8. |
 | 0.1.0 | 2026-11-15 | First draft: starting points, the three facets (Learning, Realism, Reality Check), heuristic questions, a minimal recording proposal, facts at HEAD (observer field, withdrawn SC-3b "RealityCheck", the M3 meaning of "facet"), six open questions. |
