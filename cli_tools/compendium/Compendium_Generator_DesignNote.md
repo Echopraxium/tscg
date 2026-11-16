@@ -162,7 +162,10 @@ each atlas sheet links its specification.
 The page is a self-contained HTML file on HEAD, `docs/semweb/SemwebVocabularies_Atlas.html`;
 `copy_semweb_atlas()` copies it as-is to `dist/semweb_vocabularies.html` at every build
 and the tab shows it in an `<iframe>` with `?theme=dark` (the atlas honours
-`?theme=dark|light`). It is not a generated view: its content is hand-written reference
+`?theme=dark|light`). Two tabs since 2026-11-16 (Michel): **Map** (the diagram, full
+width; a box opens its sheet) and **Vocabularies** (the sheet, with a picker of the 12
+vocabularies). The atlas posts its height to the Compendium (`postMessage`), and the frame
+takes it: only the page scrolls, never the frame. It is not a generated view: its content is hand-written reference
 material about vocabularies external to TSCG. Its "used in TSCG" marks are a dated
 measurement (namespaces searched in the live `.jsonld`/`.ttl` files), stated as such in the
 page footer. A missing file never breaks the build: the tab says **"Semweb atlas

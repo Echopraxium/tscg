@@ -191,7 +191,7 @@ details.fold.flash>summary{box-shadow:0 0 0 2px var(--accent) inset;transition:b
 .health-intro a{color:var(--accent)}
 .health-intro a:hover{text-decoration:underline}
 .semweb-frame{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:4px 0 12px}
-.semweb-frame iframe{display:block;width:100%;height:min(1400px,85vh);border:0}
+.semweb-frame iframe{display:block;width:100%;height:1100px;border:0}
 .health-legend{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0 4px;font-size:13px;color:var(--muted)}
 .health-legend span::before{content:"";display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
 .hl-g::before{background:#3f9e5a}.hl-o::before{background:#ff8a00}.hl-m::before{background:#c4268f}.hl-r::before{background:#d8322a}.hl-x::before{background:#b9b9b9}
@@ -702,6 +702,14 @@ function renderHealth(){
       open the map alone: <a href="${esc(H.svg)}" target="_blank" rel="noopener">${esc(H.svg)}</a></p></section>`;
 }
 
+// The atlas reports its height (and asks to be scrolled into view after a tab switch):
+// the frame takes the page's scroll instead of scrolling inside itself.
+window.addEventListener("message",e=>{
+  const d=e.data, f=document.getElementById("semweb-frame");
+  if(!f||!d||e.source!==f.contentWindow) return;
+  if(typeof d.semwebHeight==="number"&&d.semwebHeight>200) f.style.height=Math.ceil(d.semwebHeight)+"px";
+  if(d.semwebScrollTop) f.scrollIntoView({block:"start",behavior:"smooth"});
+});
 function renderSemweb(){
   const S=DATA.semweb||{status:"unavailable",reason:"no atlas data in this build",src:"docs/semweb/SemwebVocabularies_Atlas.html"};
   const src=BLOB+encodeURI(S.src||"docs/semweb/SemwebVocabularies_Atlas.html");
@@ -719,7 +727,7 @@ function renderSemweb(){
     placed by the job they do, with the domain each one covers and how they reuse or overlap each other.
     Use it before modelling a notion in TSCG: reuse an existing vocabulary before inventing one.</p>
     ${refs}
-    <div class="semweb-frame"><iframe src="${esc(S.file)}?theme=dark" title="Semantic Web Starter Atlas" loading="lazy"></iframe></div>
+    <div class="semweb-frame"><iframe id="semweb-frame" src="${esc(S.file)}?theme=dark" title="Semantic Web Starter Atlas" scrolling="no"></iframe></div>
     <p class="health-intro">Open the atlas alone: <a href="${esc(S.file)}" target="_blank" rel="noopener">${esc(S.file)}</a> ·
       source on HEAD: <a href="${src}" target="_blank" rel="noopener">${esc(S.src)}</a></p></section>`;
 }

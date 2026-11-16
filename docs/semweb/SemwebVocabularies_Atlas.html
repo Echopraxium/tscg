@@ -38,8 +38,20 @@ body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16
 header h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,5vw,44px);line-height:1.05;margin:0;letter-spacing:-.01em;text-wrap:balance}
 header p{margin:10px 0 0;max-width:62ch;color:var(--muted)}
 .eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
-.plate{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:24px;align-items:start}
-@media (max-width:820px){.plate{grid-template-columns:1fr}}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line)}
+.tabs button{font-family:var(--f-display);font-weight:500;font-size:15px;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:8px 14px 9px;cursor:pointer;margin-bottom:-1px}
+.tabs button[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
+.tabs button:hover{color:var(--fg)}
+.tabs button:focus-visible,.picker button:focus-visible,.back:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel-map{display:grid;gap:10px;justify-items:center}
+.panel-map .map{width:100%;max-width:640px}
+.panel-vocab{display:grid;gap:14px;max-width:820px;width:100%;margin:0 auto}
+.vbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
+.back{font:inherit;font-family:var(--f-mono);font-size:12.5px;background:none;border:0;padding:0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.picker{display:flex;flex-wrap:wrap;gap:6px}
+.picker button{font-family:var(--f-mono);font-size:12px;background:var(--paper);color:var(--fg);border:1px solid var(--line);border-radius:99px;padding:3px 10px;cursor:pointer}
+.picker button:hover{border-color:var(--accent)}
+.picker button[aria-current="true"]{background:var(--node-sel);border-color:var(--node-sel);color:var(--node-sel-fg)}
 .map{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:12px;min-width:0}
 .map svg{width:100%;height:auto;display:block}
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);padding:8px 4px 2px}
@@ -55,13 +67,13 @@ header p{margin:10px 0 0;max-width:62ch;color:var(--muted)}
 .node:focus{outline:none}
 .node.sel rect{fill:var(--node-sel);stroke:var(--node-sel)}
 .node.sel .nm,.node.sel .px{fill:var(--node-sel-fg)}
-.node.dim{opacity:.35}
+.node.dim{opacity:1}
 .edge{fill:none;stroke-width:1.5;transition:opacity .15s}
 .edge.builds{stroke:var(--builds)}
 .edge.uses{stroke:var(--uses);stroke-dasharray:5 4}
 .edge.overlaps{stroke:var(--overlap);stroke-dasharray:1.5 3.5;stroke-linecap:round;stroke-width:2}
-.edge.dim{opacity:.1}
-.band-lbl{font-family:var(--f-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;fill:var(--muted)}
+.edge.dim{opacity:.18}
+.band-lbl{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;fill:var(--muted)}
 .sheet{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:22px 22px 20px;display:grid;gap:14px;min-width:0}
 .sheet h2{font-family:var(--f-display);font-weight:700;font-size:30px;line-height:1.1;margin:0}
 .meta{display:flex;flex-wrap:wrap;gap:8px 16px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
@@ -96,10 +108,14 @@ footer{font-size:13px;color:var(--muted)}
   <header>
     <div class="eyebrow">Atlas · 12 starter vocabularies</div>
     <h1>Semantic Web Starter Atlas</h1>
-    <p>Twelve vocabularies a newcomer meets first, placed by the job they do. The foundations sit at the bottom; each layer reuses the ones below it. Select a vocabulary to read what domain it covers, its key terms, and how it connects to the others.</p>
+    <p>Twelve vocabularies a newcomer meets first, placed by the job they do. The foundations sit at the bottom; each layer reuses the ones below it. Select a vocabulary on the map to open its sheet: the domain it covers, its key terms, and how it connects to the others.</p>
   </header>
 
-  <div class="plate">
+  <div class="tabs" role="tablist" aria-label="Atlas views">
+    <button type="button" role="tab" id="tab-map" aria-controls="panel-map" aria-selected="true">Map</button>
+    <button type="button" role="tab" id="tab-vocab" aria-controls="panel-vocab" aria-selected="false">Vocabularies</button>
+  </div>
+  <div class="panel-map" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
     <div class="map">
       <svg id="atlas" viewBox="0 0 440 610" role="group" aria-label="Map of semantic web vocabularies"></svg>
       <div class="legend">
@@ -108,8 +124,14 @@ footer{font-size:13px;color:var(--muted)}
         <span><svg viewBox="0 0 30 8"><line x1="0" y1="4" x2="30" y2="4" class="edge overlaps"/></svg>overlaps with</span>
         <span><svg viewBox="0 0 8 8" style="width:8px"><circle cx="4" cy="4" r="3.5" fill="var(--tscg)"/></svg>used in TSCG files</span>
       </div>
-      <div class="hint">Tap a box to select it. Its links stay bright.</div>
+      <div class="hint">Tap a box to open its sheet. The selected box and its links stay bright.</div>
     </div>
+  </div>
+  <div class="panel-vocab" id="panel-vocab" role="tabpanel" aria-labelledby="tab-vocab" hidden>
+    <div class="vbar">
+      <button type="button" class="back" id="back">← Back to the map</button>
+    </div>
+    <nav class="picker" id="picker" aria-label="Vocabularies"></nav>
     <article class="sheet" id="sheet" aria-live="polite"></article>
   </div>
 
@@ -276,17 +298,38 @@ for(const id in V){
   const n=mk("text",{x:v.x,y:v.y-2,"text-anchor":"middle",class:"nm"},g);n.textContent=v.name;
   const p=mk("text",{x:v.x,y:v.y+13,"text-anchor":"middle",class:"px"},g);p.textContent=v.prefix;
   if(v.tscg) mk("circle",{cx:v.x+NW/2-7,cy:v.y-NH/2+7,r:3.5,class:"dot"},g);
-  g.addEventListener("click",()=>select(id));
-  g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(id)}});
+  g.addEventListener("click",()=>{select(id);show("vocab",true)});
+  g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(id);show("vocab",true)}});
   nodeEls[id]=g;
 }
 
 const sheet=document.getElementById("sheet");
+// Two tabs (Michel, 2026-11-16): the map and the sheets. A box on the map opens its sheet.
+const tabs={map:document.getElementById("tab-map"),vocab:document.getElementById("tab-vocab")};
+const panels={map:document.getElementById("panel-map"),vocab:document.getElementById("panel-vocab")};
+function show(name,scroll){
+  for(const k in tabs){const on=k===name;tabs[k].setAttribute("aria-selected",on);panels[k].hidden=!on}
+  try{localStorage.setItem("swatlas-tab",name)}catch(e){}
+  if(scroll){tabs[name].scrollIntoView({block:"nearest"}); post({semwebScrollTop:true})}
+  post();
+}
+tabs.map.addEventListener("click",()=>show("map"));
+tabs.vocab.addEventListener("click",()=>show("vocab"));
+document.getElementById("back").addEventListener("click",()=>show("map",true));
+const picker=document.getElementById("picker"), pick={};
+for(const id in V){const b=document.createElement("button");b.type="button";b.textContent=V[id].name;b.addEventListener("click",()=>select(id));picker.append(b);pick[id]=b}
+// Embedded in the Compendium: tell the host page our height, so only the page scrolls.
+function post(extra){
+  if(window.parent===window) return;
+  try{window.parent.postMessage(Object.assign({semwebHeight:Math.ceil(document.body.getBoundingClientRect().height)},extra||{}),"*")}catch(e){}
+}
+try{new ResizeObserver(()=>post()).observe(document.body)}catch(e){}
 const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e};
 function select(id){
   const v=V[id], linked=new Set([id]);
   E.forEach(([f,t],i)=>{const on=f===id||t===id;edgeEls[i].classList.toggle("dim",!on);if(on){linked.add(f);linked.add(t)}});
   for(const k in nodeEls){nodeEls[k].classList.toggle("sel",k===id);nodeEls[k].classList.toggle("dim",!linked.has(k))}
+  for(const k in pick) pick[k].setAttribute("aria-current",k===id);
   sheet.replaceChildren();
   sheet.append(el("div","eyebrow",v.prefix+"  ·  "+v.by), el("h2",null,v.name));
   const meta=el("div","meta"); const ns=el("span");ns.append("namespace ",el("code",null,v.ns));
@@ -314,8 +357,9 @@ function select(id){
   sheet.append(ul);
   try{localStorage.setItem("swatlas-sel",id)}catch(e){}
 }
-let start="rdf"; try{const s=localStorage.getItem("swatlas-sel"); if(s&&V[s]) start=s}catch(e){}
-select(start);
+let start="rdf", tab="map";
+try{const s=localStorage.getItem("swatlas-sel"); if(s&&V[s]) start=s; if(localStorage.getItem("swatlas-tab")==="vocab") tab="vocab"}catch(e){}
+select(start); show(tab);
 </script>
 
 </body>
