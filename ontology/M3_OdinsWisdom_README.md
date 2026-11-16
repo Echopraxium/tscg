@@ -282,6 +282,33 @@ Analogously in TSCG:
 
 ---
 
+## 🔭 Why "Odin's Wisdom" — the observer
+
+Odin gives one eye to Mímir's well to gain wisdom: the sacrificed eye stays in
+the well (the Map), the remaining eye looks at the world (the Territory). His
+wisdom is not sharper sight but knowing that his sight is partial, and what it
+cost. This is the stance of the **second-order observer** (von Foerster;
+Maturana & Varela): the observer is part of the description.
+
+There is **one Stereopsis** (Gs), the composition of the two views. Two roles
+must not be confused:
+
+- **Inside the model, Odin is the figure of the second-order observer** — a
+  guide. Like a navigator or a GPS, he locates, reads the Map and raises
+  warnings (*refuel*, *storm ahead*). He never decides and never evaluates.
+- **Outside the model, the user decides** — with the observers of the mock-up,
+  at least one of them human. Facing the Territory, the user reacts to the
+  unforeseen, may overrule the Map, and negotiates the best trajectory. The
+  user is the only legitimate evaluator
+  (`docs/CoreHypotheses/LayerCake_Models_The_Kit.md` §6).
+
+Odin is to the user what the Map is to the Territory. The model may hold a map
+of the observer; it never becomes the observer — so it cannot evaluate itself.
+
+This reading of the myth is an interpretation, in the metaphoric vocabulary.
+
+---
+
 ## 📚 Key Takeaways
 
 1. **Reification of stereopsis** — not a third head, but the formal algebraic
