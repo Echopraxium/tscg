@@ -176,6 +176,10 @@ h1{text-align:left;font-family:var(--disp);font-weight:700;font-size:clamp(30px,
 details.fold.flash>summary{box-shadow:0 0 0 2px var(--accent) inset;transition:box-shadow .3s}
 @media (max-width:640px){.health-frame:has(.xcorner){padding-top:34px}.xcorner{top:6px;right:8px;font-size:12px;padding:2px 9px}}
 .health-frame object{display:block;width:100%;height:auto}
+.health-intro a{color:var(--accent)}
+.health-intro a:hover{text-decoration:underline}
+.semweb-frame{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:4px 0 12px}
+.semweb-frame iframe{display:block;width:100%;height:min(1400px,85vh);border:0}
 .health-legend{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0 4px;font-size:13px;color:var(--muted)}
 .health-legend span::before{content:"";display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
 .hl-g::before{background:#3f9e5a}.hl-o::before{background:#ff8a00}.hl-m::before{background:#c4268f}.hl-r::before{background:#d8322a}.hl-x::before{background:#b9b9b9}
@@ -332,6 +336,7 @@ const UNDERSTAND="Understand the kit";
 const DOC_ORDER=["Epistemology","Guides & templates","Gate tools & tooling","The M3–M0 layers","Project management"];
 const EYE=["KitUser","KitCrafter","KitArchitect"];
 const HEALTH="LayerCake Health";   // KitArchitect only (Michel, 2026-10-06)
+const SEMWEB="Semweb vocabularies: overview";   // KitArchitect only (WS-15 SF-7, Michel, 2026-11-16)
 const ICON={
   [UNDERSTAND]:'<path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="m2 13 10 5 10-5"/>',
   "Instances & simulations":'<polygon points="6 4 20 12 6 20 6 4"/>',
@@ -340,7 +345,8 @@ const ICON={
   "Gate tools & tooling":'<path d="M14 7a4 4 0 1 0-5 5l-6 6 3 3 6-6a4 4 0 0 0 5-5l-2 2-3-1-1-3z"/>',
   "The M3–M0 layers":'<rect x="4" y="4" width="16" height="4" rx="1"/><rect x="4" y="10" width="16" height="4" rx="1"/><rect x="4" y="16" width="16" height="4" rx="1"/>',
   "Project management":'<path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/>',
-  [HEALTH]:'<polygon points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5"/>'
+  [HEALTH]:'<polygon points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5"/>',
+  [SEMWEB]:'<circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><circle cx="12" cy="6" r="2.5"/><path d="M8 16.5l3-8M16 16.5l-3-8M8.5 18h7"/>'
 };
 const GT='<span class="chip gt">Gt</span>', GM='<span class="chip gm">Gm</span>', GS='<span class="chip gs">Gs</span>';
 const GLOSSARY=[
@@ -401,11 +407,11 @@ function sectionsForAudience(){
   if(has(PM)) out.push(PM);
   if(DATA.subjects.some(inAud)) out.push("Instances & simulations");
   DOC_ORDER.forEach(s=>{ if(s!==PM&&has(s)) out.push(s); });
-  if(audience==="KitArchitect") out.push(HEALTH);
+  if(audience==="KitArchitect") out.push(SEMWEB,HEALTH);
   return out;
 }
 function sectionCount(s){
-  if(s===UNDERSTAND||s===HEALTH) return "";
+  if(s===UNDERSTAND||s===HEALTH||s===SEMWEB) return "";
   if(s==="Instances & simulations") return DATA.subjects.filter(inAud).length;
   return DATA.docs.filter(d=>inAud(d)&&d.section===s).length;
 }
@@ -664,6 +670,28 @@ function renderHealth(){
       open the map alone: <a href="${esc(H.svg)}" target="_blank" rel="noopener">${esc(H.svg)}</a></p></section>`;
 }
 
+function renderSemweb(){
+  const S=DATA.semweb||{status:"unavailable",reason:"no atlas data in this build",src:"docs/semweb/SemwebVocabularies_Atlas.html"};
+  const src=BLOB+encodeURI(S.src||"docs/semweb/SemwebVocabularies_Atlas.html");
+  const refs=`<p class="health-intro">Reference sources:
+      <a href="https://lov.linkeddata.es/dataset/lov/" target="_blank" rel="noopener">Linked Open Vocabularies (LOV)</a> ·
+      <a href="https://prefix.cc/" target="_blank" rel="noopener">prefix.cc</a> ·
+      <a href="https://www.w3.org/TR/prov-dc/" target="_blank" rel="noopener">Dublin Core to PROV mapping</a>.
+      Each vocabulary's specification is linked from its sheet in the atlas.</p>`;
+  if(S.status!=="ok"){
+    return `<div class="intro"><p><b>Semweb atlas unavailable in this build.</b></p>
+      <p class="health-intro">${esc(S.reason||"unknown reason")}</p>${refs}</div>`;
+  }
+  return `<section class="group"><h2><span>Semweb vocabularies: overview</span><span>12 starter vocabularies</span></h2>
+    <p class="health-intro">The vocabularies a newcomer meets first (RDF, RDFS, OWL, XSD, SHACL, SKOS, DCTerms, PROV-O, DCAT, ADMS, FOAF, schema.org),
+    placed by the job they do, with the domain each one covers and how they reuse or overlap each other.
+    Use it before modelling a notion in TSCG: reuse an existing vocabulary before inventing one.</p>
+    ${refs}
+    <div class="semweb-frame"><iframe src="${esc(S.file)}?theme=dark" title="Semantic Web Starter Atlas" loading="lazy"></iframe></div>
+    <p class="health-intro">Open the atlas alone: <a href="${esc(S.file)}" target="_blank" rel="noopener">${esc(S.file)}</a> ·
+      source on HEAD: <a href="${src}" target="_blank" rel="noopener">${esc(S.src)}</a></p></section>`;
+}
+
 function render(focus){
   const c=counts();
   document.getElementById("nvis").textContent=c.total;
@@ -691,6 +719,7 @@ function render(focus){
   else if(section==="Instances & simulations") html=renderInstances();
   else if(section==="Project management") html=renderProject();
   else if(section===HEALTH) html=renderHealth();
+  else if(section===SEMWEB) html=renderSemweb();
   else html=renderDocs(section);
   html+=`<div class="pager"><button id="pp" ${i===0?"hidden":""}>‹ ${esc(secs[i-1]||"")}</button><span></span><button id="pn" ${i===secs.length-1?"hidden":""}>${esc(secs[i+1]||"")} ›</button></div>`;
   v.innerHTML=html;

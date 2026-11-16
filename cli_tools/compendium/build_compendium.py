@@ -256,6 +256,20 @@ def run_health_map(root, outdir):
         return {"status": "ok", "svg": HEALTH_FILE, "snapshot": os.path.basename(svg),
                 "width": int(m.group(1)) if m else 1600, "height": int(m.group(2)) if m else 1700}
 
+SEMWEB_SRC = "docs/semweb/SemwebVocabularies_Atlas.html"
+SEMWEB_FILE = "semweb_vocabularies.html"
+
+def copy_semweb_atlas(root, outdir):
+    """Semweb vocabularies overview (WS-15 SF-7, 2026-11-16): a self-contained page kept
+    on HEAD at SEMWEB_SRC, copied as-is to dist/ and embedded in the KitArchitect tab
+    "Semweb vocabularies: overview". A missing file never breaks the build: the tab says
+    so and names the expected path."""
+    src = os.path.join(root, SEMWEB_SRC)
+    if not os.path.isfile(src):
+        return {"status": "unavailable", "reason": f"page not found: {SEMWEB_SRC}", "src": SEMWEB_SRC}
+    shutil.copyfile(src, os.path.join(outdir, SEMWEB_FILE))
+    return {"status": "ok", "file": SEMWEB_FILE, "src": SEMWEB_SRC}
+
 WORKSITE_GRAPH_SCRIPT = "ontology/toolchain/worksite_graph.py"
 WORKSITE_GRAPH_FILE = "worksites_dependency_graph.svg"
 
@@ -378,7 +392,9 @@ def main():
     health=run_health_map(a.root,a.out)
     wsgraph=run_worksite_graph(a.root,a.out)
     wsreg=worksite_registries(a.root)
-    data=json.dumps({"subjects":subjects,"docs":docs,"build":build_stamp(a.root),"health":health,"wsgraph":wsgraph,"wsreg":wsreg},ensure_ascii=False)
+    semweb=copy_semweb_atlas(a.root,a.out)
+    data=json.dumps({"subjects":subjects,"docs":docs,"build":build_stamp(a.root),"health":health,"wsgraph":wsgraph,"wsreg":wsreg,
+                     "semweb":semweb},ensure_ascii=False)
     html=read(a.template)
     if '"@@DATA@@"' not in html:
         raise SystemExit("template missing the \"@@DATA@@\" placeholder")
@@ -394,6 +410,7 @@ def main():
     print(f"  docs: {len(docs)}")
     print(f"  kit workshops copied: {kits}")
     print(f"  worksites graph: {wsgraph.get('status')}" + (f" ({wsgraph.get('reason')})" if wsgraph.get("reason") else ""))
+    print(f"  semweb atlas: {semweb.get('status')}" + (f" ({semweb.get('reason')})" if semweb.get("reason") else ""))
     print(f"  health map: {health.get('status')}" + (f" ({health.get('reason')})" if health.get("reason") else ""))
 
 if __name__=="__main__": main()

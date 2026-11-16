@@ -1,0 +1,322 @@
+<!doctype html>
+<!-- Semantic Web Starter Atlas — 12 starter vocabularies, their domains and relations.
+     Author: Echopraxium with the collaboration of Claude AI · Created: 2026-10-25
+     Self-contained (no build step). Registered as WS-15 item SF-7. Shown in the Compendium tab "Semweb vocabularies: overview"
+     (KitArchitect), copied into dist/ by cli_tools/compendium/build_compendium.py. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Semantic Web Starter Atlas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: layered "atlas plate" (foundations at the bottom, like a layer cake) + a detail sheet for the selected vocabulary */
+:root{
+  --bg:#F2F4F1; --paper:#FBFCFA; --fg:#1B2420; --muted:#5B6862; --line:#C9D2CC;
+  --accent:#1F6F6A; --uses:#1F6F6A; --overlap:#A86A12; --builds:#2D3A34;
+  --band-a:#E6ECE8; --band-b:#EDF1EE; --node:#FFFFFF; --node-sel:#1F6F6A; --node-sel-fg:#FFFFFF;
+  --tscg:#7A4E9E;
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111715; --paper:#171F1C; --fg:#E2EAE5; --muted:#93A39B; --line:#33413B;
+  --accent:#62C3B9; --uses:#62C3B9; --overlap:#E3AA4E; --builds:#C9D6CF;
+  --band-a:#18211E; --band-b:#1C2622; --node:#202B27; --node-sel:#62C3B9; --node-sel-fg:#0E1412;
+  --tscg:#C29BE6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111715; --paper:#171F1C; --fg:#E2EAE5; --muted:#93A39B; --line:#33413B;
+  --accent:#62C3B9; --uses:#62C3B9; --overlap:#E3AA4E; --builds:#C9D6CF;
+  --band-a:#18211E; --band-b:#1C2622; --node:#202B27; --node-sel:#62C3B9; --node-sel-fg:#0E1412;
+  --tscg:#C29BE6; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px;display:grid;gap:28px}
+header h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,5vw,44px);line-height:1.05;margin:0;letter-spacing:-.01em;text-wrap:balance}
+header p{margin:10px 0 0;max-width:62ch;color:var(--muted)}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.plate{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:820px){.plate{grid-template-columns:1fr}}
+.map{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:12px;min-width:0}
+.map svg{width:100%;height:auto;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);padding:8px 4px 2px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend svg{width:30px;height:8px}
+.hint{font-size:13px;color:var(--muted);padding:2px 4px 0}
+.node{cursor:pointer}
+.node rect{fill:var(--node);stroke:var(--line);stroke-width:1.2;transition:fill .15s}
+.node .nm{font-family:var(--f-display);font-weight:700;font-size:13px;fill:var(--fg)}
+.node .px{font-family:var(--f-mono);font-size:9.5px;fill:var(--muted)}
+.node .dot{fill:var(--tscg)}
+.node:hover rect,.node:focus-visible rect{stroke:var(--accent);stroke-width:2}
+.node:focus{outline:none}
+.node.sel rect{fill:var(--node-sel);stroke:var(--node-sel)}
+.node.sel .nm,.node.sel .px{fill:var(--node-sel-fg)}
+.node.dim{opacity:.35}
+.edge{fill:none;stroke-width:1.5;transition:opacity .15s}
+.edge.builds{stroke:var(--builds)}
+.edge.uses{stroke:var(--uses);stroke-dasharray:5 4}
+.edge.overlaps{stroke:var(--overlap);stroke-dasharray:1.5 3.5;stroke-linecap:round;stroke-width:2}
+.edge.dim{opacity:.1}
+.band-lbl{font-family:var(--f-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;fill:var(--muted)}
+.sheet{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:22px 22px 20px;display:grid;gap:14px;min-width:0}
+.sheet h2{font-family:var(--f-display);font-weight:700;font-size:30px;line-height:1.1;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px 16px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.meta a{color:var(--accent)}
+.meta code{color:var(--fg);word-break:break-all}
+.chip{display:inline-block;font-family:var(--f-mono);font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--tscg);color:var(--tscg)}
+.sheet h3{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:4px 0 0;font-weight:600}
+.sheet p{margin:0;max-width:65ch}
+.terms{display:flex;flex-wrap:wrap;gap:6px}
+.terms code{font-family:var(--f-mono);font-size:12.5px;background:var(--band-a);padding:2px 7px;border-radius:3px}
+pre{margin:0;background:var(--band-a);border-radius:4px;padding:12px 14px;overflow-x:auto;font-family:var(--f-mono);font-size:12.5px;line-height:1.5}
+.rels{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.rels li{display:flex;gap:10px;align-items:baseline;font-size:15px}
+.rels .k{font-family:var(--f-mono);font-size:11px;min-width:76px;color:var(--muted)}
+.rels button{font:inherit;font-family:var(--f-display);font-weight:500;background:none;border:0;padding:0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.rels .why{color:var(--muted);font-size:14px}
+section.lower{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px}
+.panel h2{font-family:var(--f-display);font-weight:700;font-size:22px;margin:0 0 10px}
+.panel p,.panel li{max-width:65ch}
+ol.path{margin:0;padding-left:1.4em;display:grid;gap:8px}
+ul.src{margin:0;padding-left:1.2em;display:grid;gap:8px}
+ul.src a,footer a{color:var(--accent)}
+ol.path b{font-family:var(--f-display)}
+.note{border-left:3px solid var(--overlap);padding:2px 0 2px 14px}
+footer{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Atlas · 12 starter vocabularies</div>
+    <h1>Semantic Web Starter Atlas</h1>
+    <p>Twelve vocabularies a newcomer meets first, placed by the job they do. The foundations sit at the bottom; each layer reuses the ones below it. Select a vocabulary to read what domain it covers, its key terms, and how it connects to the others.</p>
+  </header>
+
+  <div class="plate">
+    <div class="map">
+      <svg id="atlas" viewBox="0 0 440 610" role="group" aria-label="Map of semantic web vocabularies"></svg>
+      <div class="legend">
+        <span><svg viewBox="0 0 30 8"><line x1="0" y1="4" x2="30" y2="4" class="edge builds"/></svg>builds on</span>
+        <span><svg viewBox="0 0 30 8"><line x1="0" y1="4" x2="30" y2="4" class="edge uses"/></svg>reuses terms of</span>
+        <span><svg viewBox="0 0 30 8"><line x1="0" y1="4" x2="30" y2="4" class="edge overlaps"/></svg>overlaps with</span>
+        <span><svg viewBox="0 0 8 8" style="width:8px"><circle cx="4" cy="4" r="3.5" fill="var(--tscg)"/></svg>used in TSCG files</span>
+      </div>
+      <div class="hint">Tap a box to select it. Its links stay bright.</div>
+    </div>
+    <article class="sheet" id="sheet" aria-live="polite"></article>
+  </div>
+
+  <section class="lower">
+    <div class="panel">
+      <h2>A reading order</h2>
+      <ol class="path">
+        <li><b>RDF</b> and <b>XSD</b>: everything is a triple; literals carry datatypes.</li>
+        <li><b>RDFS</b>: classes, subclasses, labels. Enough for most small models.</li>
+        <li><b>SKOS</b> and <b>DCTerms</b>: name concepts and describe documents.</li>
+        <li><b>OWL</b>: when you need richer logic and a reasoner.</li>
+        <li><b>SHACL</b>: check that real data has the shape you expect.</li>
+        <li><b>PROV-O</b>, <b>DCAT</b>, <b>ADMS</b>, <b>FOAF</b>, <b>schema.org</b>: pick up as your data needs them.</li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h2>Two worlds to keep apart</h2>
+      <p class="note"><b>OWL reasons in an open world.</b> A missing fact is unknown, not false, so OWL infers new facts rather than reporting errors. <b>SHACL validates in a closed world.</b> A missing required property is a violation. Use OWL to say what things mean and SHACL to check what a file contains.</p>
+      <p style="margin-top:12px">The name “layer cake” for the Semantic Web stack comes from Tim Berners-Lee's diagrams of the early 2000s. TSCG's own Layer Cake is a separate idea that shares the image.</p>
+    </div>
+    <div class="panel">
+      <h2>Reference sources</h2>
+      <ul class="src">
+        <li><a href="https://lov.linkeddata.es/dataset/lov/" target="_blank" rel="noopener">Linked Open Vocabularies (LOV)</a>: search engine and catalogue of several hundred vocabularies, with the dependencies between them.</li>
+        <li><a href="https://prefix.cc/" target="_blank" rel="noopener">prefix.cc</a>: look up the namespace behind a prefix, or the usual prefix for a namespace.</li>
+        <li><a href="https://www.w3.org/TR/prov-dc/" target="_blank" rel="noopener">Dublin Core to PROV mapping</a>: the W3C note behind the DCTerms–PROV-O overlap.</li>
+        <li>The specification of each vocabulary is linked from its sheet above.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>Namespaces and dates are given as published by W3C, DCMI and schema.org. The “used in TSCG” marks were measured on HEAD <code>97af180</code> (2026-11-16) by searching each namespace in the live <code>.jsonld</code> and <code>.ttl</code> files; PROV-O, DCAT and FOAF were found in none. The marks are a snapshot: re-measure before relying on them.</footer>
+</div>
+
+<script>
+// ?theme=dark|light forces a theme (the Compendium embeds the atlas with ?theme=dark).
+try{const t=new URLSearchParams(location.search).get("theme"); if(t==="dark"||t==="light") document.documentElement.dataset.theme=t;}catch(e){}
+const V = {
+ rdf:{spec:"https://www.w3.org/TR/rdf11-concepts/",name:"RDF",prefix:"rdf:",ns:"http://www.w3.org/1999/02/22-rdf-syntax-ns#",by:"W3C",since:"1999 · RDF 1.1 in 2014",x:150,y:560,
+  tscg:"rdf:type (as @type in JSON-LD), in nearly every file",
+  domain:"The data model itself. Every statement is a triple: subject, predicate, object. RDF defines the few terms needed to say that a resource has a type, and to build lists and language-tagged strings. Turtle, JSON-LD and RDF/XML are just different ways to write the same graph.",
+  terms:["rdf:type","rdf:Property","rdf:langString","rdf:List","rdf:value"],
+  ex:'ex:fire rdf:type ex:Reaction .\nex:fire ex:temperature "600"^^xsd:integer .',
+  when:"Always. You are using RDF as soon as you write a triple."},
+ xsd:{spec:"https://www.w3.org/TR/xmlschema11-2/",name:"XSD",tscg:"typed literals (xsd:float, xsd:date…) in nearly every file",prefix:"xsd:",ns:"http://www.w3.org/2001/XMLSchema#",by:"W3C",since:"2001 · 1.1 in 2012",x:290,y:560,
+  domain:"Datatypes for literal values. RDF borrows them from XML Schema so that \"42\" can be read as an integer and \"2026-10-25\" as a date, which lets tools compare and sort values correctly.",
+  terms:["xsd:string","xsd:integer","xsd:decimal","xsd:boolean","xsd:date","xsd:dateTime"],
+  ex:'ex:obs ex:date "2026-10-25"^^xsd:date ;\n       ex:count "3"^^xsd:integer .',
+  when:"Whenever a value is a number, a date or a boolean rather than plain text."},
+ rdfs:{spec:"https://www.w3.org/TR/rdf-schema/",name:"RDFS",prefix:"rdfs:",ns:"http://www.w3.org/2000/01/rdf-schema#",by:"W3C",since:"2004 · 1.1 in 2014",x:150,y:450,
+  tscg:"rdfs:label, rdfs:comment, rdfs:subClassOf (combos, domains)",
+  domain:"A minimal schema language. RDFS lets you declare classes and properties, arrange them in hierarchies, say which class a property applies to, and attach human-readable labels and comments.",
+  terms:["rdfs:Class","rdfs:subClassOf","rdfs:subPropertyOf","rdfs:domain","rdfs:range","rdfs:label","rdfs:comment"],
+  ex:'ex:Poclet rdfs:subClassOf ex:Model ;\n          rdfs:label "Poclet"@en .\nex:hasPart rdfs:domain ex:Model .',
+  when:"To give your data a vocabulary of classes and properties. Often enough on its own."},
+ owl:{spec:"https://www.w3.org/TR/owl2-primer/",name:"OWL 2",prefix:"owl:",ns:"http://www.w3.org/2002/07/owl#",by:"W3C",since:"2004 · OWL 2 in 2009",x:290,y:450,
+  tscg:"owl:Class, owl:Ontology, owl:versionInfo",
+  domain:"A logic for ontologies, built on RDFS. OWL adds cardinality, disjointness, equivalence, inverse and transitive properties, and identity between resources. A reasoner can then infer new facts or detect contradictions.",
+  terms:["owl:Ontology","owl:Class","owl:ObjectProperty","owl:DatatypeProperty","owl:equivalentClass","owl:sameAs","owl:imports","owl:versionInfo"],
+  ex:'ex:Model a owl:Class .\nex:hasPart a owl:ObjectProperty ;\n           owl:inverseOf ex:partOf .',
+  when:"When the meaning must be precise enough for a reasoner to check or extend it."},
+ shacl:{spec:"https://www.w3.org/TR/shacl/",name:"SHACL",prefix:"sh:",ns:"http://www.w3.org/ns/shacl#",by:"W3C",since:"2017",x:110,y:340,
+  tscg:"the gate's grammars: ontology/toolchain/check-M0, check-M1, check-M2, grammars/",
+  domain:"Validation of RDF data against shapes. A shape says which nodes it targets and what they must have: how many values, of which datatype, matching which pattern. Validation is closed-world, so missing data is reported as a violation.",
+  terms:["sh:NodeShape","sh:PropertyShape","sh:targetClass","sh:path","sh:minCount","sh:maxCount","sh:datatype","sh:pattern"],
+  ex:'ex:ModelShape a sh:NodeShape ;\n  sh:targetClass ex:Model ;\n  sh:property [ sh:path rdfs:label ;\n                sh:minCount 1 ] .',
+  when:"To check that files meet a contract before you accept them, like a test suite for data."},
+ skos:{spec:"https://www.w3.org/TR/skos-reference/",name:"SKOS",prefix:"skos:",ns:"http://www.w3.org/2004/02/skos/core#",by:"W3C",since:"2009",x:330,y:340,
+  tscg:"skos:definition, skos:example, skos:altLabel; skos:Concept / ConceptScheme for facets; skos:closeMatch for alignments",
+  domain:"Knowledge organization: thesauri, taxonomies, classification schemes and tag lists. SKOS concepts are linked by looser relations than OWL classes (broader, narrower, related) and can be mapped to concepts in other schemes.",
+  terms:["skos:Concept","skos:ConceptScheme","skos:prefLabel","skos:altLabel","skos:broader","skos:narrower","skos:related","skos:closeMatch","skos:exactMatch"],
+  ex:'ex:feedback a skos:Concept ;\n  skos:prefLabel "Feedback"@en ;\n  skos:altLabel "Feedback loop"@en ;\n  skos:broader ex:control ;\n  skos:closeMatch other:Feedback .',
+  when:"For terms and topics you want to arrange and align without committing to strict logic."},
+ dcterms:{spec:"https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",name:"DCTerms",prefix:"dcterms:",ns:"http://purl.org/dc/terms/",by:"DCMI",since:"1995 (Dublin Core) · terms 2008",x:70,y:230,
+  tscg:"dcterms:created, creator, date, description (file and node metadata)",
+  domain:"Descriptive metadata for any resource: who made it, when, its title, subject, license and source. Dublin Core started as 15 elements for library records (dc: namespace); DCTerms is the modern, typed version.",
+  terms:["dcterms:title","dcterms:creator","dcterms:date","dcterms:description","dcterms:subject","dcterms:license","dcterms:source"],
+  ex:'ex:doc dcterms:title "Fire Triangle" ;\n       dcterms:creator ex:alice ;\n       dcterms:date "2026-10-25"^^xsd:date .',
+  when:"For the basic catalogue card of any document, file or dataset."},
+ prov:{spec:"https://www.w3.org/TR/prov-o/",name:"PROV-O",prefix:"prov:",ns:"http://www.w3.org/ns/prov#",by:"W3C",since:"2013",x:175,y:230,
+  domain:"Provenance: where something came from. PROV-O describes entities, the activities that produced or used them, and the agents responsible, so you can trace how a result was derived.",
+  terms:["prov:Entity","prov:Activity","prov:Agent","prov:wasGeneratedBy","prov:used","prov:wasDerivedFrom","prov:wasAttributedTo"],
+  ex:'ex:report prov:wasGeneratedBy ex:run42 .\nex:run42 a prov:Activity ;\n         prov:used ex:dataset .',
+  when:"When you need an audit trail: which run, input or person produced a file."},
+ dcat:{spec:"https://www.w3.org/TR/vocab-dcat-3/",name:"DCAT",prefix:"dcat:",ns:"http://www.w3.org/ns/dcat#",by:"W3C",since:"2014 · v3 in 2024",x:280,y:230,
+  domain:"Data catalogues. DCAT describes catalogues, the datasets they list, and the distributions (files, APIs) through which each dataset can be obtained. Open-data portals use it widely.",
+  terms:["dcat:Catalog","dcat:Dataset","dcat:Distribution","dcat:DataService","dcat:downloadURL","dcat:keyword"],
+  ex:'ex:ds a dcat:Dataset ;\n  dcterms:title "Sensor log" ;\n  dcat:distribution [ a dcat:Distribution ;\n    dcat:downloadURL <https://example.org/log.csv> ] .',
+  when:"To publish or index a collection of datasets."},
+ adms:{spec:"https://www.w3.org/TR/vocab-adms/",name:"ADMS",prefix:"adms:",ns:"http://www.w3.org/ns/adms#",by:"W3C Note (EU SEMIC)",since:"2013",x:385,y:230,
+  tscg:"adms:versionNotes (m3:changelog entries)",
+  domain:"Description of reusable semantic assets such as vocabularies, code lists and schemas: their status, identifiers and version notes. It extends DCAT for this specific kind of resource.",
+  terms:["adms:Asset","adms:AssetDistribution","adms:versionNotes","adms:status","adms:identifier"],
+  ex:'ex:onto a adms:Asset ;\n  owl:versionInfo "1.2.0" ;\n  adms:versionNotes "Added combos"@en .',
+  when:"To document versions and status of an ontology or vocabulary you publish."},
+ foaf:{spec:"http://xmlns.com/foaf/spec/",name:"FOAF",prefix:"foaf:",ns:"http://xmlns.com/foaf/0.1/",by:"D. Brickley & L. Miller",since:"2000",x:150,y:120,
+  domain:"People, organizations and their links: names, homepages, accounts and who knows whom. One of the first widely used Linked Data vocabularies.",
+  terms:["foaf:Person","foaf:Agent","foaf:Organization","foaf:name","foaf:knows","foaf:homepage","foaf:account"],
+  ex:'ex:alice a foaf:Person ;\n  foaf:name "Alice" ;\n  foaf:knows ex:bob .',
+  when:"For simple descriptions of people and organizations in Linked Data."},
+ schema:{spec:"https://schema.org/docs/schemas.html",name:"schema.org",tscg:"schema:value only, in 3 files (M3_GrammarFoundation, M2_GenericConcepts, M1_Chemistry)",prefix:"schema:",ns:"https://schema.org/",by:"Google, Microsoft, Yahoo, Yandex",since:"2011",x:290,y:120,
+  domain:"A broad, general-purpose vocabulary for describing things on web pages: people, places, events, products, articles, recipes. Search engines read it, usually embedded as JSON-LD, to build rich results.",
+  terms:["schema:Thing","schema:Person","schema:CreativeWork","schema:Event","schema:Product","schema:name","schema:author"],
+  ex:'{ "@context": "https://schema.org",\n  "@type": "Person",\n  "name": "Alice",\n  "url": "https://example.org/alice" }',
+  when:"For web content you want search engines to understand, or when one broad vocabulary beats several narrow ones."}
+};
+const E = [
+ ["rdfs","rdf","builds","defines its classes and properties as RDF resources"],
+ ["owl","rdfs","builds","adds logic on top of RDFS classes and properties"],
+ ["rdf","xsd","uses","types its literal values with XSD datatypes"],
+ ["shacl","rdf","builds","validates RDF graphs, and shapes are written in RDF"],
+ ["skos","owl","builds","is itself published as an OWL ontology"],
+ ["dcterms","rdfs","builds","is defined with RDFS"],
+ ["prov","owl","builds","is an OWL 2 ontology"],
+ ["foaf","owl","builds","is defined with RDFS and OWL"],
+ ["schema","rdfs","builds","is also published in an RDFS form"],
+ ["dcat","dcterms","uses","describes datasets with dcterms:title, dcterms:publisher…"],
+ ["dcat","foaf","uses","uses foaf:Agent for publishers"],
+ ["dcat","skos","uses","uses SKOS for themes and keywords schemes"],
+ ["dcat","prov","uses","uses PROV for qualified relations"],
+ ["adms","dcat","uses","extends DCAT for semantic assets"],
+ ["adms","skos","uses","uses SKOS concepts for status values"],
+ ["foaf","schema","overlaps","both describe people (foaf:Person, schema:Person)"],
+ ["dcterms","schema","overlaps","both give title, creator and date to works"],
+ ["prov","dcterms","overlaps","dcterms:creator and prov:wasAttributedTo say similar things; W3C published a mapping"],
+ ["skos","owl","overlaps","skos:exactMatch is a weaker cousin of owl:sameAs"],
+ ["shacl","owl","overlaps","both constrain data, but SHACL validates and OWL infers"]
+];
+const BANDS=[
+ {y:70,h:100,lbl:"People & the web"},
+ {y:180,h:100,lbl:"Metadata & provenance"},
+ {y:290,h:100,lbl:"Validation · Concept schemes"},
+ {y:400,h:100,lbl:"Schema & logic"},
+ {y:510,h:100,lbl:"Data model"}
+];
+const NW=94, NH=42, svgNS="http://www.w3.org/2000/svg";
+const svg=document.getElementById("atlas");
+const mk=(t,a,p)=>{const e=document.createElementNS(svgNS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e};
+
+BANDS.forEach((b,i)=>{
+  mk("rect",{x:0,y:b.y,width:440,height:b.h,fill:i%2?"var(--band-b)":"var(--band-a)"});
+  const t=mk("text",{x:8,y:b.y+14,class:"band-lbl"});t.textContent=b.lbl;
+});
+const t0=mk("text",{x:8,y:22,class:"band-lbl"});t0.textContent="Specialised  ↑";
+const t1=mk("text",{x:8,y:40,class:"band-lbl",style:"letter-spacing:.04em;text-transform:none"});t1.textContent="Foundations at the bottom; each layer reuses those below.";
+
+function clip(a,b){ // point on box a's edge toward b
+  const dx=b.x-a.x, dy=b.y-a.y, sx=(NW/2)/Math.abs(dx||1e-6), sy=(NH/2)/Math.abs(dy||1e-6), s=Math.min(sx,sy);
+  return {x:a.x+dx*s, y:a.y+dy*s};
+}
+const gEdges=mk("g",{}), gNodes=mk("g",{});
+const edgeEls=E.map(([f,t,k])=>{
+  const A=V[f],B=V[t],p=clip(A,B),q=clip(B,A);
+  const mx=(p.x+q.x)/2, my=(p.y+q.y)/2, len=Math.hypot(q.x-p.x,q.y-p.y);
+  const bend = k==="overlaps"? 0.22 : (A.y===B.y? 0.25 : 0.08);
+  const cx=mx-(q.y-p.y)/len*len*bend, cy=my+(q.x-p.x)/len*len*bend;
+  return mk("path",{d:`M${p.x},${p.y} Q${cx},${cy} ${q.x},${q.y}`,class:"edge "+k},gEdges);
+});
+const nodeEls={};
+for(const id in V){
+  const v=V[id];
+  const g=mk("g",{class:"node",tabindex:0,role:"button","aria-label":v.name},gNodes);
+  mk("rect",{x:v.x-NW/2,y:v.y-NH/2,width:NW,height:NH,rx:5},g);
+  const n=mk("text",{x:v.x,y:v.y-2,"text-anchor":"middle",class:"nm"},g);n.textContent=v.name;
+  const p=mk("text",{x:v.x,y:v.y+13,"text-anchor":"middle",class:"px"},g);p.textContent=v.prefix;
+  if(v.tscg) mk("circle",{cx:v.x+NW/2-7,cy:v.y-NH/2+7,r:3.5,class:"dot"},g);
+  g.addEventListener("click",()=>select(id));
+  g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(id)}});
+  nodeEls[id]=g;
+}
+
+const sheet=document.getElementById("sheet");
+const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e};
+function select(id){
+  const v=V[id], linked=new Set([id]);
+  E.forEach(([f,t],i)=>{const on=f===id||t===id;edgeEls[i].classList.toggle("dim",!on);if(on){linked.add(f);linked.add(t)}});
+  for(const k in nodeEls){nodeEls[k].classList.toggle("sel",k===id);nodeEls[k].classList.toggle("dim",!linked.has(k))}
+  sheet.replaceChildren();
+  sheet.append(el("div","eyebrow",v.prefix+"  ·  "+v.by), el("h2",null,v.name));
+  const meta=el("div","meta"); const ns=el("span");ns.append("namespace ",el("code",null,v.ns));
+  meta.append(ns, el("span",null,"since "+v.since));
+  const sp=el("a",null,"specification ↗"); sp.href=v.spec; sp.target="_blank"; sp.rel="noopener"; meta.append(sp);
+  sheet.append(meta);
+  if(v.tscg){const c=el("div");c.append(el("span","chip","in TSCG: "+v.tscg));sheet.append(c)}
+  sheet.append(el("h3",null,"Domain it covers"), el("p",null,v.domain));
+  sheet.append(el("h3",null,"Key terms"));
+  const tm=el("div","terms"); v.terms.forEach(t=>tm.append(el("code",null,t))); sheet.append(tm);
+  sheet.append(el("h3",null,"Example"), el("pre",null,v.ex));
+  sheet.append(el("h3",null,"Reach for it"), el("p",null,v.when));
+  sheet.append(el("h3",null,"Connections"));
+  const ul=el("ul","rels");
+  const label={builds:"builds on",uses:"reuses",overlaps:"overlaps"};
+  E.forEach(([f,t,k,why])=>{
+    if(f!==id&&t!==id) return;
+    const other=f===id?t:f; const li=el("li");
+    const kk = f===id ? label[k] : (k==="builds"?"base for":k==="uses"?"reused by":"overlaps");
+    const b=el("button",null,V[other].name); b.type="button"; b.addEventListener("click",()=>select(other));
+    const w=el("span","why",(f===id? "It ":V[f].name+" ")+why+".");
+    const d=el("div"); d.append(b," ",w);
+    li.append(el("span","k",kk),d); ul.append(li);
+  });
+  sheet.append(ul);
+  try{localStorage.setItem("swatlas-sel",id)}catch(e){}
+}
+let start="rdf"; try{const s=localStorage.getItem("swatlas-sel"); if(s&&V[s]) start=s}catch(e){}
+select(start);
+</script>
+
+</body>
+</html>

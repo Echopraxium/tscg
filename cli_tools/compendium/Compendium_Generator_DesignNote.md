@@ -144,3 +144,23 @@ a bad regex stops the build with the rule named. PyYAML is listed in
 
 
 Tab order (2026-10-22): **Project management** is the 2nd tab, right after "Understand the kit" (KitArchitect only).
+
+## 11. Semweb vocabularies tab (added 2026-11-16, WS-15 SF-7)
+
+A rubric **"Semweb vocabularies: overview"**, visible to **KitArchitect** only (just
+before LayerCake Health), embeds the *Semantic Web Starter Atlas*: twelve starter
+vocabularies (RDF, RDFS, OWL, XSD, SHACL, SKOS, DCTerms, PROV-O, DCAT, ADMS, FOAF,
+schema.org), the domain each covers and how they build on, reuse or overlap each other.
+It serves the "reuse before inventing" rule: check an existing vocabulary before
+modelling a notion. The tab also links the reference catalogues (LOV, prefix.cc) and
+each atlas sheet links its specification.
+
+The page is a self-contained HTML file on HEAD, `docs/semweb/SemwebVocabularies_Atlas.html`;
+`copy_semweb_atlas()` copies it as-is to `dist/semweb_vocabularies.html` at every build
+and the tab shows it in an `<iframe>` with `?theme=dark` (the atlas honours
+`?theme=dark|light`). It is not a generated view: its content is hand-written reference
+material about vocabularies external to TSCG. Its "used in TSCG" marks are a dated
+measurement (namespaces searched in the live `.jsonld`/`.ttl` files), stated as such in the
+page footer. A missing file never breaks the build: the tab says **"Semweb atlas
+unavailable"** with the expected path. The HTML file is not classified by the folder
+rules, so it is not listed a second time in a document tab.
