@@ -14,9 +14,9 @@
     {
       "@id": "m3:GenesisGrammar",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "4.18.0",
+      "owl:versionInfo": "4.19.0",
       "dcterms:created": "2026-01-21",
-      "dcterms:modified": "2026-11-16",
+      "dcterms:modified": "2026-11-18",
       "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
       "dcterms:contributor": "Claude AI (Anthropic)",
       "dcterms:title": "TSCG M3 Genesis Grammar — the three perspectives",
@@ -51,10 +51,9 @@
         "connection": {
           "Phi": "Φ : Gt → Gm  (natural transformation — observation: Territory → Map)",
           "Psi": "Ψ : Gm → Gt  (natural transformation — interpretation: Map → Territory)",
-          "epistemic_gap": "δ₁ = ||ASFID_mean − REVOI_mean|| / √2",
           "korzybski": "Φ is never a perfect isomorphism — the map is not the territory"
         },
-        "see_also": "M3_GrammarFoundation.jsonld for operators, type system, intersubjectiveBenchmark"
+        "see_also": "M3_GrammarFoundation.jsonld for operators, type system"
       },
       "three_perspectives": {
         "dcterms:description": "Dual complementary perspectives forming complete basis",
@@ -95,8 +94,7 @@
           "feedback_loop": {
             "forward": "Φ: ASFID → REVOI (observation)",
             "backward": "Ψ: REVOI → ASFID (interpretation)",
-            "iteration": "iterative refinement via Φ/Ψ natural transformations until epistemic equilibrium",
-            "convergence": "δ₁ → 0 represents epistemic equilibrium (Map ≈ Territory)",
+            "iteration": "the iterative use of Φ/Ψ (Territory ↔ Map alignment) is outside the model: it belongs to the validation by the user and the observers (see the deprecated m3:AlignmentLoop)",
             "korzybski_principle": "Map influences how we observe Territory, Territory observations refine Map"
           }
         },
@@ -279,6 +277,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "4.19.0",
+          "dcterms:date": "2026-11-18",
+          "adms:versionNotes": "WS-15 SF-3 (Michel, 2026-11-18, decision record positions 17-18): m3:AlignmentLoop DEPRECATED — moved out of the model (validation by the user and observers, at least one of them human, WS-15 SF-6); its δ₁ stopping criterion and skos:definition folded into the deprecation comment; label encoding repaired (↔). Φ and Ψ stay. δ₁ removed from the connection block, the feedback_loop block (convergence line deleted, iteration points out of the model), CouplingStructure mathematicalForm and KorzybskiPrinciple formalization ('the map is not the territory'). intersubjectiveBenchmark dropped from see_also. CouplingStructure definition encoding repaired (ƒᵢⱼ)."
+        },
+        {
           "owl:versionInfo": "4.18.0",
           "dcterms:date": "2026-11-16",
           "adms:versionNotes": "Lot D1 of the Ontology Encoding Review (WS-15 SF-7), decided by Michel 2026-11-16: dcterms:creator is now an IRI, <https://github.com/Echopraxium> (a dcterms:Agent declared in the apex), as DCMI recommends; the collaboration is kept, separately, as dcterms:contributor \"Claude AI (Anthropic)\" (3 node(s))."
@@ -307,11 +310,6 @@
           "owl:versionInfo": "4.13.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "4.12.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1h (explicit declarations), non-terms removed (Michel, 2026-09-30). (1) m3:TscgOntologyType: owl:isAbstract (not an OWL term — OWL has no abstract classes) removed; the rdfs:comment already states the class is abstract, so no information is lost. (2) Same node: rdfs:isDefinedBy was the string 'm3:TscgOntologyTypeScheme'; it is now a link to that skos:ConceptScheme. (3) m3:F_CategoryTheoryNote typed owl:NamedIndividual instead of owl:Annotation, a reserved class used only to reify annotations of axioms. SKOS terms used here (skos:Concept, skos:ConceptScheme, skos:broader, skos:related, skos:inScheme, skos:hasTopConcept, skos:topConceptOf, skos:notation…) are now declared in M3_GrammarFoundation with their official SKOS typing. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ]
     },
@@ -472,16 +470,16 @@
       "@type": "owl:Class",
       "rdfs:label": "Synesthesia — Territory/Map Coupling (Natural Transformations Φ, Ψ)",
       "rdfs:comment": "Natural transformations Φ and Ψ encoding bidirectional connection between Territory Grammar Gt and Map Grammar Gm.",
-      "skos:definition": "Æ’ᵢⱼ represents coupling strength between ASFID types i and REVOI types j",
-      "m3:mathematicalForm": "Φ : Gt → Gm, Ψ : Gm → Gt (natural transformations), δ₁ = ||ASFID_mean − REVOI_mean|| / √2",
+      "skos:definition": "ƒᵢⱼ represents coupling strength between ASFID types i and REVOI types j",
+      "m3:mathematicalForm": "Φ : Gt → Gm, Ψ : Gm → Gt (natural transformations)",
       "m3:role": "Encodes Map/Territory bidirectional epistemological connection"
     },
     {
       "@id": "m3:AlignmentLoop",
       "@type": "owl:Class",
-      "rdfs:label": "Territory \" Map Alignment Loop",
-      "rdfs:comment": "Bidirectional iterative process aligning Territory observations with Map construction: Eagle Eye measures phenomena (ASFID), Sphinx Eye constructs representations (REVOI), and the Φ/Ψ operators drive progressive convergence between the two. Distinct from systemic feedback loops (biological, mechanical) \" this is an epistemological alignment mechanism intrinsic to TSCG architecture.",
-      "skos:definition": "Epistemological alignment loop between empirical observations (Territory/ASFID) and conceptual representations (Map/REVOI), driven by Φ and Ψ operators until Map-Territory coherence is achieved.",
+      "owl:deprecated": true,
+      "rdfs:label": "Territory ↔ Map Alignment Loop",
+      "rdfs:comment": "DEPRECATED (2026-11-18) — moved out of the model (Michel; WS-15 decision record, position 18). The iterative Territory ↔ Map alignment is not part of the grammar: it is the validation loop run at the end of modelling by the user and the observers of the mock-up — at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6; heuristics: ontology/docs/_02_EpistemicReview/MockupValidation_Heuristics_Draft.md, WS-15 SF-6). Φ and Ψ themselves stay in M3 (m3:CouplingStructure, m3:KorzybskiPrinciple). Kept only so that older documents still resolve. Do not use it. Former definition: epistemological alignment loop between empirical observations (Territory/ASFID) and conceptual representations (Map/REVOI), driven by the Φ and Ψ operators; distinct from systemic feedback loops (biological, mechanical). Its former stopping criterion (δ₁ convergence) is retired with the scoring family.",
       "m3:operators": {
         "Phi": {
           "symbol": "Φ",
@@ -493,8 +491,7 @@
           "signature": "Ψ : Gm → Gt  (natural transformation)",
           "dcterms:description": "Interpretation operator - Map predictions guide Territory measurement strategies"
         }
-      },
-      "m3:iteration": "iterative refinement via Φ/Ψ until δ₁ converges toward epistemic equilibrium"
+      }
     },
     {
       "@id": "m3:KorzybskiPrinciple",
@@ -504,7 +501,7 @@
       "skos:definition": "Epistemological principle recognizing Map and Territory as distinct yet mutually influential through bidirectional coupling Σ",
       "m3:classicStatement": "The map is not the territory (Alfred Korzybski, 1933)",
       "m3:tscgExtension": "The map influences how we observe the territory, and observations refine the map",
-      "m3:formalization": "Φ : Gt → Gm is never a perfect isomorphism — δ₁ > 0 for all real systems"
+      "m3:formalization": "Φ : Gt → Gm is never a perfect isomorphism — the map is not the territory"
     },
     {
       "@id": "m3:MathematicalCategory",

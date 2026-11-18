@@ -1,7 +1,7 @@
 # Validating a mock-up — three facets and their heuristics (draft for reflection)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.3.1 (draft) · **Date**: 2026-11-16
+**Version**: 0.4.0 (draft) · **Date**: 2026-11-18
 **Status**: **DRAFT** — meant to start a reflection, not to be graved. No ontology,
 tool or check is proposed for implementation here.
 **Measured at**: HEAD `ee07f1a` (the facts in §5).
@@ -167,6 +167,17 @@ Heuristic leads for the duo (questions, open list):
 Possible test bench: the paused instance *RequisiteVarietyDuo* (human/AI duo), knowing
 the reflexive trap (decision D15 of the WS-15 record); Q9.
 
+## 7b. The Territory ↔ Map alignment loop, moved here (Michel, 2026-11-18)
+
+`m3:AlignmentLoop` (M3_GenesisGrammar) is **deprecated**: the iterative alignment of
+the Map with the Territory is not part of the grammar. It belongs here, at the **end of
+modelling**, with the validation heuristics: the user and the observers of the mock-up
+— **at least one of them human, outside the model** (an AI may take part) — run it, and they decide when it stops (no
+numeric criterion; its former δ₁ convergence criterion is retired with the scores).
+Φ (observation, Territory → Map) and Ψ (interpretation, Map → Territory) **stay in M3**
+as the arrows that relate Gt and Gm; what moves out is their *iterative use to validate*.
+Record: WS-15 decision record, position 18.
+
 ## 8. Open questions (for Michel)
 
 - **Q1 — The word "facet".** Keep "validation facets" as a working name in prose only,
@@ -190,11 +201,14 @@ the reflexive trap (decision D15 of the WS-15 record); Q9.
   improvement leads (the Debt Overview, a worksite, `_03_SerendipCrates`)?
 - **Q9 — The duo.** Is the human/AI duo itself a mock-up (an M0 instance, e.g.
   *RequisiteVarietyDuo*), or only a practice described in the method?
+- **Q10 — Who may close the loop.** *Answered 2026-11-18*: at least one of them human
+  (CH4 §6 and `M0_Common` unchanged); an AI may take part.
 
 ## Changelog
 
 | version | date | change |
 |---|---|---|
+| 0.4.0 | 2026-11-18 | §7b: the Territory ↔ Map alignment loop moved here from M3 (m3:AlignmentLoop deprecated); Q10. |
 | 0.3.1 | 2026-11-16 | §7: Odin is a second-order map inside the model (was "a figure"). |
 | 0.3.0 | 2026-11-16 | §7 leads: the human/AI duo as a cybernetic system (the AI plays Odin's role — guide, warnings — the human decides and evaluates; the eye in the well; two planes; heuristic leads); open questions renumbered §8; Q9. |
 | 0.2.0 | 2026-11-15 | Evaluation outside the model (now in CH4 §6); §6 validation *and refutation* heuristics for mock-ups and for the Toolkit (need recorded); Q7, Q8. |
