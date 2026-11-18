@@ -1,7 +1,7 @@
 # Epistemic gap δ₁ and the scoring family — Feasibility note / Decision Record draft
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.11.0 (draft) · **Date**: 2026-11-18
+**Version**: 0.12.0 (draft) · **Date**: 2026-11-18
 **Kind**: feasibility study (pipeline Phase 0 + Phase 1). **No ontology file is changed.**
 **Worksite id**: **WS-15** (D1, chosen by Michel 2026-11-15). The folder was
 `WS-TBD_EpistemicGap/` until then; dated outputs written before the rename (the
@@ -115,6 +115,13 @@ Added later the same day (after reading the Ashby reading of Odin's Wisdom):
     - **Encoding repairs** done on the way (AlignmentLoop label ↔, CouplingStructure ƒᵢⱼ);
       7 other broken `\"` sequences remain in `M3_GenesisGrammar.jsonld` (another lot).
     - Heuristics draft Q10 answered: "at least one of them human" (CH4 §6 unchanged).
+19. **SF-3 batches B, C, D approved** (2026-11-18, "until further notice"): the
+    benchmark deleted; `defeasibilityStatus` generalised (revision triggers
+    `refuted_by_an_observer`, `model_superseded`, `domain_expansion`, `corpus_maturation`);
+    the D20 wording "at M0, a qualitative reading grid of the instance, with no numeric
+    value" in the primitive definitions and the Eagle / Sphinx headers;
+    `integrationGuidelines.step5` "Document the limits of the mapping (qualitative notes,
+    no score)"; the F magnitude note without F_score; `m2:hasEpistemicGap` deprecated.
 
 What this changes below: §2 (the "concept" column now means Korzybski only), §4
 (option (a) removes concept and measure; option (c) becomes the heuristics loop),
@@ -648,6 +655,7 @@ at M0 first would hide the debt that M3 still asserts.
 
 | version | date | change |
 |---|---|---|
+| 0.12.0 | 2026-11-18 | Position 19: SF-3 batches B, C, D approved and done. |
 | 0.11.0 | 2026-11-18 | Position 18: m3:AlignmentLoop moved out of the model (deprecated), Φ/Ψ stay in M3, Strabismus kept, proof term without degree. SF-3 batch A done. |
 | 0.10.0 | 2026-11-18 | Position 17: D4 (Q2-4, Q2-5, Q2-7, Q2-11), D7, D8, D14, D17, D20, D21 answered; SF-2 rule; SF-7 phantom fate. |
 | 0.9.0 | 2026-11-16 | D18 answered: Narcissus §2 rewritten. |

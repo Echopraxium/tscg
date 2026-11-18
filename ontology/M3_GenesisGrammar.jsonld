@@ -14,13 +14,13 @@
     {
       "@id": "m3:GenesisGrammar",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "4.19.0",
+      "owl:versionInfo": "4.20.0",
       "dcterms:created": "2026-01-21",
       "dcterms:modified": "2026-11-18",
       "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
       "dcterms:contributor": "Claude AI (Anthropic)",
       "dcterms:title": "TSCG M3 Genesis Grammar — the three perspectives",
-      "dcterms:description": "M3 — the most abstract layer of the TSCG Layer Cake (M3 → M0), numbered as in the OMG/UML four-layer metamodel architecture: M3 is the level that every other layer instantiates; M0 holds the concrete instances. This file assembles the structural grammar of TSCG (commutative Lambek calculus): three perspectives, named in three coexisting terminology contexts. Monoidal: Gt (×), Gm (+), Gs (|). Epistemological: Territory (what a system is), Map (how it is known), Stereopsis (their synergy). Metaphoric: Eagle Eye, Sphinx Eye, Odin's Wisdom — in a TSCG interpretation of the Norse myth, Odin keeps one eye to see the world and leaves the other in Mímir's well to see into knowledge; his wisdom, born of both, is the Stereopsis. The couplings Φ : Gt → Gm (observation) and Ψ : Gm → Gt (interpretation) are its Synesthesia: one perspective evokes the other, never perfectly — the map is not the territory. The gap between Territory and Map (epistemic gap δ₁) is not a defect but the source of depth of the Stereopsis, as binocular disparity is for vision. Operators, type system and shared vocabulary are declared in the apex M3_GrammarFoundation.",
+      "dcterms:description": "M3 — the most abstract layer of the TSCG Layer Cake (M3 → M0), numbered as in the OMG/UML four-layer metamodel architecture: M3 is the level that every other layer instantiates; M0 holds the concrete instances. This file assembles the structural grammar of TSCG (commutative Lambek calculus): three perspectives, named in three coexisting terminology contexts. Monoidal: Gt (×), Gm (+), Gs (|). Epistemological: Territory (what a system is), Map (how it is known), Stereopsis (their synergy). Metaphoric: Eagle Eye, Sphinx Eye, Odin's Wisdom — in a TSCG interpretation of the Norse myth, Odin keeps one eye to see the world and leaves the other in Mímir's well to see into knowledge; his wisdom, born of both, is the Stereopsis. The couplings Φ : Gt → Gm (observation) and Ψ : Gm → Gt (interpretation) are its Synesthesia: one perspective evokes the other, never perfectly — the map is not the territory. Operators, type system and shared vocabulary are declared in the apex M3_GrammarFoundation.",
       "owl:imports": [
         { "@id": "M3_GrammarFoundation.jsonld" },
         { "@id": "M3_EagleEye.jsonld" },
@@ -277,6 +277,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "4.20.0",
+          "dcterms:date": "2026-11-18",
+          "adms:versionNotes": "WS-15 SF-3 batch C (Michel, 2026-11-18, decision record position 17, D20): the primitive type's role (2) is 'at M0, a qualitative reading grid of the instance, with no numeric value' (comment and definition); integrationGuidelines step5 no longer asks for gaps and scores; the F magnitude note no longer points to F_score. Header: the sentence 'the epistemic gap δ₁ is the source of depth of the Stereopsis' deleted (D14: Gs is an algebra, its naming rationale lives in the narrative docs)."
+        },
+        {
           "owl:versionInfo": "4.19.0",
           "dcterms:date": "2026-11-18",
           "adms:versionNotes": "WS-15 SF-3 (Michel, 2026-11-18, decision record positions 17-18): m3:AlignmentLoop DEPRECATED — moved out of the model (validation by the user and observers, at least one of them human, WS-15 SF-6); its δ₁ stopping criterion and skos:definition folded into the deprecation comment; label encoding repaired (↔). Φ and Ψ stay. δ₁ removed from the connection block, the feedback_loop block (convergence line deleted, iteration points out of the model), CouplingStructure mathematicalForm and KorzybskiPrinciple formalization ('the map is not the territory'). intersubjectiveBenchmark dropped from see_also. CouplingStructure definition encoding repaired (ƒᵢⱼ)."
@@ -305,11 +310,6 @@
           "owl:versionInfo": "4.14.0",
           "dcterms:date": "2026-10-06",
           "adms:versionNotes": "WS-5 DEBT LOT (2a), decision D5(a) (Michel, 2026-10-06): removed the legacy 'changelog' object from the 'metadata' block (option i: dropped, not folded). Its entries (v4.3.0, v4.2.0, v4.1.0) predate the m3:changelog entries kept here and remain in git history; folding them would have exceeded the 7-entry M3 window. The only changelog is m3:changelog on the owl:Ontology node."
-        },
-        {
-          "owl:versionInfo": "4.13.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ]
     },
@@ -317,11 +317,11 @@
       "@id": "m3:MonoidalType",
       "@type": "owl:Class",
       "rdfs:label": "M3 MonoidalType",
-      "rdfs:comment": "A primitive type in the TSCG Structural Grammar. At M2/M3: generator of type expressions (qualitative, no metric). At M0: instantiation functors map structural primitives to observable instance values (quantitative scoring belongs to the M0 ValueSpace, not to the M3 structural grammar). Belongs to either Territory Grammar Gt (ASFID) or Map Grammar Gm (REVOI).",
+      "rdfs:comment": "A primitive type in the TSCG Structural Grammar. At M2/M3: generator of type expressions (qualitative, no metric). At M0: a qualitative reading grid of the instance, with no numeric value (evaluation is outside the model). Belongs to either Territory Grammar Gt (ASFID) or Map Grammar Gm (REVOI).",
       "rdfs:subClassOf": {
         "@id": "owl:Thing"
       },
-      "skos:definition": "A primitive type generator of the TSCG Structural Grammar. Independence verified (analytical, not metric). Two roles: (1) type generator at M2 level; (2) structural primitive instantiated at M0 level, where observable values are produced by evaluation functors belonging to the M0 ValueSpace (not to the M3 structural grammar).",
+      "skos:definition": "A primitive type generator of the TSCG Structural Grammar. Independence verified (analytical, not metric). Two roles: (1) generator of type expressions (M2 formulas); (2) at M0, a qualitative reading grid of the instance, with no numeric value.",
       "skos:scopeNote": "This class has exactly 10 instances: 5 ASFID types (Attractor, Structure, Flow, Information, Dynamics) defined in M3_EagleEye.jsonld, and 5 REVOI types (Representable, Evolvable, Verifiable, Observable, Interoperable) defined in M3_SphinxEye.jsonld.",
       "dcterms:created": "2026-02-16",
       "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
@@ -423,7 +423,7 @@
         "step2": "Map framework concepts to M2 metaconcepts",
         "step3": "Express framework operations as structural formulas (×, + operators)",
         "step4": "Validate mapping with framework experts",
-        "step5": "Document epistemic gaps and alignment scores"
+        "step5": "Document the limits of the mapping (qualitative notes, no score)"
       }
     },
     {
@@ -980,7 +980,7 @@
           "Potentialization_plus": "latent/absent → active (mobilization) — m2:Potentialization pole _^",
           "Potentialization_minus": "active → latent/absent (depletion) — m2:Potentialization pole _$"
         },
-        "magnitudeNote": "Flow magnitude lives at M0 as F_score (xsd:float in [0,1]); the M3 grammar carries only the qualitative present/absent and latent/active distinctions."
+        "magnitudeNote": "Flow magnitude is not encoded as a score: the M3 grammar carries only the qualitative present/absent and latent/active distinctions; a magnitude, when needed, belongs to the instance's own description or to its simulation."
       }
     },
     {

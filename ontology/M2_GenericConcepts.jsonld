@@ -23,7 +23,7 @@
       "dcterms:contributor": "Claude AI (Anthropic)",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-11-18",
-      "owl:versionInfo": "16.41.0",
+      "owl:versionInfo": "16.42.0",
       "owl:imports": [
         { "@id": "M3_GenesisGrammar.jsonld" }
       ],
@@ -94,6 +94,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "16.42.0",
+          "dcterms:date": "2026-11-18",
+          "adms:versionNotes": "WS-15 SF-3 batch D (Michel, 2026-11-18, decision record position 17, D8): m2:hasEpistemicGap DEPRECATED first (owl:deprecated + the epistemological reason used in M0_Common); 0 uses at HEAD; deletion later."
+        },
+        {
           "owl:versionInfo": "16.41.0",
           "dcterms:date": "2026-11-18",
           "adms:versionNotes": "WS-15 SF-3 (Michel, 2026-11-18, decision record positions 17-18): header m2:epistemicGapFormula deleted; m2:Modelisation korzybskiConnection keeps Korzybski without the gap ('this imperfection is constitutive of Modelisation'); the two citers of m3:AlignmentLoop (Alignment hasExample, FeedbackLoop architecturalNote) now say the alignment runs outside the model (m3:AlignmentLoop deprecated)."
@@ -102,11 +107,6 @@
           "owl:versionInfo": "16.40.0",
           "dcterms:date": "2026-11-18",
           "adms:versionNotes": "WS-15 SF-7 (Michel, 2026-11-18, decision record position 17): the phantom predicate m2:stereopsicArchitecture (never declared; a descriptive block repeating M3) is deleted from the header. The header points to M3 instead: rdfs:seeAlso M3_GenesisGrammar.jsonld added next to the README (owl:imports unchanged)."
-        },
-        {
-          "owl:versionInfo": "16.39.0",
-          "dcterms:date": "2026-11-16",
-          "adms:versionNotes": "Lot D1 of the Ontology Encoding Review (WS-15 SF-7), decided by Michel 2026-11-16: dcterms:creator is now an IRI, <https://github.com/Echopraxium> (a dcterms:Agent declared in the apex), as DCMI recommends; the collaboration is kept, separately, as dcterms:contributor \"Claude AI (Anthropic)\" (61 node(s))."
         }
       ],
       "metadata": {
@@ -383,7 +383,9 @@
     {
       "@id": "m2:hasEpistemicGap",
       "@type": "owl:DatatypeProperty",
+      "owl:deprecated": true,
       "rdfs:label": "has epistemic gap",
+      "rdfs:comment": "DEPRECATED (2026-11-18) — epistemological reason. A model is not legitimate to evaluate itself, and this holds for a mock-up as for the toolkit that builds it. Evaluation is subjective: it belongs to the user and to the observers of the mock-up, at least one of them human, outside the model (docs/CoreHypotheses/LayerCake_Models_The_Kit.md §6). This term carried a self-evaluation (an epistemic gap) and is kept only so that older documents still resolve. Do not use it. It has no use at HEAD. Former definition: none written (domain m2:GenericConcept, range xsd:double).",
       "rdfs:domain": {
         "@id": "m2:GenericConcept"
       },

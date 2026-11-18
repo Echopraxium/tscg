@@ -16,13 +16,13 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.21.0",
+      "owl:versionInfo": "2.22.0",
       "dcterms:created": "2026-05-12",
       "dcterms:modified": "2026-11-18",
       "dcterms:creator": { "@id": "https://github.com/Echopraxium" },
       "dcterms:contributor": "Claude AI (Anthropic)",
       "dcterms:title": "TSCG M3 Grammar Foundation",
-      "dcterms:description": "Apex ontology of the TSCG hierarchy — it imports nothing, and every other TSCG ontology depends on it. It defines the mathematical foundation — the commutative Lambek calculus (Lambek 1958, commutative variant) and free commutative monoidal categories (MacLane 1963) — with the three operators × (Gt), + (Gm) and | (Gs), precedence × > + > |; the abstract classes M3Grammar and MonoidalType; the TSCG type system hierarchy (𝕋₀ → 𝕄₀); the intersubjective benchmark properties; and the vocabulary shared by every layer (m3:changelog, m3:ontologyType and its scheme, m3:metaphoricLabel). The operators are monoidal products, not algebraic tensor products: no metric, no Hilbert space, no scalar multiplication. Imported by M3_EagleEye, M3_SphinxEye, M3_OdinsWisdom and M3_GenesisGrammar.",
+      "dcterms:description": "Apex ontology of the TSCG hierarchy — it imports nothing, and every other TSCG ontology depends on it. It defines the mathematical foundation — the commutative Lambek calculus (Lambek 1958, commutative variant) and free commutative monoidal categories (MacLane 1963) — with the three operators × (Gt), + (Gm) and | (Gs), precedence × > + > |; the abstract classes M3Grammar and MonoidalType; the TSCG type system hierarchy (𝕋₀ → 𝕄₀); the defeasibility status property; and the vocabulary shared by every layer (m3:changelog, m3:ontologyType and its scheme, m3:metaphoricLabel). The operators are monoidal products, not algebraic tensor products: no metric, no Hilbert space, no scalar multiplication. Imported by M3_EagleEye, M3_SphinxEye, M3_OdinsWisdom and M3_GenesisGrammar.",
       "rdfs:label": "M3 Grammar Foundation — TSCG Apex Ontology",
       "m3:ontologyType": {
         "@id": "m3:Genesis"
@@ -55,6 +55,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.22.0",
+          "dcterms:date": "2026-11-18",
+          "adms:versionNotes": "WS-15 SF-3 batches B-C (Michel, 2026-11-18, decision record position 17: Q2-7, D17, D20): m3:grammar_foundation:intersubjectiveBenchmark DELETED (nothing left to calibrate). defeasibilityStatus generalised: every TSCG model is provisional and refutable (revision triggers: refuted_by_an_observer, model_superseded, domain_expansion, corpus_maturation). MonoidalType_base: role (2) is now 'at M0, a qualitative reading grid of the instance, with no numeric value'. Header: 'the intersubjective benchmark properties' -> 'the defeasibility status property'."
+        },
+        {
           "owl:versionInfo": "2.21.0",
           "dcterms:date": "2026-11-18",
           "adms:versionNotes": "WS-15 SF-3 (Michel, 2026-11-18, decision record positions 17-18): δ₁ removed from the Curry-Howard reading ('Poclet = proof term', no degree of proof) and from StereopsisEmptySet / StereopsisUniversalSet (epistemicGap keys deleted, 'δ₁ = max' and the SpectralClass Coherent comparison dropped from the comments). The qualitative Divergent / Convergent Strabismus semantics are kept."
@@ -83,11 +88,6 @@
           "owl:versionInfo": "2.16.0",
           "dcterms:date": "2026-10-12",
           "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-12): the Fm1m2 description reads 'Domain + GenericConcept composition' (KnowledgeField is obsolete)."
-        },
-        {
-          "owl:versionInfo": "2.15.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "RENAME LOT R (Michel, 2026-10-10/11): M3_BicephalousPerspective.jsonld → M3_OdinsWisdom.jsonld; prefix m3:bicephalous:X → m3:odins_wisdom.X (no colon inside a namespace path); 'bicephalous' retired as a metaphor — three perspectives, named in three coexisting terminology contexts (monoidal Gt/Gm/Gs, epistemological Territory/Map/Stereopsis, metaphoric Eagle Eye/Sphinx Eye/Odin's Wisdom); acronyms suffixed in prose (AStFItD, REVOIm, TKSsL). This file: Gs IRIs (PositivePole, NegativePole, StereopsisEmptySet, StereopsisUniversalSet) → m3:odins_wisdom.X; references to M3_OdinsWisdom; m3:metaphoricLabel comment and m3:GenesisExtension definition: terminology contexts, AStFItD / REVOIm."
         }
       ],
       "three_alphabets": {
@@ -186,8 +186,8 @@
       "@id": "m3:grammar_foundation:MonoidalType_base",
       "@type": "owl:Class",
       "rdfs:label": "Monoidal Type Base (formerly M3Dimension)",
-      "rdfs:comment": "Abstract base class for M3 primitive types. At M2/M3: generators of structural formulas (qualitative, no metric). At M0: instantiation functors map structural primitives to observable instance values (quantitative scoring belongs to the M0 ValueSpace, not to the M3 structural grammar).",
-      "skos:definition": "A primitive type in the TSCG Structural Grammar. Plays two roles: (1) generator of type expressions at M2 level; (2) evaluation functor at M0 level via norm-referenced scoring against intersubjective benchmarks.",
+      "rdfs:comment": "Abstract base class for M3 primitive types. At M2/M3: generators of structural formulas (qualitative, no metric). At M0: a qualitative reading grid of the instance, with no numeric value (evaluation is outside the model).",
+      "skos:definition": "A primitive type in the TSCG Structural Grammar. Plays two roles: (1) generator of type expressions (M2 formulas); (2) at M0, a qualitative reading grid of the instance, with no numeric value.",
       "skos:note": "The word 'dimension' is used in the analytical sense (independent axis of characterisation), NOT in the metric/Hilbert sense."
     },
     {
@@ -310,57 +310,10 @@
       }
     },
     {
-      "@id": "m3:grammar_foundation:intersubjectiveBenchmark",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "Intersubjective Benchmark",
-      "rdfs:comment": "Domain-contextualized canonical poclet(s) used as scoring reference for M0 instances. Grounds TSCG measurement in norm-referenced intersubjective consensus. Defeasible by design — valid until superseded by broader consensus.",
-      "skos:definition": "A provisional structural attractor of a conceptual domain, identified by multi-cook convergence, domain-contextualized by default, explicitly defeasible, and self-improving through corpus growth.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      },
-      "m3:grammar_foundation:structure": {
-        "epistemicScore": {
-          "property": "m0:epistemicGap",
-          "formula": "||ASFID_mean - REVOI_mean|| / sqrt(2)",
-          "range": "[0.0, 1.0]"
-        },
-        "objectivityLevel": {
-          "values": [
-            "Subjective",
-            "MultiExpertConsensus",
-            "CanonCalibrated",
-            "ContextualizedBenchmark"
-          ],
-          "default": "ContextualizedBenchmark"
-        },
-        "benchmarkRefs": {
-          "type": "array",
-          "items": {
-            "uri": "IRI of canonical poclet",
-            "domain": "M1 domain  (e.g. m1:Biology, m1:Electronics)",
-            "canonType": "DomainSpecific | CrossDomain | Universal",
-            "weight": "xsd:float  [0.0, 1.0]"
-          }
-        },
-        "expertConsensus": {
-          "numberOfExperts": "xsd:integer",
-          "convergenceScore": "xsd:float  (ICC / Cohen kappa)",
-          "method": "comparative | absolute | hybrid"
-        }
-      },
-      "m3:grammar_foundation:resolutionOrder": [
-        "1. DomainSpecific benchmark  (M1 domain of the poclet)  <- DEFAULT",
-        "2. CrossDomain benchmark     (adjacent M1 domain)",
-        "3. Universal benchmark       (e.g. M0_AdaptiveImmuneResponse)",
-        "4. Free scoring + justification                         <- last resort"
-      ],
-      "skos:note": "Philosophical grounding: Popper (falsifiability), Kuhn (paradigm shifts), Peirce (limit of inquiry). Mathematical grounding: norm-referenced measurement (Stevens 1946), inter-rater reliability (ICC, Cohen kappa)."
-    },
-    {
       "@id": "m3:grammar_foundation:defeasibilityStatus",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Defeasibility Status",
-      "rdfs:comment": "Explicit declaration that a benchmark or canonical reference is provisional — valid until superseded by broader consensus. Makes revisability a first-class property of TSCG measurements.",
+      "rdfs:comment": "Explicit declaration that a TSCG model (an M0 mock-up, or any part of the kit) is provisional and refutable — held until refuted or superseded (validation and refutation heuristics: WS-15 SF-6). Makes revisability a first-class property of TSCG models.",
       "rdfs:range": {
         "@id": "xsd:string"
       },
@@ -376,8 +329,8 @@
         },
         "validUntil": "superseded_by_better_consensus",
         "revisionTrigger": [
-          "new_canonical_poclet_identified",
-          "expert_consensus_challenged",
+          "refuted_by_an_observer",
+          "model_superseded",
           "domain_expansion",
           "corpus_maturation"
         ]
