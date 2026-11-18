@@ -1,7 +1,7 @@
 # Epistemic gap δ₁ and the scoring family — Feasibility note / Decision Record draft
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 0.9.0 (draft) · **Date**: 2026-11-16
+**Version**: 0.10.0 (draft) · **Date**: 2026-11-18
 **Kind**: feasibility study (pipeline Phase 0 + Phase 1). **No ontology file is changed.**
 **Worksite id**: **WS-15** (D1, chosen by Michel 2026-11-15). The folder was
 `WS-TBD_EpistemicGap/` until then; dated outputs written before the rename (the
@@ -70,6 +70,33 @@ Added later the same day (after reading the Ashby reading of Odin's Wisdom):
     M0 first, M3 prose afterwards once the wordings are given; in several steps.
     **Step 1 (M0 lot) done** — see `TSCG_Debt_Overview.md` §8.0h. C16 is a guard at 0, so
     D7 (FAIL or WARN) is moot.
+17. **Answers of 2026-11-18** (D4, D7, D8, D14, D17, D20, D21, SF-2 rule, SF-7 phantom):
+    - **D4 / Q2-4, Q2-11**: Korzybski only. Keep "Φ : Gt → Gm is never a perfect
+      isomorphism" and "the imperfection of Φ is constitutive of Modelisation"; drop
+      "δ₁ > 0" and every other gap clause.
+    - **D4 / Q2-5**: the AlignmentLoop keeps its Φ/Ψ structure; it stops when the human
+      decides (the user, or the observers of the mock-up). No numeric criterion.
+    - **D4 / Q2-7**: the whole `intersubjectiveBenchmark` is removed, not only its
+      `epistemicScore` slot: it has nothing left to calibrate.
+    - **D14**: Gs stays an algebra, with no naming rationale inside it (position 5 kept).
+      The naming rationale moves to the narrative docs (Debt Overview, `docs/CoreHypotheses/`):
+      Odin's Wisdom is a map of **second-order cybernetics**; Ashby's law of requisite
+      variety and the **pilot / co-pilot** metaphor ground it — the model is the co-pilot,
+      the pilot is the user or the critics of the mock-up the user built.
+    - **D20**: the M3 primitive keeps two roles, reworded: (1) generator of type
+      expressions (M2 formulas); (2) at M0, a **qualitative reading grid** of the instance,
+      with no numeric value. Eagle / Sphinx headers follow.
+    - **D17**: `defeasibilityStatus` is kept, generalised: every TSCG model is provisional
+      and refutable (no longer tied to the benchmark).
+    - **D21**: option (c) is kept: TSCG offers validation heuristics *to* the user and the
+      observers (method, UserGuide) and records no outcome in the ontology.
+    - **D7**: C16 is FAIL (confirms position 16).
+    - **D8**: `m2:hasEpistemicGap` is deprecated first (`owl:deprecated` + reason),
+      deleted later.
+    - **SF-2 rule**: in M0 score-bearing blocks, keep the qualitative text and remove the
+      numbers (values, means, classes).
+    - **SF-7**: the phantom `m2:stereopsicArchitecture` block in the M2 header is deleted;
+      the header points to M3 (`rdfs:seeAlso` `M3_GenesisGrammar.jsonld`).
 
 What this changes below: §2 (the "concept" column now means Korzybski only), §4
 (option (a) removes concept and measure; option (c) becomes the heuristics loop),
@@ -526,15 +553,15 @@ authority (root `CLAUDE.md`) and is left as written unless Michel decides otherw
   (positions 1–2). The evidence of §1–§2 stays as the written record.
 - **D3** — Scope: δ₁ + spectral classes only, or also the focal family (`m0:focalBias`,
   `m0:focalScore`, `m0:FocalClass`, "δ₂"), which reuses the same subtraction?
-- **D4** — Wording of each Q2 row, now under the constraint "Korzybski only, no gap";
+- **D4** — *Answered 2026-11-18* (position 17). Wording of each Q2 row, now under the constraint "Korzybski only, no gap";
   in particular Q2-5 (AlignmentLoop criterion), Q2-7 (benchmark slot), and whether
   "Φ is never a perfect isomorphism" (Q2-4, Q2-11) is Korzybski or the gap in disguise.
 - **D5** — *Direction given 2026-11-15*: (a) for the removal, (c) as the replacement to
   invent. To confirm: (b) kept only as a recording format for (c)?
 - **D6** — If (b) is kept as the recording format of (c): (b1) EARL/PROV declared in the apex, or (b2) a TSCG concept through the
   candidate filter?
-- **D7** — C16 (and the cross-layer counter): FAIL or WARN (facts in §5)?
-- **D8** — `m2:hasEpistemicGap` (0 uses): delete outright or deprecate first? SHAPE 11:
+- **D7** — *Answered 2026-11-18*: FAIL (position 17). C16 (and the cross-layer counter): FAIL or WARN (facts in §5)?
+- **D8** — *Answered 2026-11-18*: deprecate first (position 17). `m2:hasEpistemicGap` (0 uses): delete outright or deprecate first? SHAPE 11:
   keep as a guard (and extend it to `m1:epistemicGap`) or retire?
 - **D9** — Does the M0 instance lot ride the WS-10 batches?
 - **D10** — Suspended patches 0001/0002: discard, keeping only the C16 design for L3?
@@ -548,7 +575,7 @@ authority (root `CLAUDE.md`) and is left as written unless Michel decides otherw
   question kept for the record — Sequencing: run the removal (L0–L6) first and design (c) afterwards, or
   design (c) first so that the pipeline step and the AlignmentLoop criterion are
   replaced in the same move?
-- **D14** — Odin's Wisdom / Stereopsis: what grounds the metaphor once "depth from
+- **D14** — *Answered 2026-11-18* (position 17). Odin's Wisdom / Stereopsis: what grounds the metaphor once "depth from
   disparity" is withdrawn (Q2-12)? The Gs algebra does not need it; the naming rationale
   in the Debt Overview and in `docs/CoreHypotheses/` does. *Narrowed 2026-11-15*: not a
   feedback loop (position 5) — the Ashby / Conant–Ashby reading stays out of Gs (the
@@ -563,13 +590,13 @@ authority (root `CLAUDE.md`) and is left as written unless Michel decides otherw
   `m0:InstanceProperty` has exactly two subclasses at HEAD, `m0:ScoringProperty` and
   `m0:FocalProperty`, both retired — it stays as an empty generic superclass (the hook for
   future shared properties), which its comment should say.
-- **D20** — Wording of the M3 primitive definition once role (2) "evaluation at M0" is
+- **D20** — *Answered 2026-11-18* (position 17). Wording of the M3 primitive definition once role (2) "evaluation at M0" is
   removed (`MonoidalType_base`, `m3:MonoidalType`, `Fm2` comment, amendment 3, Eagle /
   Sphinx headers).
-- **D21** — Option (c) under position 9: TSCG offers validation heuristics *to* the user
+- **D21** — *Answered 2026-11-18*: (c) kept, no outcome recorded (position 17). Option (c) under position 9: TSCG offers validation heuristics *to* the user
   and observers (method, UserGuide) and records no outcome, or (c) is dropped? EARL /
   PROV-O (option b) then has no use inside TSCG.
-- **D17** — `defeasibilityStatus`: removed with the benchmark, or kept as a general
+- **D17** — *Answered 2026-11-18*: kept, generalised (position 17). `defeasibilityStatus`: removed with the benchmark, or kept as a general
   statement that every TSCG model is provisional?
 - **D18** — *Answered 2026-11-16*: rewritten now, with Michel's wording
   (`docs/CoreHypotheses/_01_Narcissus_and_Icarus_as_Safeguards.md` §2: evaluation taken
@@ -603,6 +630,7 @@ at M0 first would hide the debt that M3 still asserts.
 
 | version | date | change |
 |---|---|---|
+| 0.10.0 | 2026-11-18 | Position 17: D4 (Q2-4, Q2-5, Q2-7, Q2-11), D7, D8, D14, D17, D20, D21 answered; SF-2 rule; SF-7 phantom fate. |
 | 0.9.0 | 2026-11-16 | D18 answered: Narcissus §2 rewritten. |
 | 0.8.0 | 2026-11-15 | D1 id answered: WS-15; folder renamed from `WS-TBD_EpistemicGap/`. Priority still open. |
 | 0.7.0 | 2026-11-15 | Position 16: method validated (deprecate definitions, delete uses; M0 first); step 1, the M0 lot, done (Debt Overview §8.0h). |
