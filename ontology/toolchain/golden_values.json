@@ -1,5 +1,5 @@
 {
-  "_measured": "2026-11-16, real repository (--update-golden)",
+  "_measured": "2026-11-18, real repository (--update-golden)",
   "_note": "Reference values, TriskeleVM-style. EXACT match required. A count that DROPS is as suspicious as one that rises: either a deliberate fix (then --update-golden, and the drop is recorded under '_previous'/'_delta') or a validator that stopped biting. A silently shrinking count is the most dangerous signal in this repo — it looks like progress.",
   "M3": {
     "status": "INSTRUMENTED",
@@ -31,27 +31,27 @@
     "status": "INSTRUMENTED",
     "note": "Measured by the WS-5 validator engine (validator/tscg_validator.py --doc --ext --shacl, working copy). errors = document-plane D2–D7 + cross-file G1b/G5/G6/G8 (G8 = phantom TSCG predicates, lot K0, one per distinct predicate); warnings = D1 bare-key OCCURRENCES (the WS-1 VOC backlog, invisible to any graph check); shacl_violations = structural grammar ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl (G1–G4) + the 2 SC-2 monoidal-formula shapes (G7), one per sh:ValidationResult. by_code gives every non-zero code: a NEW code (an engine fault, a blind shape, a missing pyshacl/pyld) fails the gate. COVERAGE: structural only (decision Q4) — no semantic grammar of GenericConcepts (SC-11b, after WS-1) yet. The frozen values are the counts above; history under _previous / _delta. Lower them ONLY by repairing data, never by loosening a check. Definitions: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md.",
     "files": 1,
-    "errors": 168,
-    "warnings": 1353,
+    "errors": 167,
+    "warnings": 1347,
     "shacl_violations": 7,
     "by_code": {
-      "D1": 1353,
+      "D1": 1347,
       "D5": 1,
       "G2": 7,
-      "G8": 167
+      "G8": 166
     },
     "_previous": {
       "files": 1,
-      "errors": 169,
-      "warnings": 1368,
+      "errors": 168,
+      "warnings": 1353,
       "shacl_violations": 7
     },
     "_delta": {
-      "errors": "169 -> 168",
-      "warnings": "1368 -> 1353"
+      "errors": "168 -> 167",
+      "warnings": "1353 -> 1347"
     },
-    "_updated": "2026-11-16",
-    "_delta_reason": "Lot \"bicephalous\" in the ontologies (2026-11-16, Michel): m2:bicephalousStrategy DELETED from the M2 header (a transitional snapshot: frozen counts 29/10/26/4, 'PROPOSITION - 7 poclets validated'). The defect disappears with the data, it does not move: D1 1368 -> 1353 = its 15 bare keys (count x4, strategy x3, perspective x3, territory/map/dual/hybridGenericConcepts, oriveStatus); G8 168 -> 167 = the phantom predicate m2:bicephalousStrategy itself. G2 unchanged. m2:bicephalousArchitecture renamed m2:stereopsicArchitecture: still a phantom (counted in G8, not repaired)."
+    "_updated": "2026-11-18",
+    "_delta_reason": "WS-15 SF-7 (2026-11-18, Michel, decision record position 17): the phantom block m2:stereopsicArchitecture DELETED from the M2 header; the header now points to M3 (rdfs:seeAlso M3_GenesisGrammar.jsonld). The defect disappears with the data: G8 167 -> 166 = the phantom predicate itself; D1 1353 -> 1347 = its 6 bare keys (eagleEye, sphinxEye, role x2, usage x2). D5 unchanged at 1 (changelog retention kept at 3: entry 16.37.0 moved to git history). G2 unchanged."
   },
   "M1": {
     "status": "INSTRUMENTED",
